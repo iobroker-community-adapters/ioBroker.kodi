@@ -1,0 +1,117 @@
+{
+    "common": {
+        "name":                     "kodi",
+        "version":                  "0.0.1",
+        "title":                    "KODI adapter",
+        "desc":                     {
+ 			             "en": "KODI Adapter",
+ 			             "de": "KODI Adapter",
+ 			             "ru": "KODI драйвер"
+	},
+        "platform":                 "Javascript/Node.js",
+        "mode":                     "daemon",
+        "icon":                     "kodi.png",
+        "enabled":                  true,
+	"extIcon":                  "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
+	"keywords":                 ["iobroker.kodi", "vis", "GUI", "graphical", "scada"],
+        "readme":                   "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
+	"loglevel":                 "info",
+        "type":                     "common adapters",
+        "restartAdapters":          ["vis"]
+    },
+    "native": {
+        "ip":                       "192.168.1.205",
+        "port":             		9090,
+        "login":                	"",
+        "password":                	""
+    },
+    "objects": [
+
+    ],
+	"instanceObjects": [
+		{
+            "_id": "stop",
+            "type": "state",
+            "common": {
+                "name":  "stop",
+                "type":  "boolean",
+                "role":  "media.stop",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "pause",
+            "type": "state",
+            "common": {
+                "name":  "pause",
+                "type":  "boolean",
+                "role":  "media.pause",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "prev",
+            "type": "state",
+            "common": {
+                "name":  "prev",
+                "type":  "boolean",
+                "role":  "media.prev",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "next",
+            "type": "state",
+            "common": {
+                "name":  "Next",
+                "type":  "boolean",
+                "role":  "media.next",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "play",
+            "type": "state",
+            "common": {
+                "name":  "Play",
+                "type":  "boolean",
+                "role":  "media.play",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "mute",
+            "type": "state",
+            "common": {
+                "name":  "Mute",
+                "type":  "boolean",
+                "role":  "media.mute",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        }
+	]
+}
