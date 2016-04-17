@@ -6,6 +6,9 @@ var kodi = require('kodi-ws');
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 var adapter = utils.adapter('kodi');
 
+
+var connection = null;
+
 // is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
     try {
@@ -40,7 +43,6 @@ adapter.on('stateChange', function (id, state) {
 			});
 			
 		}
-		
     }
 });
 
@@ -75,35 +77,76 @@ function send(){
 			}
 	});
 }
+
+function getConnection(cb) {
+	if (connection) {
+		cb && cb(null, connection);
+		return;
+	}
+	
+	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
+		connection = _connection;
+		adapter.log.info('KODI connected');
+		cb && cb(null, connection);
+	}, function (error) {
+		//do something if error
+		adapter.log.warn(error);
+		// try again in 5 seconds
+		setTimeout(getConnection, 5000, cb);
+	}).catch(function(error) {
+		// Handle errors 
+		if (error.stack) {
+			adapter.log.error(error.stack);
+		} else {
+			adapter.log.error(error);
+		}
+		// try again in 5 seconds
+		setTimeout(getConnection, 5000, cb);
+	});
+}
+
+function sendCommand(param) {
+	getConnection(function (err, _connection) {
+		// call your command here
+		_connection.Player.DoSomething().then(function (result) {
+			
+		}, function (error) {
+			adapter.log.warn(error);
+			connection = null;
+		}).catch(function (error) {
+			adapter.log.error(error);
+			connection = null;
+		})
+	});
+}
+
 function main() {
 
-adapter.log.info('KODI connecting to: ' + adapter.config.ip +':'+adapter.config.port);
+	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
 
-	kodi(adapter.config.ip, adapter.config.port).then(function (connection) {
-	adapter.log.info('KODI connected');
-	/* Get all active players and log them */
-		connection.Player.GetActivePlayers().then(function (players) {
-			adapter.log.info('Active players:' + JSON.stringify(players));
-
-			/* Log the currently played item for all players */
-			Promise.all(players.map(function(player) {
-				connection.Player.GetItem(player.playerid).then(function(item) {
-					adapter.log.info('Currently played for player[' + player.playerid + ']:' + JSON.stringify(item));
-				});
-			}));
-		});
-	}).catch(function(e) {
-		// Handle errors 
-		if(e.stack) {
-			adapter.log.error(e.stack);
-		} else {
-			adapter.log.error(e);
-		}
-	});/*.then(function() {
-		// Finally exit this process 
-		process.exit();
-	});*/
+	getConnection(function (err, _connection) {
+		if (_connection) {
+			/* Get all active players and log them */
+			_connection.Player.GetActivePlayers().then(function (players) {
+				adapter.log.info('Active players:' + JSON.stringify(players));
 	
+				/* Log the currently played item for all players */
+				Promise.all(players.map(function(player) {
+					_connection.Player.GetItem(player.playerid).then(function(item) {
+						adapter.log.info('Currently played for player[' + player.playerid + ']:' + JSON.stringify(item));
+					});
+				}));
+			}, function (error) {
+				adapter.log.warn(error);
+				connection = null;
+			}).catch(error, function () {
+				adapter.log.error(error);
+				connection = null;
+			});
+		} else {
+			if (err) adapter.log.error(err);
+		}
+	});
 
     adapter.setObject('testVariable', {
         type: 'state',
