@@ -33,18 +33,36 @@ adapter.on('stateChange', function (id, state) {
     // you can use the ack flag to detect if it is status (true) or command (false)
     if (state && !state.ack) {
        // adapter.log.info('ack is not set!');
-		var ids = id.split(".");
-		ids = ids[ids.length - 1];
-		if (ids == 'mute'){
-			kodi(adapter.config.ip, adapter.config.port).then(function(connection) {
-				connection.Application.SetMute(state.val).then(function() {
-				adapter.setState(id, {val: state.val, ack: true});
-				});
-			});
-			
-		}
+			sendCommand(id,state);
     }
 });
+
+function sendCommand(id,state) {
+	getConnection(function (err, _connection) {
+		// call your command here
+		//_connection.Player.DoSomething().then(function (result) {
+		var ids = id.split(".");
+		var methods = ids[ids.length - 2];
+		ids = ids[ids.length - 1];
+		//var cm = 'Application.SetMute';
+		//connection.run('Application.SetMute', true);
+		//connection.Application.SetMute(true);
+		
+
+		_connection.run('Player.GoTo', {"playerid":0,"to":"next"}).then(function(result) {
+				
+				adapter.log.info('ack is not set!'+JSON.stringify(result));
+				adapter.setState(id, {val: JSON.stringify(result), ack: true});
+			
+		}, function (error) {
+			adapter.log.warn(error);
+			connection = null;
+		}).catch(function (error) {
+			adapter.log.error(error);
+			connection = null;
+		})
+	});
+}
 
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on('message', function (obj) {
@@ -64,19 +82,7 @@ adapter.on('message', function (obj) {
 adapter.on('ready', function () {
     main();
 });
-function send(){
-	kodi(adapter.config.ip, adapter.config.port).then(function (connection) {
-		adapter.log.info('KODI connected');
-		
-		}).catch(function(e) {
-			// Handle errors 
-			if(e.stack) {
-				adapter.log.error(e.stack);
-			} else {
-				adapter.log.error(e);
-			}
-	});
-}
+
 
 function getConnection(cb) {
 	if (connection) {
@@ -105,21 +111,6 @@ function getConnection(cb) {
 	});
 }
 
-function sendCommand(param) {
-	getConnection(function (err, _connection) {
-		// call your command here
-		_connection.Player.DoSomething().then(function (result) {
-			
-		}, function (error) {
-			adapter.log.warn(error);
-			connection = null;
-		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-		})
-	});
-}
-
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -139,7 +130,7 @@ function main() {
 			}, function (error) {
 				adapter.log.warn(error);
 				connection = null;
-			}).catch(error, function () {
+			}).catch(function (error) {
 				adapter.log.error(error);
 				connection = null;
 			});
@@ -157,10 +148,10 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('mute', {
+	adapter.setObject('Application.SetMute', {
         type: 'state',
         common: {
-            name: 'mute',
+            name: 'SetMute',
             type: 'boolean',
             role: 'indicator'
         },
