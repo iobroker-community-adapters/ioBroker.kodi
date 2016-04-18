@@ -49,7 +49,7 @@ function sendCommand(id,state) {
 		//connection.Application.SetMute(true);
 		
 
-		_connection.run('Player.GoTo', {"playerid":0,"to":"next"}).then(function(result) {
+		_connection.run('Player.GetActivePlayers', {"playerid":0,"to":"next"}).then(function(result) {
 				
 				adapter.log.info('ack is not set!'+JSON.stringify(result));
 				adapter.setState(id, {val: JSON.stringify(result), ack: true});
