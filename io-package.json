@@ -16,7 +16,7 @@
 	"keywords":                 ["iobroker.kodi", "vis", "GUI", "graphical", "scada"],
         "readme":                   "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
 	"loglevel":                 "info",
-        "type":                     "common adapters",
+        "type":                     "media",
         "restartAdapters":          ["vis"]
     },
     "native": {
