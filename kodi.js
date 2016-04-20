@@ -40,17 +40,19 @@ adapter.on('stateChange', function (id, state) {
 		var methods = ids[ids.length - 2];
 		ids = ids[ids.length - 1];
 		var cmd = (methods +'.'+ ids).toString();
-		if (ids == 'ShowNotification'){ 
-				//image "info", "warning", "error"
-				//displaytime min 1500 default 5000
-			var c = state.val.split(";");
-			var title = c[0].toString();
-			var message = c[1].toString();
-			state.val = {'title': title, 'message': message};
-		}
+		
+		if (ids === 'ShowNotification') ShowNotification(state);
+		
 		if (methods == 'Player'){
-			state.val = {'playerid': player_id};
-		} 
+			if(ids == 'Open'){
+				//cmd = cmd;
+				state.val = {'item': {'file' : ids.toString() }};
+			//{"item": {"file" : "plugin://plugin.video.youtube/?action=play_video&amp;videoid=LDZX4ooRsWs" }}
+			} else {
+				state.val = {'playerid': player_id};
+			}
+			
+		}
 		if (methods == 'Input_ExecuteAction'){
 			cmd = 'Input.ExecuteAction';
 			state.val = ids.toString();
@@ -79,7 +81,7 @@ function sendCommand(cmd,state,param) {
 		adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state));
 		_connection.run(cmd, state.val).then(function(result) {
 				
-				adapter.log.info('ack is not set!'+JSON.stringify(result));
+				adapter.log.info('response from KODI: '+JSON.stringify(result));
 				adapter.setState(id, {val: JSON.stringify(result), ack: true});
 			
 		}, function (error) {
@@ -138,49 +140,61 @@ function getConnection(cb) {
 		setTimeout(getConnection, 5000, cb);
 	});
 }
+function GetPlayerId(_connection){
+	if (_connection) {
+		/* Get all active players and log them */
+		_connection.Player.GetActivePlayers().then(function (players) {
+			adapter.log.info('Active players:' + JSON.stringify(players));
 
+			/* Log the currently played item for all players */
+			Promise.all(players.map(function(player) {
+				_connection.Player.GetItem(player.playerid).then(function(res) {
+					adapter.log.info('Currently played for player[' + player.playerid + ']:' + JSON.stringify(res));
+					player_id = player.playerid;
+					//if (item.label){
+						adapter.setState('CurrentPlay', {val: res.item.label, ack: true});
+					//} else {
+					//	adapter.setState('CurrentPlay', {val: '', ack: true});
+					//}
+				});
+			}));
+		}, function (error) {
+			adapter.log.warn(error);
+			connection = null;
+		}).catch(function (error) {
+			adapter.log.error(error);
+			connection = null;
+		});
+		setTimeout(GetPlayerId, 5000, _connection);
+	} else {
+		if (err) adapter.log.error(err);
+	}
+	
+}
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
 
 	getConnection(function (err, _connection) {
-		if (_connection) {
-			/* Get all active players and log them */
-			_connection.Player.GetActivePlayers().then(function (players) {
-				adapter.log.info('Active players:' + JSON.stringify(players));
-	
-				/* Log the currently played item for all players */
-				Promise.all(players.map(function(player) {
-					_connection.Player.GetItem(player.playerid).then(function(res) {
-						adapter.log.info('Currently played for player[' + player.playerid + ']:' + JSON.stringify(res));
-						player_id = player.playerid;
-						//if (item.label){
-							adapter.setState('CurrentPlay', {val: res.item.label, ack: true});
-						//} else {
-						//	adapter.setState('CurrentPlay', {val: '', ack: true});
-						//}
-					});
-				}));
-			}, function (error) {
-				adapter.log.warn(error);
-				connection = null;
-			}).catch(function (error) {
-				adapter.log.error(error);
-				connection = null;
-			});
-		} else {
-			if (err) adapter.log.error(err);
-		}
+		GetPlayerId(_connection);
 	});
 	
-	 adapter.setObject('GUI.ShowNotification', {//
+	adapter.setObject('Player.Open', {
+        type: 'state',
+        common: {
+            name: 'Open',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('GUI.ShowNotification', {//
         type: 'state',
         common: {
             name: 'ShowNotification',
             type: 'string',
         },
         native: {}
-    });//Player.PlayPause
+    });
 	adapter.setObject('Player.PlayPause', {
         type: 'state',
         common: {
@@ -262,6 +276,39 @@ function main() {
         console.log('check group user admin group admin: ' + res);
     });
 */
-
-
+}
+function ShowNotification(state){
+	var title = '';
+	var message = '';
+	var displaytime = 5000;
+	var img = ['info','warning','error'];
+	var image = 'info';
+	var c = (';'+state.val).split(';');
+	var flag = false;
+	c.forEach(function(item, i, arr) {
+		if (!isNaN(item)){
+			var num = parseInt(item);
+			if (num >= 1500 && num <= 30000){
+				displaytime = num;
+			}
+			else if (num >= 0 && num <= 2){
+				image = img[num];
+			}
+		}
+		if (isNaN(arr[i]) && isNaN(arr[i+1]) && flag === false){
+			if (arr[i] && arr[i+1]){
+				title = arr[i].toString();
+				message = arr[i+1].toString();
+				flag = true;
+			}
+		}
+	});
+	if (!flag){
+		c.forEach(function(item, i, arr) {
+			if (isNaN(arr[i]) && arr[i]){
+				message = arr[i].toString();
+			}
+		});
+	}
+	return state.val = {'title': title, 'message': message, 'image': image, 'displaytime': displaytime};
 }
