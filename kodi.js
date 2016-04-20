@@ -6,7 +6,6 @@ var kodi = require('kodi-ws');
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 var adapter = utils.adapter('kodi');
 
-
 var connection = null;
 var player_id =  null;
 var player_type = null;
@@ -30,12 +29,11 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
     // Warning, state can be null if it was deleted
-    adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
+    adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
 
     // you can use the ack flag to detect if it is status (true) or command (false)
     if (state && !state.ack) {
 		var param = null;
-       // adapter.log.info('ack is not set!');
 	    var ids = id.split(".");
 		var methods = ids[ids.length - 2];
 		ids = ids[ids.length - 1];
@@ -46,8 +44,8 @@ adapter.on('stateChange', function (id, state) {
 		if (methods == 'Player'){
 			if(ids == 'Open'){
 				//cmd = cmd;
-				state.val = {'item': {'file' : ids.toString() }};
-			//{"item": {"file" : "plugin://plugin.video.youtube/?action=play_video&amp;videoid=LDZX4ooRsWs" }}
+				state.val = {'item': {'file' : state.val.toString() }};
+			//plugin://plugin.video.youtube/?action=play_video&amp;videoid=LDZX4ooRsWs
 			} else {
 				state.val = {'playerid': player_id};
 			}
@@ -58,12 +56,9 @@ adapter.on('stateChange', function (id, state) {
 			state.val = ids.toString();
 		}
 		
-			
 			sendCommand(cmd,state,param);
     }
 });
-//"Player.Open", "params":{"item": {"file" : "plugin://plugin.video.youtube/?action=play_video&amp;videoid=LDZX4ooRsWs" }}, "id" : "1"}
-// "GUI.ShowNotification","params":{"title":"Switch to Channel 1","message":"1 Live TV Channel"},"id": "0"}
 // "Player.PlayPause","params":[true]}
 //"method": "Input.ExecuteAction","params": { "action": name},
 function sendCommand(cmd,state,param) {
@@ -81,7 +76,7 @@ function sendCommand(cmd,state,param) {
 		adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state));
 		_connection.run(cmd, state.val).then(function(result) {
 				
-				adapter.log.info('response from KODI: '+JSON.stringify(result));
+				adapter.log.debug('response from KODI: '+JSON.stringify(result));
 				adapter.setState(id, {val: JSON.stringify(result), ack: true});
 			
 		}, function (error) {
@@ -144,12 +139,11 @@ function GetPlayerId(_connection){
 	if (_connection) {
 		/* Get all active players and log them */
 		_connection.Player.GetActivePlayers().then(function (players) {
-			adapter.log.info('Active players:' + JSON.stringify(players));
-
+			adapter.log.debug('Active players:' + JSON.stringify(players));
 			/* Log the currently played item for all players */
 			Promise.all(players.map(function(player) {
 				_connection.Player.GetItem(player.playerid).then(function(res) {
-					adapter.log.info('Currently played for player[' + player.playerid + ']:' + JSON.stringify(res));
+					adapter.log.debug('Currently played for player[' + player.playerid + ']:' + JSON.stringify(res));
 					player_id = player.playerid;
 					//if (item.label){
 						adapter.setState('CurrentPlay', {val: res.item.label, ack: true});
