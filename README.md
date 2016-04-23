@@ -13,6 +13,7 @@ You can find kodi's official documentation of the JSON-RCP API [here](http://kod
 
 ####displaytime:
 Время отображения сообщения в милисекундах, минимум 1500 макс 30000 мс.
+
 Пример: 
  * 1;Внимание;Протечка воды;15000
  * Внимание;Протечка воды;2;10000
