@@ -157,11 +157,21 @@ function GetPlayerId(_connection){
 			connection = null;
 		});
 		setTimeout(GetPlayerId, 5000, _connection);
+		GetPlayProperties(_connection);
 	} else {
 		if (err) adapter.log.error(err);
 	}
 	
 }
+function GetPlayProperties(_connection){
+	_connection.run('Player.GetProperties', {"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]}).then(function (res) {
+		//adapter.log.debug('Player.GetProperties:' + JSON.stringify(item));
+		adapter.setState('time', {val: res.time.hours+'-'+res.time.minutes+'-'+res.time.seconds, ack: true});
+		
+	});
+setTimeout(GetPlayProperties, 1000, _connection);
+}
+
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -176,7 +186,6 @@ function main() {
 				//adapter.setState('CurrentPlay', {val: res.item.label, ack: true});
 				_connection.run('PVR.GetChannels', {"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
 				adapter.log.debug('PVR.GetChannels:' + JSON.stringify(item));
-				
 			//	{"jsonrpc":"2.0","id":1,"method":"PVR.GetChannels","params":{"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}}
 				});
 			}, function (error) {
