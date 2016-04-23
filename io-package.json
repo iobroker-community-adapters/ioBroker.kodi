@@ -42,6 +42,76 @@
             },
             "native": {
             }
+        },
+	{
+            "_id": "next",
+            "type": "state",
+            "common": {
+                "name":  "next",
+                "type":  "boolean",
+                "role":  "media.next",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "previous",
+            "type": "state",
+            "common": {
+                "name":  "previous",
+                "type":  "boolean",
+                "role":  "media.previous",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "stop",
+            "type": "state",
+            "common": {
+                "name":  "stop",
+                "type":  "boolean",
+                "role":  "media.stop",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "volume",
+            "type": "state",
+            "common": {
+                "name":  "volume",
+                "type":  "boolean",
+                "role":  "media.volume",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
+        },
+	{
+            "_id": "playpause",
+            "type": "state",
+            "common": {
+                "name":  "playpause",
+                "type":  "boolean",
+                "role":  "media.playpause",
+                "read":  true,
+                "write": true,
+                "def":   null
+            },
+            "native": {
+            }
         }
 	]
 }

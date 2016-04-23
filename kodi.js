@@ -33,28 +33,57 @@ adapter.on('stateChange', function (id, state) {
 		var param = null;
 	    var ids = id.split(".");
 		var methods = ids[ids.length - 2];
-		ids = ids[ids.length - 1];
+		ids = ids[ids.length - 1].toLowerCase();
 		var cmd = (methods +'.'+ ids).toString();
-		
-		if (ids === 'ShowNotification') ShowNotification(state);
+		adapter.log.info('sending methods: '+ methods);
+		if (ids === 'shownotification') ShowNotification(state);
 		
 		if (methods == 'Player'){
-			if(ids == 'YouTube'){
+			if(ids == 'youtube'){
 				cmd = (methods +'.Open');
 				state.val = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + state.val.toString() }};
 			}
-			else if(ids == 'Open'){
-				//cmd = cmd;
+			else if(ids == 'open'){
 				state.val = {'item': {'file' : state.val.toString() }};
 			}
-			else if (ids !== 'Open' && ids !== 'YouTube'){
+			else if (ids !== 'open' && ids !== 'youtube'){
 				state.val = {'playerid': player_id};
 			}
 		}
-		if (methods == 'Input_ExecuteAction'){
+		if (ids == 'input_executeaction'){
 			cmd = 'Input.ExecuteAction';
-			//state.val = ids.toString();
+			state.val = state.val.toString();
 		}
+		if (ids == 'volume'){
+			cmd = 'Application.SetVolume';
+		}
+		if (ids == 'repeat'){
+			cmd = 'Player.SetRepeat';
+			state.val = {'playerid': player_id,"repeat": state.val};
+		}
+		if (ids == 'shuffle'){
+			cmd = 'Player.SetShuffle';
+		}
+		if (ids == 'mute'){
+			cmd = 'Application.SetMute';
+		}
+		if (ids == 'next'){ //fullscreen
+			cmd = 'Input.ExecuteAction';
+			state.val = 'skipnext';
+		}
+		if (ids == 'previous'){ //fullscreen
+			cmd = 'Input.ExecuteAction';
+			state.val = 'skipprevious';
+		}
+		if (ids == 'playpause'){
+			cmd = 'Player.PlayPause';
+			state.val = {'playerid': player_id};
+		}
+		if (ids == 'stop'){
+			cmd = 'Player.Stop';
+			state.val = {'playerid': player_id};
+		}
+		
 		
 			sendCommand(cmd,state,param);
     }
@@ -72,6 +101,8 @@ function sendCommand(cmd,state,param) {
 				
 				adapter.log.debug('response from KODI: '+JSON.stringify(result));
 				adapter.setState(id, {val: JSON.stringify(result), ack: true});
+				//GetProperties(_connection);
+				//GetPlayProperties(_connection);
 			
 		}, function (error) {
 			adapter.log.warn(error);
@@ -142,6 +173,7 @@ function GetPlayerId(_connection){
 						adapter.setState('CurrentPlay', {val: res.item.label, ack: true});
 				});
 			}));
+			GetProperties(_connection);
 			GetPlayProperties(_connection);
 		}, function (error) {
 			adapter.log.warn(error);
