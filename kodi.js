@@ -36,7 +36,7 @@ adapter.on('stateChange', function (id, state) {
 		ids = ids[ids.length - 1];
 		var cmd = (methods +'.'+ ids).toString();
 		adapter.log.info('sending methods: '+ methods);
-		if (ids === 'shownotification') ShowNotification(state);
+		if (ids === 'ShowNotification') ShowNotification(state);
 		
 		if (ids === 'ActivateWindow'){
 			state.val = {"window": state.val };
@@ -224,25 +224,25 @@ function GetPlayProperties(_connection){
 //setTimeout(GetPlayProperties, 3000, _connection);
 }
 function GetProperties(_connection){
-		_connection.run('Application.GetProperties', {"properties":["volume","muted","name","version"]}).then(function (res) {
-			adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
-			adapter.setState('Mute', {val: res.muted, ack: true});
-			adapter.setState('Name', {val: res.name, ack: true});
-			adapter.setState('Volume', {val: res.volume, ack: true});
-			adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
-			_connection.run('PVR.GetChannels', {"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
-			adapter.setState('PVR.GetChannelsIPTV', {val: JSON.stringify(item), ack: true});
-			});
-			_connection.run('PVR.GetChannels', {"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
-			adapter.setState('PVR.GetChannelsRadio', {val: JSON.stringify(item), ack: true});
-			});
-		}, function (error) {
-			adapter.log.warn(error);
-			connection = null;
-		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
+	_connection.run('Application.GetProperties', {"properties":["volume","muted","name","version"]}).then(function (res) {
+		adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
+		adapter.setState('Mute', {val: res.muted, ack: true});
+		adapter.setState('Name', {val: res.name, ack: true});
+		adapter.setState('Volume', {val: res.volume, ack: true});
+		adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
+		_connection.run('PVR.GetChannels', {"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
+		adapter.setState('PVR.GetChannelsIPTV', {val: JSON.stringify(item), ack: true});
 		});
+		_connection.run('PVR.GetChannels', {"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
+		adapter.setState('PVR.GetChannelsRadio', {val: JSON.stringify(item), ack: true});
+		});
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+	});
 }
 function main() {
 
@@ -404,27 +404,8 @@ function main() {
 	});
 	*/	
 	
-	
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
-
-
-    /**
-     *   setState examples
-     *   you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-     */
-
-    // the variable testVariable is set to true as command (ack=false)
-//    adapter.setState('testVariable', true);
-
-    // same thing, but the value is flagged "ack"
-    // ack should be always set to true if the value is received from or acknowledged from the target system
-//   adapter.setState('testVariable', {val: true, ack: true});
-
-    // same thing, but the state is deleted after 30s (getState will return null afterwards)
-//    adapter.setState('testVariable', {val: true, ack: true, expire: 30});
-
-
 
     // examples for the checkPassword/checkGroup functions
 /*    adapter.checkPassword('admin', 'iobroker', function (res) {
