@@ -42,14 +42,17 @@ adapter.on('stateChange', function (id, state) {
 		if (ids === 'ShowNotification') ShowNotification(state);
 		
 		if (methods == 'Player'){
-			if(ids == 'Open'){
+			if(ids == 'YouTube'){
+				cmd = (methods +'.Open');
+				state.val = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + state.val.toString() }};
+			}
+			else if(ids == 'Open'){
 				//cmd = cmd;
 				state.val = {'item': {'file' : state.val.toString() }};
-			//plugin://plugin.video.youtube/?action=play_video&amp;videoid=LDZX4ooRsWs
-			} else {
+			}
+			else if (ids !== 'Open' && ids !== 'YouTube'){
 				state.val = {'playerid': player_id};
 			}
-			
 		}
 		if (methods == 'Input_ExecuteAction'){
 			cmd = 'Input.ExecuteAction';
@@ -59,19 +62,13 @@ adapter.on('stateChange', function (id, state) {
 			sendCommand(cmd,state,param);
     }
 });
-// "Player.PlayPause","params":[true]}
-//"method": "Input.ExecuteAction","params": { "action": name},
+
 function sendCommand(cmd,state,param) {
 	getConnection(function (err, _connection) {
 		// call your command here
-		//_connection.Player.DoSomething().then(function (result) {
 		if (param){
 			state.val = param;
 		}
-		//var cm = 'Application.SetMute';
-		//connection.run('Application.SetMute', true);
-		//connection.Application.SetMute(true);
-		//_connection.run('Player.GetActivePlayers', {"playerid":0,"to":"next"}).then(function(result) {
 
 		adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state));
 		_connection.run(cmd, state.val).then(function(result) {
@@ -171,12 +168,87 @@ function main() {
 
 	getConnection(function (err, _connection) {
 		GetPlayerId(_connection);
+	
+			_connection.run('Application.GetProperties', {"properties":["volume","muted","name","version"]}).then(function (item) {
+				adapter.log.debug('Application.GetProperties:' + JSON.stringify(item));
+			//{"muted":false,"name":"Kodi","version":{"major":14,"minor":2,"revision":"20150326-7cc53a9","tag":"stable"},"volume":100}
+			//state.val = {'playerid': player_id};
+				//adapter.setState('CurrentPlay', {val: res.item.label, ack: true});
+				_connection.run('PVR.GetChannels', {"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
+				adapter.log.debug('PVR.GetChannels:' + JSON.stringify(item));
+				
+			//	{"jsonrpc":"2.0","id":1,"method":"PVR.GetChannels","params":{"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}}
+				});
+			}, function (error) {
+				adapter.log.warn(error);
+				connection = null;
+			}).catch(function (error) {
+				adapter.log.error(error);
+				connection = null;
+			});
+		
 	});
 	
+	adapter.setObject('Player.YouTube', {
+        type: 'state',
+        common: {
+            name: 'YouTube',
+            type: 'string',
+        },
+        native: {}
+    });
 	adapter.setObject('Player.Open', {
         type: 'state',
         common: {
             name: 'Open',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('Player.Seek', {
+        type: 'state',
+        common: {
+            name: 'Seek',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('Player.SetRepeat', {
+        type: 'state',
+        common: {
+            name: 'SetRepeat',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('Player.SetShuffle', {
+        type: 'state',
+        common: {
+            name: 'SetShuffle',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('Player.SetSpeed', { //-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32
+        type: 'state',
+        common: {
+            name: 'SetSpeed',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('Player.SetSubtitle', { //"previous","next","off","on"
+        type: 'state',
+        common: {
+            name: 'SetSubtitle',
+            type: 'string',
+        },
+        native: {}
+    });
+	adapter.setObject('Player.Zoom', { //1-10
+        type: 'state',
+        common: {
+            name: 'Zoom',
             type: 'string',
         },
         native: {}
