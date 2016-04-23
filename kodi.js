@@ -29,7 +29,7 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
     // Warning, state can be null if it was deleted
-    adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
+		 adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));   
 
     // you can use the ack flag to detect if it is status (true) or command (false)
     if (state && !state.ack) {
@@ -169,7 +169,7 @@ function GetPlayProperties(_connection){
 		adapter.setState('time', {val: res.time.hours+'-'+res.time.minutes+'-'+res.time.seconds, ack: true});
 		
 	});
-setTimeout(GetPlayProperties, 1000, _connection);
+setTimeout(GetPlayProperties, 3000, _connection);
 }
 
 function main() {
