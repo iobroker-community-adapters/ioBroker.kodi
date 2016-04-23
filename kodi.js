@@ -33,11 +33,18 @@ adapter.on('stateChange', function (id, state) {
 		var param = null;
 	    var ids = id.split(".");
 		var methods = ids[ids.length - 2];
-		ids = ids[ids.length - 1].toLowerCase();
+		ids = ids[ids.length - 1];
 		var cmd = (methods +'.'+ ids).toString();
 		adapter.log.info('sending methods: '+ methods);
 		if (ids === 'shownotification') ShowNotification(state);
 		
+		if (ids === 'ActivateWindow'){
+			state.val = {"window": state.val };
+		}
+		if (methods === 'Input'){
+			cmd = 'Input.'+ids;
+			state.val = [];
+		}
 		if (methods == 'Player'){
 			if(ids == 'youtube'){
 				cmd = (methods +'.Open');
@@ -50,39 +57,37 @@ adapter.on('stateChange', function (id, state) {
 				state.val = {'playerid': player_id};
 			}
 		}
-		if (ids == 'input_executeaction'){
+		if (ids == 'Input_Executeaction'){
 			cmd = 'Input.ExecuteAction';
 			state.val = state.val.toString();
 		}
-		if (ids == 'volume'){
+		if (ids == 'Volume'){
 			cmd = 'Application.SetVolume';
 		}
-		if (ids == 'repeat'){ //off, on, all
+		if (ids == 'Repeat'){ //off, on, all
 			cmd = 'Player.SetRepeat';
 			state.val = {'playerid': player_id,"repeat": state.val};
 		}
-		if (ids == 'shuffle'){
+		if (ids == 'Shuffle'){
 			cmd = 'Player.SetShuffle';
 			state.val = {'playerid': player_id,"shuffle": state.val};
 		}
-		if (ids == 'mute'){
+		if (ids == 'Mute'){
 			cmd = 'Application.SetMute';
 		}
-		if (ids == 'next'){ //fullscreen
+		if (ids == 'Next'){ //fullscreen
 			cmd = 'Input.ExecuteAction';
 			state.val = 'skipnext';
 		}
-		//{"jsonrpc":"2.0","id":1,"method":"Player.GoNext","params":{"playerid":1}}
-		//{"jsonrpc":"2.0","id":1,"method":"Player.GoPrevious","params":{"playerid":1}}
-		if (ids == 'previous'){ //fullscreen
+		if (ids == 'Previous'){ //fullscreen
 			cmd = 'Input.ExecuteAction';
 			state.val = 'skipprevious';
 		}
-		if (ids == 'playpause'){
+		if (ids == 'PlayPause'){
 			cmd = 'Player.PlayPause';
 			state.val = {'playerid': player_id};
 		}
-		if (ids == 'stop'){
+		if (ids == 'Stop'){
 			cmd = 'Player.Stop';
 			state.val = {'playerid': player_id};
 		}
@@ -98,7 +103,7 @@ function sendCommand(cmd,state,param) {
 			state.val = param;
 		}
 
-		adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state));
+		adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state.val));
 		_connection.run(cmd, state.val).then(function(result) {
 				
 				adapter.log.debug('response from KODI: '+JSON.stringify(result));
@@ -320,6 +325,14 @@ function main() {
         },
         native: {}
     });
+	adapter.setObject('GUI.ActivateWindow', {
+        type: 'state',
+        common: {
+            name: 'ActivateWindow',
+            type: 'string',
+        },
+        native: {}
+    });
 	adapter.setObject('Player.PlayPause', {
         type: 'state',
         common: {
@@ -364,6 +377,18 @@ function main() {
         },
         native: {}
     });
+	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up'];
+	input.forEach(function(item, i, arr) {
+		adapter.setObject('Input.'+item, {
+			type: 'state',
+			common: {
+				name: item,
+				type: 'string',
+				role: 'indicator'
+			},
+			native: {}
+		});						
+	});
 	/*var action = ['left','right','up','down','pageup','pagedown','select','highlight','parentdir','parentfolder','back','previousmenu','info','pause','stop','skipnext','skipprevious','fullscreen','aspectratio','stepforward','stepback','bigstepforward','bigstepback','osd','showsubtitles','nextsubtitle','codecinfo','nextpicture','previouspicture','zoomout','zoomin','playlist','queue','zoomnormal','zoomlevel1','zoomlevel2','zoomlevel3','zoomlevel4','zoomlevel5','zoomlevel6','zoomlevel7','zoomlevel8','zoomlevel9','nextcalibration','resetcalibration','analogmove','rotate','rotateccw','close','subtitledelayminus','subtitledelay','subtitledelayplus','audiodelayminus','audiodelay','audiodelayplus','subtitleshiftup','subtitleshiftdown','subtitlealign','audionextlanguage','verticalshiftup','verticalshiftdown','nextresolution','audiotoggledigital','number0','number1','number2','number3','number4','number5','number6','number7','number8','number9','osdleft','osdright','osdup','osddown','osdselect','osdvalueplus','osdvalueminus','smallstepback','fastforward','rewind','play','playpause','delete','copy','move','mplayerosd','hidesubmenu','screenshot','rename','togglewatched','scanitem','reloadkeymaps','volumeup','volumedown','mute','backspace','scrollup','scrolldown','analogfastforward','analogrewind','moveitemup','moveitemdown','contextmenu','shift','symbols','cursorleft','cursorright','showtime','analogseekforward','analogseekback','showpreset','presetlist','nextpreset','previouspreset','lockpreset','randompreset','increasevisrating','decreasevisrating','showvideomenu','enter','increaserating','decreaserating','togglefullscreen','nextscene','previousscene','nextletter','prevletter','jumpsms2','jumpsms3','jumpsms4','jumpsms5','jumpsms6','jumpsms7','jumpsms8','jumpsms9','filter','filterclear','filtersms2','filtersms3','filtersms4','filtersms5','filtersms6','filtersms7','filtersms8','filtersms9','firstpage','lastpage','guiprofile','red','green','yellow','blue','increasepar','decreasepar','volampup','volampdown','channelup','channeldown','previouschannelgroup','nextchannelgroup','leftclick','rightclick','middleclick','doubleclick','wheelup','wheeldown','mousedrag','mousemove','noop'];
 	
 	action.forEach(function(item, i, arr) {

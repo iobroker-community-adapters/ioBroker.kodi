@@ -30,7 +30,7 @@
     ],
 	"instanceObjects": [
 	{
-            "_id": "mute",
+            "_id": "Mute",
             "type": "state",
             "common": {
                 "name":  "Mute",
@@ -44,7 +44,7 @@
             }
         },
 	{
-            "_id": "next",
+            "_id": "Next",
             "type": "state",
             "common": {
                 "name":  "next",
@@ -58,7 +58,7 @@
             }
         },
 	{
-            "_id": "previous",
+            "_id": "Previous",
             "type": "state",
             "common": {
                 "name":  "previous",
@@ -72,7 +72,7 @@
             }
         },
 	{
-            "_id": "stop",
+            "_id": "Stop",
             "type": "state",
             "common": {
                 "name":  "stop",
@@ -86,7 +86,7 @@
             }
         },
 	{
-            "_id": "volume",
+            "_id": "Volume",
             "type": "state",
             "common": {
                 "name":  "volume",
@@ -100,7 +100,7 @@
             }
         },
 	{
-            "_id": "playpause",
+            "_id": "PlayPause",
             "type": "state",
             "common": {
                 "name":  "playpause",
