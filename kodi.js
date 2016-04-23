@@ -57,12 +57,13 @@ adapter.on('stateChange', function (id, state) {
 		if (ids == 'volume'){
 			cmd = 'Application.SetVolume';
 		}
-		if (ids == 'repeat'){
+		if (ids == 'repeat'){ //off, on, all
 			cmd = 'Player.SetRepeat';
 			state.val = {'playerid': player_id,"repeat": state.val};
 		}
 		if (ids == 'shuffle'){
 			cmd = 'Player.SetShuffle';
+			state.val = {'playerid': player_id,"shuffle": state.val};
 		}
 		if (ids == 'mute'){
 			cmd = 'Application.SetMute';
@@ -71,6 +72,8 @@ adapter.on('stateChange', function (id, state) {
 			cmd = 'Input.ExecuteAction';
 			state.val = 'skipnext';
 		}
+		//{"jsonrpc":"2.0","id":1,"method":"Player.GoNext","params":{"playerid":1}}
+		//{"jsonrpc":"2.0","id":1,"method":"Player.GoPrevious","params":{"playerid":1}}
 		if (ids == 'previous'){ //fullscreen
 			cmd = 'Input.ExecuteAction';
 			state.val = 'skipprevious';
@@ -83,7 +86,6 @@ adapter.on('stateChange', function (id, state) {
 			cmd = 'Player.Stop';
 			state.val = {'playerid': player_id};
 		}
-		
 		
 			sendCommand(cmd,state,param);
     }
@@ -208,6 +210,8 @@ function GetPlayProperties(_connection){
 		adapter.setState('PlayingTime', {val: time(res.time.hours, res.time.minutes, res.time.seconds), ack: true});
 		adapter.setState('PlayingTotalTime', {val: time(res.totaltime.hours, res.totaltime.minutes, res.totaltime.seconds), ack: true});
 		adapter.setState('Repeat', {val: res.repeat, ack: true});
+		adapter.setState('shuffle', {val: res.shuffled, ack: true});
+		adapter.setState('Speed', {val: res.speed, ack: true});
 		adapter.setState('Position', {val: res.position, ack: true});
 		adapter.setState('Playlistid', {val: res.playlistid, ack: true});
 		adapter.setState('Partymode', {val: res.partymode, ack: true});
