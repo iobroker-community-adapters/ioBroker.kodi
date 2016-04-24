@@ -1,6 +1,6 @@
 {
   "name": "iobroker.kodi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "iobroker.kodi Adapter",
   "author": {
     "name": "instalator",
@@ -41,10 +41,5 @@
   "bugs": {
     "url": "https://github.com/instalator/ioBroker.kodi/issues"
   },
-  "readmeFilename": "README.md",
-  "readme": "# Kodi's JSON-RPC API for IoBroker\n\n",
-  "_id": "iobroker.kodi@0.0.1",
-  "_shasum": "9c92e809dc1cbed371da6603072fc6d3b02eeafa",
-  "_resolved": "https://github.com/instalator/ioBroker.kodi/tarball/master",
-  "_from": "https://github.com/instalator/ioBroker.kodi/tarball/master"
+  "readmeFilename": "README.md"
 }

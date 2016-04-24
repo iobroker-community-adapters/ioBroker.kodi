@@ -34,15 +34,13 @@ adapter.on('stateChange', function (id, state) {
 	    var ids = id.split(".");
 		var methods = ids[ids.length - 2];
 		ids = ids[ids.length - 1];
-		var cmd = (methods +'.'+ ids).toString();
-		adapter.log.info('sending methods: '+ methods);
-		if (ids === 'ShowNotification') ShowNotification(state);
-		
-		if (ids === 'ActivateWindow'){
-			state.val = {"window": state.val };
+		if (methods !== 0){
+			var cmd = (methods +'.'+ ids).toString();
 		}
+		
+		adapter.log.info('sending methods: '+ methods);
+		
 		if (methods === 'Input'){
-			cmd = 'Input.'+ids;
 			state.val = [];
 		}
 		if (methods == 'Player'){
@@ -57,42 +55,53 @@ adapter.on('stateChange', function (id, state) {
 				state.val = {'playerid': player_id};
 			}
 		}
-		if (ids == 'Input_Executeaction'){
-			cmd = 'Input.ExecuteAction';
-			state.val = state.val.toString();
-		}
-		if (ids == 'Volume'){
-			cmd = 'Application.SetVolume';
-		}
-		if (ids == 'Repeat'){ //off, on, all
-			cmd = 'Player.SetRepeat';
-			state.val = {'playerid': player_id,"repeat": state.val};
-		}
-		if (ids == 'Shuffle'){
-			cmd = 'Player.SetShuffle';
-			state.val = {'playerid': player_id,"shuffle": state.val};
-		}
-		if (ids == 'Mute'){
-			cmd = 'Application.SetMute';
-		}
-		if (ids == 'Next'){ //fullscreen
-			cmd = 'Input.ExecuteAction';
-			state.val = 'skipnext';
-		}
-		if (ids == 'Previous'){ //fullscreen
-			cmd = 'Input.ExecuteAction';
-			state.val = 'skipprevious';
-		}
-		if (ids == 'PlayPause'){
-			cmd = 'Player.PlayPause';
-			state.val = {'playerid': player_id};
-		}
-		if (ids == 'Stop'){
-			cmd = 'Player.Stop';
-			state.val = {'playerid': player_id};
-		}
-		
-			sendCommand(cmd,state,param);
+		switch(ids) {
+			case "ShowNotification":
+				ShowNotification(state);
+			  break;
+			case "ActivateWindow":
+				state.val = {"window": state.val };
+			  break;
+			case "Input_ExecuteAction":
+				cmd = 'Input.ExecuteAction';
+				state.val = state.val.toString();
+			  break;
+			case "Volume":
+				cmd = 'Application.SetVolume';
+			  break;
+			case "Repeat":
+				cmd = 'Player.SetRepeat';
+				state.val = {'playerid': player_id,"repeat": state.val};
+			  break;
+			case "Shuffle": //off, on, all
+				cmd = 'Player.SetRepeat';
+				state.val = {'playerid': player_id,"repeat": state.val};
+			  break;
+			case "Mute":
+				cmd = 'Application.SetMute';
+			  break;
+			case "Next":
+				cmd = 'Input.ExecuteAction';
+				state.val = 'skipnext';
+			  break;
+			case "Previous":
+				cmd = 'Input.ExecuteAction';
+				state.val = 'skipprevious';
+			  break;
+			case "PlayPause":
+				cmd = 'Player.PlayPause';
+				state.val = {'playerid': player_id};
+			  break;
+			case "Stop":
+				cmd = 'Player.Stop';
+				state.val = {'playerid': player_id};
+			  break;
+
+			default:
+			
+		}	
+		sendCommand(cmd,state,param);
+	
     }
 });
 
@@ -108,8 +117,6 @@ function sendCommand(cmd,state,param) {
 				
 				adapter.log.debug('response from KODI: '+JSON.stringify(result));
 				adapter.setState(id, {val: JSON.stringify(result), ack: true});
-				//GetProperties(_connection);
-				//GetPlayProperties(_connection);
 			
 		}, function (error) {
 			adapter.log.warn(error);
@@ -127,7 +134,6 @@ adapter.on('message', function (obj) {
         if (obj.command == 'send') {
             // e.g. send email or pushover or whatever
             console.log('send command');
-
             // Send response in callback if required
             if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
         }
@@ -146,7 +152,6 @@ function getConnection(cb) {
 		cb && cb(null, connection);
 		return;
 	}
-	
 	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
@@ -181,7 +186,7 @@ function GetPlayerId(_connection){
 				});
 			}));
 			GetProperties(_connection);
-			GetPlayProperties(_connection);
+			//GetPlayProperties(_connection);
 		}, function (error) {
 			adapter.log.warn(error);
 			connection = null;
@@ -194,56 +199,10 @@ function GetPlayerId(_connection){
 	} else {
 		if (err) adapter.log.error(err);
 	}
-	
-}
-function time(hour,min,sec){
-		var time = '';
-		hour = (parseInt(hour) < 10 ? '0': '') + hour;
-		min = (parseInt(min) < 10 ? '0': '') + min;
-		sec = (parseInt(sec) < 10 ? '0': '') + sec;
-		if (parseInt(hour) === 0){
-			time = min + '-' + sec;
-		} else {
-			time = hour + '-' + min + '-' + sec;
-		}
-		return time;
 }
 
-function GetPlayProperties(_connection){
-	_connection.run('Player.GetProperties', {"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]}).then(function (res) {
-		//adapter.log.debug('Player.GetProperties:' + JSON.stringify(item));
-		adapter.setState('PlayingTime', {val: time(res.time.hours, res.time.minutes, res.time.seconds), ack: true});
-		adapter.setState('PlayingTotalTime', {val: time(res.totaltime.hours, res.totaltime.minutes, res.totaltime.seconds), ack: true});
-		adapter.setState('Repeat', {val: res.repeat, ack: true});
-		adapter.setState('shuffle', {val: res.shuffled, ack: true});
-		adapter.setState('Speed', {val: res.speed, ack: true});
-		adapter.setState('Position', {val: res.position, ack: true});
-		adapter.setState('Playlistid', {val: res.playlistid, ack: true});
-		adapter.setState('Partymode', {val: res.partymode, ack: true});
-	});
-//setTimeout(GetPlayProperties, 3000, _connection);
-}
-function GetProperties(_connection){
-	_connection.run('Application.GetProperties', {"properties":["volume","muted","name","version"]}).then(function (res) {
-		adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
-		adapter.setState('Mute', {val: res.muted, ack: true});
-		adapter.setState('Name', {val: res.name, ack: true});
-		adapter.setState('Volume', {val: res.volume, ack: true});
-		adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
-		_connection.run('PVR.GetChannels', {"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
-		adapter.setState('PVR.GetChannelsIPTV', {val: JSON.stringify(item), ack: true});
-		});
-		_connection.run('PVR.GetChannels', {"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]}).then(function (item) {
-		adapter.setState('PVR.GetChannelsRadio', {val: JSON.stringify(item), ack: true});
-		});
-	}, function (error) {
-		adapter.log.warn(error);
-		connection = null;
-	}).catch(function (error) {
-		adapter.log.error(error);
-		connection = null;
-	});
-}
+
+
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -251,8 +210,50 @@ function main() {
 	getConnection(function (err, _connection) {
 		GetPlayerId(_connection);
 		GetProperties(_connection);
+		GetPVRChannel(_connection);
 	});
-	
+	var media = ['Repeat','Shuffle','Mute','Next','Previous','Stop','Volume','PlayPause'];
+	media.forEach(function(item, i, arr) {
+		adapter.setObject(item, {
+			type: 'state',
+			common: {
+				"name":  item,
+				"type":  "string",
+				"role":  "media."+item,
+				"read":  true,
+				"write": true,
+				"def":   null
+			},
+			native: {}
+		});
+	});
+		
+	var info = ['CurrentPlay','PlayingTime','PlayingTotalTime','Name','Version','Codec','SampleRate','BitRate'];
+	info.forEach(function(item, i, arr) {
+		adapter.setObject(item, {
+			type: 'state',
+			common: {
+				"name":  item,
+				"type":  "string",
+				"read":  true,
+				"write": false,
+				"def":   null
+			},
+			native: {}
+		});
+	});
+	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up'];
+	input.forEach(function(item, i, arr) {
+		adapter.setObject('Input.'+item, {
+			type: 'state',
+			common: {
+				name: item,
+				type: 'string',
+				role: 'indicator'
+			},
+			native: {}
+		});						
+	});
 	adapter.setObject('Player.YouTube', {
         type: 'state',
         common: {
@@ -277,22 +278,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('Player.SetRepeat', {
-        type: 'state',
-        common: {
-            name: 'SetRepeat',
-            type: 'string',
-        },
-        native: {}
-    });
-	adapter.setObject('Player.SetShuffle', {
-        type: 'state',
-        common: {
-            name: 'SetShuffle',
-            type: 'string',
-        },
-        native: {}
-    });
+	
 	adapter.setObject('Player.SetSpeed', { //-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32
         type: 'state',
         common: {
@@ -333,15 +319,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('Player.PlayPause', {
-        type: 'state',
-        common: {
-            name: 'PlayPause',
-            type: 'boolean',
-            role: 'indicator'
-        },
-        native: {}
-    });
+
     adapter.setObject('Player.GoTo', {
         type: 'state',
         common: {
@@ -350,24 +328,7 @@ function main() {
         },
         native: {}
     });
-	adapter.setObject('Application.SetMute', {
-        type: 'state',
-        common: {
-            name: 'SetMute',
-            type: 'boolean',
-            role: 'indicator'
-        },
-        native: {}
-    });
-	adapter.setObject('CurrentPlay', {
-        type: 'state',
-        common: {
-            name: 'CurrentPlay',
-            type: 'string',
-            role: 'indicator'
-        },
-        native: {}
-    });
+
 	adapter.setObject('Input_ExecuteAction', {
         type: 'state',
         common: {
@@ -377,18 +338,7 @@ function main() {
         },
         native: {}
     });
-	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up'];
-	input.forEach(function(item, i, arr) {
-		adapter.setObject('Input.'+item, {
-			type: 'state',
-			common: {
-				name: item,
-				type: 'string',
-				role: 'indicator'
-			},
-			native: {}
-		});						
-	});
+	
 	/*var action = ['left','right','up','down','pageup','pagedown','select','highlight','parentdir','parentfolder','back','previousmenu','info','pause','stop','skipnext','skipprevious','fullscreen','aspectratio','stepforward','stepback','bigstepforward','bigstepback','osd','showsubtitles','nextsubtitle','codecinfo','nextpicture','previouspicture','zoomout','zoomin','playlist','queue','zoomnormal','zoomlevel1','zoomlevel2','zoomlevel3','zoomlevel4','zoomlevel5','zoomlevel6','zoomlevel7','zoomlevel8','zoomlevel9','nextcalibration','resetcalibration','analogmove','rotate','rotateccw','close','subtitledelayminus','subtitledelay','subtitledelayplus','audiodelayminus','audiodelay','audiodelayplus','subtitleshiftup','subtitleshiftdown','subtitlealign','audionextlanguage','verticalshiftup','verticalshiftdown','nextresolution','audiotoggledigital','number0','number1','number2','number3','number4','number5','number6','number7','number8','number9','osdleft','osdright','osdup','osddown','osdselect','osdvalueplus','osdvalueminus','smallstepback','fastforward','rewind','play','playpause','delete','copy','move','mplayerosd','hidesubmenu','screenshot','rename','togglewatched','scanitem','reloadkeymaps','volumeup','volumedown','mute','backspace','scrollup','scrolldown','analogfastforward','analogrewind','moveitemup','moveitemdown','contextmenu','shift','symbols','cursorleft','cursorright','showtime','analogseekforward','analogseekback','showpreset','presetlist','nextpreset','previouspreset','lockpreset','randompreset','increasevisrating','decreasevisrating','showvideomenu','enter','increaserating','decreaserating','togglefullscreen','nextscene','previousscene','nextletter','prevletter','jumpsms2','jumpsms3','jumpsms4','jumpsms5','jumpsms6','jumpsms7','jumpsms8','jumpsms9','filter','filterclear','filtersms2','filtersms3','filtersms4','filtersms5','filtersms6','filtersms7','filtersms8','filtersms9','firstpage','lastpage','guiprofile','red','green','yellow','blue','increasepar','decreasepar','volampup','volampdown','channelup','channeldown','previouschannelgroup','nextchannelgroup','leftclick','rightclick','middleclick','doubleclick','wheelup','wheeldown','mousedrag','mousemove','noop'];
 	
 	action.forEach(function(item, i, arr) {
@@ -416,6 +366,62 @@ function main() {
         console.log('check group user admin group admin: ' + res);
     });
 */
+}
+function GetPlayProperties(_connection){
+	var batch = _connection.batch();
+	var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
+	var InfoLabels = batch.XBMC.GetInfoLabels({"labels":["MusicPlayer.Codec","MusicPlayer.SampleRate","MusicPlayer.BitRate"]});
+	batch.send();
+	Promise.all([Properties, InfoLabels]).then(function(res) {
+		adapter.setState('PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
+		adapter.setState('PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
+		adapter.setState('Repeat', {val: res[0].repeat, ack: true});
+		adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
+		adapter.setState('Speed', {val: res[0].speed, ack: true});
+		adapter.setState('Position', {val: res[0].position, ack: true});
+		adapter.setState('Playlistid', {val: res[0].playlistid, ack: true});
+		adapter.setState('Partymode', {val: res[0].partymode, ack: true});
+		adapter.setState('Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
+		adapter.setState('SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
+		adapter.setState('BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
+	});
+}
+function GetPVRChannel(_connection){
+	var batch = _connection.batch();
+	var alltv = batch.PVR.GetChannels({"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
+	var allradio = batch.PVR.GetChannels({"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
+	batch.send();
+	Promise.all([alltv, allradio]).then(function(res) {
+		adapter.setState('PVR.GetChannelsIPTV', {val: JSON.stringify(res[0]), ack: true});
+		adapter.setState('PVR.GetChannelsRadio', {val: JSON.stringify(res[1]), ack: true});
+	});
+}
+function GetProperties(_connection){
+	_connection.run('Application.GetProperties', {"properties":["volume","muted","name","version"]}).then(function (res) {
+		adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
+		adapter.setState('Mute', {val: res.muted, ack: true});
+		adapter.setState('Name', {val: res.name, ack: true});
+		adapter.setState('Volume', {val: res.volume, ack: true});
+		adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+	});
+}
+function time(hour,min,sec){
+		var time = '';
+		hour = (parseInt(hour) < 10 ? '0': '') + hour;
+		min = (parseInt(min) < 10 ? '0': '') + min;
+		sec = (parseInt(sec) < 10 ? '0': '') + sec;
+		if (parseInt(hour) === 0){
+			time = min + '-' + sec;
+		} else {
+			time = hour + '-' + min + '-' + sec;
+		}
+		return time;
 }
 function ShowNotification(state){
 	var title = '';
