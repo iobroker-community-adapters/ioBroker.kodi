@@ -153,27 +153,31 @@ function ChangePVRchannel(_connection, val){
 }
 
 function sendCommand(cmd,state,param) {
-	getConnection(function (err, _connection) {
-		// call your command here
-		if (param){
-			state.val = param;
-		}
+	if (cmd){
+		getConnection(function (err, _connection) {
+			// call your command here
+			if (param){
+				state.val = param;
+			}
 
-		adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state.val));
-		_connection.run(cmd, state.val).then(function(result) {
+			adapter.log.info('sending in KODI: '+ cmd +' - '+JSON.stringify(state.val));
+			_connection.run(cmd, state.val).then(function(result) {
+					
+					adapter.log.debug('response from KODI: '+JSON.stringify(result));
+					
+				//adapter.setState(id, {val: JSON.stringify(result), ack: true});
 				
-				adapter.log.debug('response from KODI: '+JSON.stringify(result));
-				
-			//adapter.setState(id, {val: JSON.stringify(result), ack: true});
-			
-		}, function (error) {
-			adapter.log.warn(error);
-			connection = null;
-		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-		})
-	});
+			}, function (error) {
+				adapter.log.warn(error);
+				connection = null;
+			}).catch(function (error) {
+				adapter.log.error(error);
+				connection = null;
+			})
+		});
+	} else {
+		adapter.log.warn('Not set command!');
+	}
 }
 
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
@@ -242,7 +246,12 @@ function GetPlayerId(_connection){
 			adapter.log.error(error);
 			connection = null;
 		});
-		setTimeout(GetPlayerId, 1000, _connection);
+		//setTimeout(GetPlayerId, 1000, _connection);		
+			setTimeout(function() {
+				getConnection(function (err, _connection) {
+					GetPlayerId(_connection);
+				});
+			}, 3000);
 		GetPlayProperties(_connection);
 	} else {
 		if (err) adapter.log.error(err);
