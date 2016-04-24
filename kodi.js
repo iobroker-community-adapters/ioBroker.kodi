@@ -103,6 +103,12 @@ adapter.on('stateChange', function (id, state) {
 					cmd = 'Player.Stop';
 					state.val = {'playerid': player_id};
 				  break;
+				case "ChangePVRchannel":
+					cmd = '';
+					getConnection(function (err, _connection) {
+						ChangePVRchannel(_connection, state.val);
+					});
+				  break;
 
 				default:
 				
@@ -121,6 +127,30 @@ adapter.on('stateChange', function (id, state) {
 		}
 	}
 });
+
+function ChangePVRchannel(_connection, val){
+	adapter.log.debug('response from KODI: '+JSON.stringify(val));
+	adapter.getState('kodi.0.PVR.GetChannelsIPTV', function (err, state) {
+		var obj = JSON.parse(state.val);
+		val = val.toString().toLowerCase();
+		obj.channels.forEach(function(item, i, arr) {
+			var channel = item.label.toString().toLowerCase();
+			if (~channel.indexOf(val)){
+				adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
+				_connection.run("Player.Open", {"item":{"channelid":item.channelid}}).then(function(result) {
+					_connection.GUI.SetFullscreen({"fullscreen":true}).then(function(res) {
+					});
+				}, function (error) {
+					adapter.log.warn(error);
+					connection = null;
+				}).catch(function (error) {
+					adapter.log.error(error);
+					connection = null;
+				});
+			}
+		});
+	}); 
+}
 
 function sendCommand(cmd,state,param) {
 	getConnection(function (err, _connection) {
@@ -219,20 +249,6 @@ function GetPlayerId(_connection){
 	}
 }
 
-function GetNameVersion(_connection){
-	_connection.run('Application.GetProperties', {"properties":["name","version"]}).then(function (res) {
-	adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
-	adapter.setState('Name', {val: res.name, ack: true});
-	adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
-	}, function (error) {
-		adapter.log.warn(error);
-		connection = null;
-	}).catch(function (error) {
-		adapter.log.error(error);
-		connection = null;
-	});
-}
-
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -242,8 +258,16 @@ function main() {
 		GetPlayerId(_connection);
 		GetProperties(_connection);
 		GetPVRChannel(_connection);
-		
 	});
+	adapter.setObject('ChangePVRchannel', {
+        type: 'state',
+        common: {
+            name: 'ChangePVRchannel',
+            type: 'string',
+			role: 'indicator'
+        },
+        native: {}
+    });
 	adapter.setObject('Player.YouTube', {
         type: 'state',
         common: {
@@ -422,6 +446,29 @@ function main() {
     });
 */
 }
+function ChangePVRchannel(_connection, val){
+	adapter.log.debug('response from KODI: '+JSON.stringify(val));
+	adapter.getState('kodi.0.PVR.GetChannelsIPTV', function (err, state) {
+		var obj = JSON.parse(state.val);
+		val = val.toString().toLowerCase();
+		obj.channels.forEach(function(item, i, arr) {
+			var channel = item.label.toString().toLowerCase();
+			if (~channel.indexOf(val)){
+				adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
+				_connection.run("Player.Open", {"item":{"channelid":item.channelid}}).then(function(result) {
+					_connection.GUI.SetFullscreen({"fullscreen":true}).then(function(res) {
+					});
+				}, function (error) {
+					adapter.log.warn(error);
+					connection = null;
+				}).catch(function (error) {
+					adapter.log.error(error);
+					connection = null;
+				});
+			}
+		});
+	}); 
+}
 function GetPlayItem(_connection){
 	//adapter.log.error('---------------:' + JSON.stringify(_connection));
 	_connection.run('Player.GetItem', {"playerid":player_id,"properties":["album","albumartist","artist","director","episode","fanart","file","genre","plot","rating","season","showtitle","studio","imdbnumber","tagline","thumbnail","title","track","writer","year","streamdetails","originaltitle","cast","playcount"]}).then(function (res) {
@@ -506,17 +553,18 @@ function GetProperties(_connection){
 		connection = null;
 	});
 }
-function time(hour,min,sec){
-		var time = '';
-		hour = (parseInt(hour) < 10 ? '0': '') + hour;
-		min = (parseInt(min) < 10 ? '0': '') + min;
-		sec = (parseInt(sec) < 10 ? '0': '') + sec;
-		if (parseInt(hour) === 0){
-			time = min + '-' + sec;
-		} else {
-			time = hour + '-' + min + '-' + sec;
-		}
-		return time;
+function GetNameVersion(_connection){
+	_connection.run('Application.GetProperties', {"properties":["name","version"]}).then(function (res) {
+	adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
+	adapter.setState('Name', {val: res.name, ack: true});
+	adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+	});
 }
 function ShowNotification(state){
 	var title = '';
@@ -552,4 +600,16 @@ function ShowNotification(state){
 		});
 	}
 	return state.val = {'title': title, 'message': message, 'image': image, 'displaytime': displaytime};
+}
+function time(hour,min,sec){
+		var time = '';
+		hour = (parseInt(hour) < 10 ? '0': '') + hour;
+		min = (parseInt(min) < 10 ? '0': '') + min;
+		sec = (parseInt(sec) < 10 ? '0': '') + sec;
+		if (parseInt(hour) === 0){
+			time = min + '-' + sec;
+		} else {
+			time = hour + '-' + min + '-' + sec;
+		}
+		return time;
 }
