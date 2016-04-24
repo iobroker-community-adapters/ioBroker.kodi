@@ -9,6 +9,7 @@ var adapter = utils.adapter('kodi');
 var connection = null;
 var player_id =  null;
 var player_type = null;
+var mem = null;
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
@@ -28,15 +29,17 @@ adapter.on('objectChange', function (id, obj) {
 
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
-		// adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));   
-		var InfoStates = 'BitRate,Codec,CurrentPlay,Name,PlayingTime,PlayingTotalTime,SampleRate,Version,GetChannelsIPTV,GetChannelsRadio';
+		// adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
+		//TODO		
+		var InfoStates = 'Info, BitRate,Codec,CurrentPlay,Name,PlayingTime,PlayingTotalTime,SampleRate,Version,GetChannelsIPTV,GetChannelsRadio,Channels,Language,Audiostreams';
 		
-    if (state && !state.ack) {
 		var param = null;
 	    var ids = id.split(".");
 		var methods = ids[ids.length - 2];
 		ids = ids[ids.length - 1];
-		if (~InfoStates.indexOf(ids)){
+
+    if (state && !state.ack) {
+		if (~InfoStates.indexOf(ids) || ~InfoStates.indexOf(methods)){
 			adapter.log.warn('States "'+ids+'" not supported changes!');
 		} else {
 			if (methods !== 0){
@@ -107,6 +110,15 @@ adapter.on('stateChange', function (id, state) {
 			sendCommand(cmd,state,param);
 		
 		}
+	} else {
+		if(ids == 'CurrentPlay'){
+			if (state.val !== mem){
+				mem = state.val;
+				getConnection(function (err, _connection) {
+					GetPlayItem(_connection);
+				});
+			}
+		}
 	}
 });
 
@@ -164,7 +176,7 @@ function getConnection(cb) {
 		cb && cb(null, connection);
 	}, function (error) {
 		//do something if error
-		adapter.log.warn(error);
+		adapter.log.debug(error);
 		// try again in 5 seconds
 		setTimeout(getConnection, 5000, cb);
 	}).catch(function(error) {
@@ -232,36 +244,46 @@ function main() {
 		GetPVRChannel(_connection);
 		
 	});
+	adapter.setObject('Player.YouTube', {
+        type: 'state',
+        common: {
+            name: 'YouTube',
+            type: 'string',
+			role: 'indicator'
+        },
+        native: {}
+    });
 	var media = ['Repeat','Shuffle','Mute','Next','Previous','Stop','Volume','PlayPause'];
 	media.forEach(function(item, i, arr) {
 		adapter.setObject(item, {
 			type: 'state',
 			common: {
-				"name":  item,
-				"type":  "string",
-				"role":  "media."+item,
-				"read":  true,
-				"write": true,
-				"def":   null
+				name:  item,
+				type:  'string',
+				role:  'media.'+item,
+				read:  true,
+				write: true,
+				def:   null
 			},
 			native: {}
 		});
 		adapter.setState(item, {val: '', ack: true});
 	});
 		
-	var info = ['CurrentPlay','PlayingTime','PlayingTotalTime','Name','Version','Codec','SampleRate','BitRate'];
+	var info = ['CurrentPlay','PlayingTime','PlayingTotalTime','Name','Version','Codec','SampleRate','BitRate','Channels','Language','Audiostreams','Type','Album','Artist','Cast','Director','Episode','File','Label','Originaltitle','Rating','Title','VideoAspect','VideoCodec','VideoDuration','VideoHeight','videoStereomode','VideoWidth','Thumbnail',			];
 	info.forEach(function(item, i, arr) {
-		adapter.setObject(item, {
+		adapter.setObject('Info.'+item, {
 			type: 'state',
 			common: {
-				"name":  item,
-				"type":  "string",
-				"read":  true,
-				"write": false
+				name:  item,
+				type:  'string',
+				read:  true,
+				write: false,
+				role: 'indicator'
 			},
 			native: {}
 		});
-		adapter.setState(item, {val: '', ack: true});
+		adapter.setState('Info.'+item, {val: '', ack: true});
 	});
 	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up'];
 	input.forEach(function(item, i, arr) {
@@ -283,6 +305,7 @@ function main() {
         common: {
             name: 'YouTube',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -291,6 +314,7 @@ function main() {
         common: {
             name: 'Open',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -299,6 +323,7 @@ function main() {
         common: {
             name: 'Seek',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -308,6 +333,7 @@ function main() {
         common: {
             name: 'SetSpeed',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -316,6 +342,7 @@ function main() {
         common: {
             name: 'SetSubtitle',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -324,6 +351,7 @@ function main() {
         common: {
             name: 'Zoom',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -332,6 +360,7 @@ function main() {
         common: {
             name: 'ShowNotification',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -340,6 +369,7 @@ function main() {
         common: {
             name: 'ActivateWindow',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -349,6 +379,7 @@ function main() {
         common: {
             name: 'GoTo',
             type: 'string',
+			role: 'indicator'
         },
         native: {}
     });
@@ -391,14 +422,45 @@ function main() {
     });
 */
 }
+function GetPlayItem(_connection){
+	//adapter.log.error('---------------:' + JSON.stringify(_connection));
+	_connection.run('Player.GetItem', {"playerid":player_id,"properties":["album","albumartist","artist","director","episode","fanart","file","genre","plot","rating","season","showtitle","studio","imdbnumber","tagline","thumbnail","title","track","writer","year","streamdetails","originaltitle","cast","playcount"]}).then(function (res) {
+		//adapter.log.error('------------///////////////---:' + res.item.file);
+		adapter.setState('Info.Album', {val: res.item.album, ack: true});
+		adapter.setState('Info.Episode', {val: res.item.episode, ack: true});
+		adapter.setState('Info.File', {val: res.item.file, ack: true});
+		adapter.setState('Info.Label', {val: res.item.label, ack: true});
+		adapter.setState('Info.Originaltitle', {val: res.item.originaltitle, ack: true});
+		adapter.setState('Info.Rating', {val: res.item.rating, ack: true});
+		adapter.setState('Info.Title', {val: res.item.title, ack: true});
+		adapter.setState('Info.Thumbnail', {val: res.item.thumbnail, ack: true});
+		adapter.setState('Info.Artist', {val: res.item.artist[0], ack: true});
+		if (player_id === 1){
+			adapter.setState('Info.Cast', {val: res.item.cast[0], ack: true});
+			adapter.setState('Info.Director', {val: res.item.director[0], ack: true});
+			adapter.setState('Info.VideoAspect', {val: res.item.streamdetails.video[0].aspect, ack: true});
+			adapter.setState('Info.VideoCodec', {val: res.item.streamdetails.video[0].codec, ack: true});
+			adapter.setState('Info.VideoDuration', {val: res.item.streamdetails.video[0].duration, ack: true});
+			adapter.setState('Info.VideoHeight', {val: res.item.streamdetails.video[0].height, ack: true});
+			adapter.setState('Info.VideoStereomode', {val: res.item.streamdetails.video[0].stereomode, ack: true});
+			adapter.setState('Info.VideoWidth', {val: res.item.streamdetails.video[0].width, ack: true});
+		}
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+	});
+}
 function GetPlayProperties(_connection){
 	var batch = _connection.batch();
 	var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
 	var InfoLabels = batch.XBMC.GetInfoLabels({"labels":["MusicPlayer.Codec","MusicPlayer.SampleRate","MusicPlayer.BitRate"]});
 	batch.send();
 	Promise.all([Properties, InfoLabels]).then(function(res) {
-		adapter.setState('PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
-		adapter.setState('PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
+		adapter.setState('Info.PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
+		adapter.setState('Info.PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
 		
 		adapter.setState('Repeat', {val: res[0].repeat, ack: true});
 		adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
@@ -406,10 +468,19 @@ function GetPlayProperties(_connection){
 		adapter.setState('Position', {val: res[0].position, ack: true});
 		adapter.setState('Playlistid', {val: res[0].playlistid, ack: true});
 		adapter.setState('Partymode', {val: res[0].partymode, ack: true});
-		
-		adapter.setState('Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
-		adapter.setState('SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
-		adapter.setState('BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
+		//adapter.log.error('---------------:' + res[0].audiostreams.length);
+		if (res[0].audiostreams.length > 0){
+			adapter.setState('Info.Codec', {val: res[0].audiostreams[0].codec, ack: true});
+			adapter.setState('Info.BitRate', {val: res[0].audiostreams[0].bitrate, ack: true});
+			adapter.setState('Info.Channels', {val: res[0].audiostreams[0].channels, ack: true});
+			adapter.setState('Info.Language', {val: res[0].audiostreams[0].language, ack: true});
+			adapter.setState('Info.Audiostreams', {val: res[0].audiostreams[0].name, ack: true});
+		} else {
+			adapter.setState('Info.Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
+			adapter.setState('Info.SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
+			adapter.setState('Info.BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});	
+		}
+		adapter.setState('Info.Type', {val: res[0].type, ack: true});
 	});
 }
 function GetPVRChannel(_connection){
