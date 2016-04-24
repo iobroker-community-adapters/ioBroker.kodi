@@ -29,80 +29,85 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));   
+		var InfoStates = 'BitRate,Codec,CurrentPlay,Name,PlayingTime,PlayingTotalTime,SampleRate,Version,GetChannelsIPTV,GetChannelsRadio';
+		
     if (state && !state.ack) {
 		var param = null;
 	    var ids = id.split(".");
 		var methods = ids[ids.length - 2];
 		ids = ids[ids.length - 1];
-		if (methods !== 0){
-			var cmd = (methods +'.'+ ids).toString();
-		}
-		
-		adapter.log.info('sending methods: '+ methods);
-		
-		if (methods === 'Input'){
-			state.val = [];
-		}
-		if (methods == 'Player'){
-			if(ids == 'youtube'){
-				cmd = (methods +'.Open');
-				state.val = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + state.val.toString() }};
+		if (~InfoStates.indexOf(ids)){
+			adapter.log.warn('States "'+ids+'" not supported changes!');
+		} else {
+			if (methods !== 0){
+				var cmd = (methods +'.'+ ids).toString();
 			}
-			else if(ids == 'open'){
-				state.val = {'item': {'file' : state.val.toString() }};
-			}
-			else if (ids !== 'open' && ids !== 'youtube'){
-				state.val = {'playerid': player_id};
-			}
-		}
-		switch(ids) {
-			case "ShowNotification":
-				ShowNotification(state);
-			  break;
-			case "ActivateWindow":
-				state.val = {"window": state.val };
-			  break;
-			case "Input_ExecuteAction":
-				cmd = 'Input.ExecuteAction';
-				state.val = state.val.toString();
-			  break;
-			case "Volume":
-				cmd = 'Application.SetVolume';
-			  break;
-			case "Repeat":
-				cmd = 'Player.SetRepeat';
-				state.val = {'playerid': player_id,"repeat": state.val};
-			  break;
-			case "Shuffle": //off, on, all
-				cmd = 'Player.SetRepeat';
-				state.val = {'playerid': player_id,"repeat": state.val};
-			  break;
-			case "Mute":
-				cmd = 'Application.SetMute';
-			  break;
-			case "Next":
-				cmd = 'Input.ExecuteAction';
-				state.val = 'skipnext';
-			  break;
-			case "Previous":
-				cmd = 'Input.ExecuteAction';
-				state.val = 'skipprevious';
-			  break;
-			case "PlayPause":
-				cmd = 'Player.PlayPause';
-				state.val = {'playerid': player_id};
-			  break;
-			case "Stop":
-				cmd = 'Player.Stop';
-				state.val = {'playerid': player_id};
-			  break;
-
-			default:
+			adapter.log.info('sending methods: '+ methods);
 			
-		}	
-		sendCommand(cmd,state,param);
-	
-    }
+			if (methods === 'Input'){
+				state.val = [];
+			}
+			if (methods == 'Player'){
+				if(ids == 'youtube'){
+					cmd = (methods +'.Open');
+					state.val = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + state.val.toString() }};
+				}
+				else if(ids == 'open'){
+					state.val = {'item': {'file' : state.val.toString() }};
+				}
+				else if (ids !== 'open' && ids !== 'youtube'){
+					state.val = {'playerid': player_id};
+				}
+			}
+			switch(ids) {
+				case "ShowNotification":
+					ShowNotification(state);
+				  break;
+				case "ActivateWindow":
+					state.val = {"window": state.val };
+				  break;
+				case "Input_ExecuteAction":
+					cmd = 'Input.ExecuteAction';
+					state.val = state.val.toString();
+				  break;
+				case "Volume":
+					cmd = 'Application.SetVolume';
+				  break;
+				case "Repeat":
+					cmd = 'Player.SetRepeat';
+					state.val = {'playerid': player_id,"repeat": state.val};
+				  break;
+				case "Shuffle": //off, on, all
+					cmd = 'Player.SetRepeat';
+					state.val = {'playerid': player_id,"repeat": state.val};
+				  break;
+				case "Mute":
+					cmd = 'Application.SetMute';
+				  break;
+				case "Next":
+					cmd = 'Input.ExecuteAction';
+					state.val = 'skipnext';
+				  break;
+				case "Previous":
+					cmd = 'Input.ExecuteAction';
+					state.val = 'skipprevious';
+				  break;
+				case "PlayPause":
+					cmd = 'Player.PlayPause';
+					state.val = {'playerid': player_id};
+				  break;
+				case "Stop":
+					cmd = 'Player.Stop';
+					state.val = {'playerid': player_id};
+				  break;
+
+				default:
+				
+			}	
+			sendCommand(cmd,state,param);
+		
+		}
+	}
 });
 
 function sendCommand(cmd,state,param) {
@@ -116,7 +121,8 @@ function sendCommand(cmd,state,param) {
 		_connection.run(cmd, state.val).then(function(result) {
 				
 				adapter.log.debug('response from KODI: '+JSON.stringify(result));
-				adapter.setState(id, {val: JSON.stringify(result), ack: true});
+				
+			//adapter.setState(id, {val: JSON.stringify(result), ack: true});
 			
 		}, function (error) {
 			adapter.log.warn(error);
@@ -194,23 +200,37 @@ function GetPlayerId(_connection){
 			adapter.log.error(error);
 			connection = null;
 		});
-		setTimeout(GetPlayerId, 5000, _connection);
+		setTimeout(GetPlayerId, 1000, _connection);
 		GetPlayProperties(_connection);
 	} else {
 		if (err) adapter.log.error(err);
 	}
 }
 
-
+function GetNameVersion(_connection){
+	_connection.run('Application.GetProperties', {"properties":["name","version"]}).then(function (res) {
+	adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
+	adapter.setState('Name', {val: res.name, ack: true});
+	adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+	});
+}
 
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
 
 	getConnection(function (err, _connection) {
+		GetNameVersion(_connection);
 		GetPlayerId(_connection);
 		GetProperties(_connection);
 		GetPVRChannel(_connection);
+		
 	});
 	var media = ['Repeat','Shuffle','Mute','Next','Previous','Stop','Volume','PlayPause'];
 	media.forEach(function(item, i, arr) {
@@ -226,6 +246,7 @@ function main() {
 			},
 			native: {}
 		});
+		adapter.setState(item, {val: '', ack: true});
 	});
 		
 	var info = ['CurrentPlay','PlayingTime','PlayingTotalTime','Name','Version','Codec','SampleRate','BitRate'];
@@ -236,11 +257,11 @@ function main() {
 				"name":  item,
 				"type":  "string",
 				"read":  true,
-				"write": false,
-				"def":   null
+				"write": false
 			},
 			native: {}
 		});
+		adapter.setState(item, {val: '', ack: true});
 	});
 	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up'];
 	input.forEach(function(item, i, arr) {
@@ -252,8 +273,11 @@ function main() {
 				role: 'indicator'
 			},
 			native: {}
-		});						
+		});
+		adapter.setState('Input.'+item, {val: '', ack: true});
 	});
+	
+	
 	adapter.setObject('Player.YouTube', {
         type: 'state',
         common: {
@@ -375,12 +399,14 @@ function GetPlayProperties(_connection){
 	Promise.all([Properties, InfoLabels]).then(function(res) {
 		adapter.setState('PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
 		adapter.setState('PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
+		
 		adapter.setState('Repeat', {val: res[0].repeat, ack: true});
 		adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
 		adapter.setState('Speed', {val: res[0].speed, ack: true});
 		adapter.setState('Position', {val: res[0].position, ack: true});
 		adapter.setState('Playlistid', {val: res[0].playlistid, ack: true});
 		adapter.setState('Partymode', {val: res[0].partymode, ack: true});
+		
 		adapter.setState('Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
 		adapter.setState('SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
 		adapter.setState('BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
@@ -397,12 +423,10 @@ function GetPVRChannel(_connection){
 	});
 }
 function GetProperties(_connection){
-	_connection.run('Application.GetProperties', {"properties":["volume","muted","name","version"]}).then(function (res) {
+	_connection.run('Application.GetProperties', {"properties":["volume","muted"]}).then(function (res) {
 		adapter.log.debug('Application.GetProperties:' + JSON.stringify(res));
 		adapter.setState('Mute', {val: res.muted, ack: true});
-		adapter.setState('Name', {val: res.name, ack: true});
 		adapter.setState('Volume', {val: res.volume, ack: true});
-		adapter.setState('Version', {val: res.version.major+'.'+res.version.minor+' '+res.version.tag, ack: true});
 	}, function (error) {
 		adapter.log.warn(error);
 		connection = null;
