@@ -164,6 +164,7 @@ function sendCommand(cmd,state,param) {
 	if (cmd){
 		getConnection(function (err, _connection) {
 			if (_connection){
+			GetPlayerId();
 			// call your command here
 				if (param){
 					state.val = param;
@@ -508,8 +509,8 @@ getConnection(function (err, _connection) {
 			adapter.setState('Info.Rating', {val: res.item.rating, ack: true});
 			adapter.setState('Info.Title', {val: res.item.title, ack: true});
 			adapter.setState('Info.Thumbnail', {val: res.item.thumbnail, ack: true});
-			adapter.setState('Info.Artist', {val: res.item.artist[0], ack: true});
 			if (player_id === 1){
+				adapter.setState('Info.Artist', {val: res.item.artist[0], ack: true});
 				adapter.setState('Info.Cast', {val: res.item.cast[0], ack: true});
 				adapter.setState('Info.Director', {val: res.item.director[0], ack: true});
 				adapter.setState('Info.VideoAspect', {val: res.item.streamdetails.video[0].aspect, ack: true});
