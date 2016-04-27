@@ -10,6 +10,7 @@ var adapter = utils.adapter('kodi');
 var connection = null;
 var player_id =  null;
 var player_type = null;
+var playlist_id = null;
 
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
@@ -90,13 +91,76 @@ function main() {
 
 	getConnection(function (err, _connection) {
 		if (_connection){
+			GetNameVersion();
 			GetPlayerId();
+			GetChannels();
+			//GetPlayList();
 		}
 	});
 	
 	
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
+}
+
+function GetPlayList(){
+	var batch = connection.batch();	//*********** playlistid
+	var GetItems = batch.Playlist.GetItems({"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"],"limits":{"start":0,"end":750}});
+	//var GetInfoBooleans = batch.XBMC.GetInfoBooleans({"booleans":["System.Platform.Linux","System.Platform.Linux.RaspberryPi","System.Platform.Windows","System.Platform.OSX","System.Platform.IOS","System.Platform.Darwin","System.Platform.ATV2","System.Platform.Android"]});
+	//var GetInfoLabels = batch.XBMC.GetInfoLabels({"labels":["System.KernelVersion","System.BuildVersion"]});
+	batch.send();
+	Promise.all([GetItems]).then(function(res) {
+	
+		adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
+	
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+		getConnection();
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+		getConnection();
+	});	
+}
+
+function GetNameVersion(){
+	var batch = connection.batch();
+	var GetProperties = batch.Application.GetProperties({"properties":["name","version"]});
+	var GetInfoBooleans = batch.XBMC.GetInfoBooleans({"booleans":["System.Platform.Linux","System.Platform.Linux.RaspberryPi","System.Platform.Windows","System.Platform.OSX","System.Platform.IOS","System.Platform.Darwin","System.Platform.ATV2","System.Platform.Android"]});
+	var GetInfoLabels = batch.XBMC.GetInfoLabels({"labels":["System.KernelVersion","System.BuildVersion"]});
+	batch.send();
+	Promise.all([GetProperties, GetInfoBooleans, GetInfoLabels]).then(function(res) {
+	
+		adapter.log.debug('GetNameVersion: ' + JSON.stringify(res));
+	
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+		getConnection();
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+		getConnection();
+	});	
+}
+function GetChannels(){
+	var batch = connection.batch();
+	var alltv = batch.PVR.GetChannels({"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
+	var allradio = batch.PVR.GetChannels({"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
+	batch.send();
+	Promise.all([alltv, allradio]).then(function(res) {
+		adapter.setState('PVR.ChannelsIPTV', {val: JSON.stringify(res[0]), ack: true});
+		adapter.setState('PVR.ChannelsRadio', {val: JSON.stringify(res[1]), ack: true});
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+		getConnection();
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+		getConnection();
+	});	
 }
 function GetPlayerProperties(){
 	var batch = connection.batch();
@@ -105,6 +169,8 @@ function GetPlayerProperties(){
 		batch.send();
 		Promise.all([Properties, InfoLabels]).then(function(res) {
 			adapter.log.debug('Response GetPlayerProperties '+ JSON.stringify(res));
+			
+			playlist_id = res[0].playlistid;
 		/*	adapter.setState('Info.PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
 			adapter.setState('Info.PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
 			
@@ -154,6 +220,7 @@ function GetPlayerId(){
 			adapter.setState('Mute', {val: res[0].muted, ack: true});
 			adapter.setState('Volume', {val: res[0].volume, ack: true});
 			player_id = res[0][0].playerid;
+			player_type = res[0][0].type;
 			GetPlayerProperties();
 		}
 		setTimeout(function() { GetPlayerId(); }, 2000);
@@ -167,7 +234,6 @@ function GetPlayerId(){
 		getConnection();
 	});	
 }
-
 
 function getConnection(cb) {
 	if (connection) {
