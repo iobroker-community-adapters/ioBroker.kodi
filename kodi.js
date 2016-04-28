@@ -83,8 +83,6 @@ adapter.on('ready', function () {
 });
 
 
-
-
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -130,9 +128,21 @@ function GetNameVersion(){
 	var GetInfoLabels = batch.XBMC.GetInfoLabels({"labels":["System.KernelVersion","System.BuildVersion"]});
 	batch.send();
 	Promise.all([GetProperties, GetInfoBooleans, GetInfoLabels]).then(function(res) {
-	
-		adapter.log.debug('GetNameVersion: ' + JSON.stringify(res));
-	
+		adapter.log.debug('GetNameVersion: ' + JSON.stringify(res[1]));
+		if (res[2]['System.KernelVersion'] === 'Ждите…'){
+			setTimeout(function() { GetNameVersion(); }, 10000);
+		} else {
+			adapter.setState('Name', {val: res[0].name, ack: true});
+			adapter.setState('Version', {val: res[0].version.major+'.'+res[0].version.minor, ack: true});
+			for (var key in res[1]) {
+				if (res[1][key] === true){
+					var system = key.split(".");
+					system = system[system.length - 1];
+					adapter.setState('System', {val: system, ack: true});
+				}
+			}
+			adapter.setState('KernelVersion', {val: res[2]['System.KernelVersion'], ack: true});
+		}
 	}, function (error) {
 		adapter.log.warn(error);
 		connection = null;
@@ -159,57 +169,54 @@ function GetChannels(){
 		adapter.log.error(error);
 		connection = null;
 		getConnection();
-	});	
+	});
 }
 function GetPlayerProperties(){
 	var batch = connection.batch();
-		var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
-		var InfoLabels = batch.XBMC.GetInfoLabels({"labels":["MusicPlayer.Codec","MusicPlayer.SampleRate","MusicPlayer.BitRate"]});
-		batch.send();
-		Promise.all([Properties, InfoLabels]).then(function(res) {
-			adapter.log.debug('Response GetPlayerProperties '+ JSON.stringify(res));
-			
-			playlist_id = res[0].playlistid;
-			
-			adapter.setState('PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
-			adapter.setState('PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
-			
-			adapter.setState('Canseek', {val: res[0].canseek, ack: true});
-			adapter.setState('Repeat', {val: res[0].repeat, ack: true});
-			adapter.setState('Shuffle', {val: res[0].shuffled, ack: true});
-			adapter.setState('Speed', {val: res[0].speed, ack: true});
-			adapter.setState('Position', {val: res[0].position, ack: true});
-			adapter.setState('Playlistid', {val: res[0].playlistid, ack: true});
-			adapter.setState('Partymode', {val: res[0].partymode, ack: true});
-			//adapter.log.error('---------------:' + res[0].audiostreams.length);
-			if (res[0].audiostreams.length > 0){
-				adapter.setState('Codec', {val: res[0].audiostreams[0].codec, ack: true});
-				adapter.setState('BitRate', {val: res[0].audiostreams[0].bitrate, ack: true});
-				adapter.setState('Channels', {val: res[0].audiostreams[0].channels, ack: true});
-				adapter.setState('Language', {val: res[0].audiostreams[0].language, ack: true});
-				adapter.setState('Audiostreams', {val: res[0].audiostreams[0].name, ack: true});
-			} else {
-				adapter.setState('Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
-				adapter.setState('SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
-				adapter.setState('BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});	
-			}
-			adapter.setState('Type', {val: res[0].type, ack: true});
+	var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
+	var InfoLabels = batch.XBMC.GetInfoLabels({"labels":["MusicPlayer.Codec","MusicPlayer.SampleRate","MusicPlayer.BitRate"]});
+	batch.send();
+	Promise.all([Properties, InfoLabels]).then(function(res) {
+		adapter.log.debug('Response GetPlayerProperties '+ JSON.stringify(res));
+		
+		playlist_id = res[0].playlistid;
+		
+		adapter.setState('PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
+		adapter.setState('PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
+		
+		adapter.setState('Canseek', {val: res[0].canseek, ack: true});
+		adapter.setState('Repeat', {val: res[0].repeat, ack: true});
+		adapter.setState('Shuffle', {val: res[0].shuffled, ack: true});
+		adapter.setState('Speed', {val: res[0].speed, ack: true});
+		adapter.setState('Position', {val: res[0].position, ack: true});
+		adapter.setState('Playlistid', {val: res[0].playlistid, ack: true});
+		adapter.setState('Partymode', {val: res[0].partymode, ack: true});
+		//adapter.log.error('---------------:' + res[0].audiostreams.length);
+		if (res[0].audiostreams.length > 0){
+			adapter.setState('Codec', {val: res[0].audiostreams[0].codec, ack: true});
+			adapter.setState('BitRate', {val: res[0].audiostreams[0].bitrate, ack: true});
+			adapter.setState('Channels', {val: res[0].audiostreams[0].channels, ack: true});
+			adapter.setState('Language', {val: res[0].audiostreams[0].language, ack: true});
+			adapter.setState('Audiostreams', {val: res[0].audiostreams[0].name, ack: true});
+		} else {
+			adapter.setState('Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
+			adapter.setState('SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
+			adapter.setState('BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});	
+		}
+		adapter.setState('Type', {val: res[0].type, ack: true});
 
-		}, function (error) {
-			adapter.log.warn(error);
-			connection = null;
-			getConnection();
-		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
-		});	
-
-
+	}, function (error) {
+		adapter.log.warn(error);
+		connection = null;
+		getConnection();
+	}).catch(function (error) {
+		adapter.log.error(error);
+		connection = null;
+		getConnection();
+	});	
 }
 
 function GetPlayerId(){
-	// Get all active players and log them 
 	var batch = connection.batch();
 	var ActivePlayers = batch.Player.GetActivePlayers();
 	var Properties = batch.Application.GetProperties({'properties':['volume','muted']});
@@ -233,7 +240,7 @@ function GetPlayerId(){
 		adapter.log.error(error);
 		connection = null;
 		getConnection();
-	});	
+	});
 }
 
 function getConnection(cb) {
@@ -262,14 +269,14 @@ function getConnection(cb) {
 	});
 }
 function time(hour,min,sec){
-		var time = '';
-		hour = (parseInt(hour) < 10 ? '0': '') + hour;
-		min = (parseInt(min) < 10 ? '0': '') + min;
-		sec = (parseInt(sec) < 10 ? '0': '') + sec;
-		if (parseInt(hour) === 0){
-			time = min + '-' + sec;
-		} else {
-			time = hour + '-' + min + '-' + sec;
-		}
-		return time;
+	var time = '';
+	hour = (parseInt(hour) < 10 ? '0': '') + hour;
+	min = (parseInt(min) < 10 ? '0': '') + min;
+	sec = (parseInt(sec) < 10 ? '0': '') + sec;
+	if (parseInt(hour) === 0){
+		time = min + '-' + sec;
+	} else {
+		time = hour + '-' + min + '-' + sec;
+	}
+	return time;
 }
