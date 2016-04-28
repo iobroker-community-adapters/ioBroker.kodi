@@ -102,48 +102,7 @@ function main() {
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
 }
-//////////////////////////////////////////////
-function sendCommands(cmds, callback){
-	getConnection(function (err, _connection) {
-		if (_connection){
-			var batch = _connection.batch();	
-			batch.send();
-			Promise.all(cmds).then(function(res) {
 
-				adapter.log.debug('sendCommands: ' + JSON.stringify(res));
-				callback (res);
-				
-			}, function (error) {
-				adapter.log.warn(error);
-				connection = null;
-				getConnection();
-			}).catch(function (error) {
-				adapter.log.error(error);
-				connection = null;
-				getConnection();
-			});
-		}
-	});	
-}
-//////////////////////////////////////////
-function GetPlayerId(){
-	var ActivePlayers = batch.Player.GetActivePlayers();
-	var Properties = batch.Application.GetProperties({'properties':['volume','muted']});
-	var cmds = [ActivePlayers, Properties];
-	sendCommands(cmds, function (res) {
-		adapter.log.debug('Response GetPlayerId '+ JSON.stringify(res));
-		if (res[0][0]){
-			adapter.log.debug('Active players = ' + res[0][0].playerid +'. Type = '+ res[0][0].type);
-			adapter.setState('Mute', {val: res[1].muted, ack: true});
-			adapter.setState('Volume', {val: res[1].volume, ack: true});
-			player_id = res[0][0].playerid;
-			player_type = res[0][0].type;
-			GetPlayerProperties();
-		}
-		setTimeout(function() { GetPlayerId(); }, 2000);
-	});
-}
-//////////////////////////////////////////
 function GetPlayList(){
 	var batch = connection.batch();	//*********** playlistid
 	var GetItem = batch.Player.GetItem({"playerid":player_id});
@@ -184,7 +143,6 @@ function GetNameVersion(){
 		getConnection();
 	});	
 }
-
 function GetChannels(){
 	var batch = connection.batch();
 	var alltv = batch.PVR.GetChannels({"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
@@ -203,7 +161,6 @@ function GetChannels(){
 		getConnection();
 	});	
 }
-
 function GetPlayerProperties(){
 	var batch = connection.batch();
 		var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
@@ -250,7 +207,7 @@ function GetPlayerProperties(){
 
 
 }
-/*
+
 function GetPlayerId(){
 	// Get all active players and log them 
 	var batch = connection.batch();
@@ -278,7 +235,7 @@ function GetPlayerId(){
 		getConnection();
 	});	
 }
-*/
+
 function getConnection(cb) {
 	if (connection) {
 		cb && cb(null, connection);
