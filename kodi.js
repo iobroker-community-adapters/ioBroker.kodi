@@ -42,22 +42,25 @@ adapter.on('stateChange', function (id, state) {
 		var param = state.val.toString();
 		var ids = id.split(".");
 		var method = ids[ids.length - 2].toString();
-		/*if (method === 0){ //
+		if (method === '0'){ //
 			method = null;
-		}*/
+		}
 		ids = ids[ids.length - 1].toString();
 		
 		ConstructorCmd(method, ids, param);
 	}
 });
 function ConstructorCmd(method, ids, param){
-	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
+	//adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
 		if (method === 'input'){
 			param = [];
 		}
 		switch(ids) {
 		  case "shownotif":
-				ShowNotification(param);
+				ShowNotification(param, function(res){
+					method = 'GUI.ShowNotification';
+					param = res;
+				});
 			break;
 		  case "123":
 				param = [];
@@ -66,8 +69,8 @@ function ConstructorCmd(method, ids, param){
 		default:
 		
 		}
-	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
-	//sendCommand(method, param);
+	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + JSON.stringify(param));
+	sendCommand(method, param);
 }
 
 
@@ -76,8 +79,8 @@ function sendCommand(method, param) {
 		getConnection(function (err, _connection) {
 			if (_connection){
 			// call your command here
-				adapter.log.info('sending in KODI: '+ method +' - '+JSON.stringify(val));
-				_connection.run(method, val).then(function(result) {
+				adapter.log.info('sending in KODI: '+ method +' - '+JSON.stringify(param));
+				_connection.run(method, param).then(function(result) {
 						adapter.log.debug('response from KODI: '+JSON.stringify(result));
 					//adapter.setState(id, {val: JSON.stringify(result), ack: true});
 				}, function (error) {
@@ -93,7 +96,7 @@ function sendCommand(method, param) {
 		adapter.log.warn('Not set command!');
 	}
 }
-function ShowNotification(param){
+function ShowNotification(param, callback){
 	var title = '';
 	var message = '';
 	var displaytime = 5000;
@@ -126,7 +129,7 @@ function ShowNotification(param){
 			}
 		});
 	}
-	return param = {'title': title, 'message': message, 'image': image, 'displaytime': displaytime};
+	callback ({'title': title, 'message': message, 'image': image, 'displaytime': displaytime});
 }
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on('message', function (obj) {
