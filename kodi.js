@@ -37,22 +37,41 @@ adapter.on('stateChange', function (id, state) {
 		mem = state.val;
 		GetPlayList();
 	}
-	
     if (state && !state.ack) {
-		
-	
+		var ids = id.split(".");
+		var method = ids[ids.length - 2];
+		if (method === 0){ //
+			method = null;
+		}
+		ids = ids[ids.length - 1];
+		ConstructorCmd(method, ids, state.val);
 	}
 });
+function ConstructorCmd(method, ids, val){
+	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + val);
+		if (method === 'input'){
+			param = [];
+		}
+		switch(ids) {
+		  case "shownotif":
+				ShowNotification(param);
+			break;
+		
+		default:
+		
+		}
+	
+	sendCommand(method, param);
+}
 
 
-
-function sendCommand(method, state, param) {
+function sendCommand(method, param) {
 	if (method){
 		getConnection(function (err, _connection) {
 			if (_connection){
 			// call your command here
-				adapter.log.info('sending in KODI: '+ method +' - '+JSON.stringify(state.val));
-				_connection.run(method, state.val).then(function(result) {
+				adapter.log.info('sending in KODI: '+ method +' - '+JSON.stringify(val));
+				_connection.run(method, val).then(function(result) {
 						adapter.log.debug('response from KODI: '+JSON.stringify(result));
 					//adapter.setState(id, {val: JSON.stringify(result), ack: true});
 				}, function (error) {
@@ -68,7 +87,41 @@ function sendCommand(method, state, param) {
 		adapter.log.warn('Not set command!');
 	}
 }
-
+function ShowNotification(val){
+	var title = '';
+	var message = '';
+	var displaytime = 5000;
+	var img = ['info','warning','error'];
+	var image = 'info';
+	var c = (';' + val).split(';');
+	var flag = false;
+	c.forEach(function(item, i, arr) {
+		if (!isNaN(item)){
+			var num = parseInt(item);
+			if (num >= 1500 && num <= 30000){
+				displaytime = num;
+			}
+			else if (num >= 0 && num <= 2){
+				image = img[num];
+			}
+		}
+		if (isNaN(arr[i]) && isNaN(arr[i+1]) && flag === false){
+			if (arr[i] && arr[i+1]){
+				title = arr[i].toString();
+				message = arr[i+1].toString();
+				flag = true;
+			}
+		}
+	});
+	if (!flag){
+		c.forEach(function(item, i, arr) {
+			if (isNaN(arr[i]) && arr[i]){
+				message = arr[i].toString();
+			}
+		});
+	}
+	return val = {'title': title, 'message': message, 'image': image, 'displaytime': displaytime};
+}
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on('message', function (obj) {
     if (typeof obj == 'object' && obj.message) {
@@ -96,13 +149,41 @@ function main() {
 			GetNameVersion();
 			GetPlayerId();
 			GetChannels();
-
 		}
 	});
 	
-	
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
+	
+	//SetSpeed', { //-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32
+	//SetSubtitle', { //"previous","next","off","on"
+	var input = ['back','contextmenu','down','home','info','left','right','select','sendtext','showcodec','showOSD','up',];
+	var media = ['setsubtitle','zoom','ExecuteAction','GoTo','ActivateWindow','shownotif','seek','open','youtube','switchPVR','next','previous','stop','playpause'];
+	
+	input.forEach(function(item, i, arr) {
+		adapter.setObject('input.'+item, {
+			type: 'state',
+			common: {
+				name: item,
+				type: 'boolean',
+				role: 'button'
+			},
+			native: {}
+		});
+		adapter.setState('input.'+item, {val: false, ack: true});
+	});
+	media.forEach(function(item, i, arr) {
+		adapter.setObject(item, {
+			type: 'state',
+			common: {
+				name: item,
+				type: 'string',
+				role: 'media'
+			},
+			native: {}
+		});
+		adapter.setState(item, {val: '', ack: true});
+	});
 }
 
 function GetPlayList(){  
@@ -143,7 +224,7 @@ adapter.getStates('info.*',function (err, obj) {
 				setObject(key, res[0][key], 'info');
 				//adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
 			}
-			adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
+			//adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
 		}
 		setObject('playlist', JSON.stringify(res[1]));
 	}, function (error) {
@@ -186,16 +267,16 @@ function GetNameVersion(){
 		if (res[2]['System.KernelVersion'] === 'Ждите…'){
 			setTimeout(function() { GetNameVersion(); }, 10000);
 		} else {
-			setObject('name', res[0].name);
-			setObject('version', res[0].version.major+'.'+res[0].version.minor);
+			setObject('name', res[0].name, 'systeminfo');
+			setObject('version', res[0].version.major+'.'+res[0].version.minor, 'systeminfo');
 			for (var key in res[1]) {
 				if (res[1][key] === true){
 					var system = key.split(".");
 					system = system[system.length - 1];
-					setObject('system', system);
+					setObject('system', system, 'systeminfo');
 				}
 			}
-			setObject('kernel', res[2]['System.KernelVersion']);
+			setObject('kernel', res[2]['System.KernelVersion'], 'systeminfo');
 		}
 	}, function (error) {
 		adapter.log.error(error);
