@@ -3,14 +3,15 @@
 "use strict";
 
 var kodi = require('kodi-ws');
-//var connect1 = require('Connection');
 var utils = require(__dirname + '/lib/utils');
 var adapter = utils.adapter('kodi');
 
+var object = {};
 var connection = null;
 var player_id =  null;
 var player_type = null;
 var playlist_id = null;
+var mem = null;
 
 
 // is called when adapter shuts down - callback has to be called under any circumstances!
@@ -32,9 +33,13 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
-
-    if (state && !state.ack) {
+	if (id == 'kodi.0.PlayingTotalTime' && state.val !== mem){
+		mem = state.val;
+		GetPlayList();
+	}
 	
+    if (state && !state.ack) {
+		
 	
 	}
 });
@@ -51,7 +56,7 @@ function sendCommand(method, state, param) {
 						adapter.log.debug('response from KODI: '+JSON.stringify(result));
 					//adapter.setState(id, {val: JSON.stringify(result), ack: true});
 				}, function (error) {
-					adapter.log.warn(error);
+					adapter.log.error(error);
 					connection = null;
 				}).catch(function (error) {
 					adapter.log.error(error);
@@ -82,7 +87,6 @@ adapter.on('ready', function () {
     main();
 });
 
-
 function main() {
 
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -92,7 +96,7 @@ function main() {
 			GetNameVersion();
 			GetPlayerId();
 			GetChannels();
-			//GetPlayList();
+
 		}
 	});
 	
@@ -101,17 +105,49 @@ function main() {
     adapter.subscribeStates('*');
 }
 
-function GetPlayList(){
+function GetPlayList(){  
+adapter.getStates('info.*',function (err, obj) {
+	for (var state in obj) {
+		adapter.setState(state, {val: '', ack: true});
+	}	
 	var batch = connection.batch();	//*********** playlistid
-	var GetItem = batch.Player.GetItem({"playerid":player_id});
+	var GetItem = batch.Player.GetItem({"playerid":player_id,"properties":["album","albumartist","artist","director","episode","fanart","file","genre","plot","rating","season","showtitle","studio","imdbnumber","tagline","thumbnail","title","track","writer","year","streamdetails","originaltitle","cast","playcount"]});
 	var GetItems = batch.Playlist.GetItems({"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"],"limits":{"start":0,"end":750}});
 	batch.send();
 	Promise.all([GetItem, GetItems]).then(function(res) {
-	
 		adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
-	
+		res[0] = res[0].item;
+		for (var key in res[0]) {
+			if (typeof res[0][key] == 'object'){
+				var obj = res[0][key];
+				if (key === 'streamdetails'){
+					for (var _key in obj) {
+						if (obj[_key] == 'object'){
+							var _obj = obj[_key][0];
+							for (var __key in _obj) {
+								setObject(_key+'_'+__key, _obj[__key], 'info');
+								//adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
+							}
+						} else {
+							setObject(_key, obj[_key], 'info');
+							//adapter.log.debug('GetPlayList: ' +_key+' = '+ JSON.stringify(obj[_key]) +' - '+typeof obj[_key] +' length = '+obj[_key].length);
+						}
+					}
+				} else {
+					for (var id in obj) { //TODO
+						setObject(key, obj[id], 'info');
+						//adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
+					}
+				}
+			} else {
+				setObject(key, res[0][key], 'info');
+				//adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
+			}
+			adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
+		}
+		setObject('playlist', JSON.stringify(res[1]));
 	}, function (error) {
-		adapter.log.warn(error);
+		adapter.log.error(error);
 		connection = null;
 		getConnection();
 	}).catch(function (error) {
@@ -119,8 +155,26 @@ function GetPlayList(){
 		connection = null;
 		getConnection();
 	});	
+});
 }
 
+function setObject(name, val, type){
+	if (type){
+		name = type +'.'+ name;
+	}
+	object = {
+		type: 'state',
+		common: {
+			name: name,
+			role: 'media'+ type ? '.'+type:'',
+			type: typeof val
+		},
+		native: {}
+	};
+	adapter.setObject(name, object, function (err, obj) {
+		adapter.setState(name, {val: val, ack: true});
+	});
+}
 function GetNameVersion(){
 	var batch = connection.batch();
 	var GetProperties = batch.Application.GetProperties({"properties":["name","version"]});
@@ -144,7 +198,7 @@ function GetNameVersion(){
 			adapter.setState('KernelVersion', {val: res[2]['System.KernelVersion'], ack: true});
 		}
 	}, function (error) {
-		adapter.log.warn(error);
+		adapter.log.error(error);
 		connection = null;
 		getConnection();
 	}).catch(function (error) {
@@ -206,7 +260,7 @@ function GetPlayerProperties(){
 		adapter.setState('Type', {val: res[0].type, ack: true});
 
 	}, function (error) {
-		adapter.log.warn(error);
+		adapter.log.error(error);
 		connection = null;
 		getConnection();
 	}).catch(function (error) {
@@ -230,10 +284,11 @@ function GetPlayerId(){
 			player_id = res[0][0].playerid;
 			player_type = res[0][0].type;
 			GetPlayerProperties();
+			//GetPlayList();//////////////////
 		}
 		setTimeout(function() { GetPlayerId(); }, 2000);
 	}, function (error) {
-		adapter.log.warn(error);
+		adapter.log.error(error);
 		connection = null;
 		getConnection();
 	}).catch(function (error) {
