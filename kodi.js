@@ -13,7 +13,6 @@ var player_type = null;
 var playlist_id = null;
 var mem = null;
 
-
 // is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
     try {
@@ -461,7 +460,7 @@ function getConnection(cb) {
 		cb && cb(null, connection);
 	}, function (error) {
 		//do something if error
-		adapter.log.debug(error);
+		adapter.log.warn(error);
 		// try again in 5 seconds
 		setTimeout(getConnection, 5000, cb);
 	}).catch(function(error) {
