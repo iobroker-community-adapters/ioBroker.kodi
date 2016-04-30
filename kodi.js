@@ -32,23 +32,26 @@ adapter.on('objectChange', function (id, obj) {
 
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
-		// adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
+		// adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
 	if (id == 'kodi.0.playing_time_total' && state.val !== mem){
 		mem = state.val;
 		GetPlayList();
 	}
     if (state && !state.ack) {
+		adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
+		var param = state.val.toString();
 		var ids = id.split(".");
-		var method = ids[ids.length - 2];
-		if (method === 0){ //
+		var method = ids[ids.length - 2].toString();
+		/*if (method === 0){ //
 			method = null;
-		}
-		ids = ids[ids.length - 1];
-		ConstructorCmd(method, ids, state.val);
+		}*/
+		ids = ids[ids.length - 1].toString();
+		
+		ConstructorCmd(method, ids, param);
 	}
 });
-function ConstructorCmd(method, ids, val){
-	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + val);
+function ConstructorCmd(method, ids, param){
+	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
 		if (method === 'input'){
 			param = [];
 		}
@@ -56,12 +59,15 @@ function ConstructorCmd(method, ids, val){
 		  case "shownotif":
 				ShowNotification(param);
 			break;
+		  case "123":
+				param = [];
+			break;
 		
 		default:
 		
 		}
-	
-	sendCommand(method, param);
+	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
+	//sendCommand(method, param);
 }
 
 
@@ -87,13 +93,13 @@ function sendCommand(method, param) {
 		adapter.log.warn('Not set command!');
 	}
 }
-function ShowNotification(val){
+function ShowNotification(param){
 	var title = '';
 	var message = '';
 	var displaytime = 5000;
 	var img = ['info','warning','error'];
 	var image = 'info';
-	var c = (';' + val).split(';');
+	var c = (';' + param).split(';');
 	var flag = false;
 	c.forEach(function(item, i, arr) {
 		if (!isNaN(item)){
@@ -120,7 +126,7 @@ function ShowNotification(val){
 			}
 		});
 	}
-	return val = {'title': title, 'message': message, 'image': image, 'displaytime': displaytime};
+	return param = {'title': title, 'message': message, 'image': image, 'displaytime': displaytime};
 }
 // Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
 adapter.on('message', function (obj) {
@@ -203,7 +209,7 @@ adapter.getStates('info.*',function (err, obj) {
 				var obj = res[0][key];
 				if (key === 'streamdetails'){
 					for (var _key in obj) {
-						if (obj[_key] == 'object'){
+						if (obj[_key].length > 0){
 							var _obj = obj[_key][0];
 							for (var __key in _obj) {
 								setObject(_key+'_'+__key, _obj[__key], 'info');
