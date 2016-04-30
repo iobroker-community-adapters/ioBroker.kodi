@@ -32,7 +32,7 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
-	if (id == 'kodi.0.playing_time_total' && state.val !== mem){
+	if (id == 'kodi.0.currentplay' && state.val !== mem){
 		mem = state.val;
 		GetPlayList();
 	}
@@ -384,10 +384,11 @@ function GetPlayerProperties(){
 	var batch = connection.batch();
 	var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
 	var InfoLabels = batch.XBMC.GetInfoLabels({"labels":["MusicPlayer.Codec","MusicPlayer.SampleRate","MusicPlayer.BitRate"]});
+	var CurrentPlay = batch.Player.GetItem({"playerid":player_id});
 	batch.send();
-	Promise.all([Properties, InfoLabels]).then(function(res) {
+	Promise.all([Properties, InfoLabels, CurrentPlay]).then(function(res) {
 		adapter.log.debug('Response GetPlayerProperties '+ JSON.stringify(res));
-		
+
 		playlist_id = res[0].playlistid;
 		setObject('playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
 		setObject('playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
@@ -410,6 +411,7 @@ function GetPlayerProperties(){
 			setObject('bitrate', res[1]['MusicPlayer.BitRate']);
 		}
 		setObject('type', res[0].type);
+		setObject('currentplay', res[2].item.label);
 
 	}, function (error) {
 		adapter.log.error(error);
