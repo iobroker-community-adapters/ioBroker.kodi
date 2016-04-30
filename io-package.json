@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.0.2",
+        "version":                  "0.0.3",
         "title":                    "KODI adapter",
         "desc":                     {
  			             "en": "KODI Adapter",
