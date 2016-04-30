@@ -33,7 +33,7 @@ adapter.on('objectChange', function (id, obj) {
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
-	if (id == 'kodi.0.PlayingTotalTime' && state.val !== mem){
+	if (id == 'kodi.0.playing_time_total' && state.val !== mem){
 		mem = state.val;
 		GetPlayList();
 	}
@@ -166,7 +166,7 @@ function setObject(name, val, type){
 		type: 'state',
 		common: {
 			name: name,
-			role: 'media'+ type ? '.'+type:'',
+			role: 'media',
 			type: typeof val
 		},
 		native: {}
@@ -186,16 +186,16 @@ function GetNameVersion(){
 		if (res[2]['System.KernelVersion'] === 'Ждите…'){
 			setTimeout(function() { GetNameVersion(); }, 10000);
 		} else {
-			adapter.setState('Name', {val: res[0].name, ack: true});
-			adapter.setState('Version', {val: res[0].version.major+'.'+res[0].version.minor, ack: true});
+			setObject('name', res[0].name);
+			setObject('version', res[0].version.major+'.'+res[0].version.minor);
 			for (var key in res[1]) {
 				if (res[1][key] === true){
 					var system = key.split(".");
 					system = system[system.length - 1];
-					adapter.setState('System', {val: system, ack: true});
+					setObject('system', system);
 				}
 			}
-			adapter.setState('KernelVersion', {val: res[2]['System.KernelVersion'], ack: true});
+			setObject('kernel', res[2]['System.KernelVersion']);
 		}
 	}, function (error) {
 		adapter.log.error(error);
@@ -213,8 +213,8 @@ function GetChannels(){
 	var allradio = batch.PVR.GetChannels({"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
 	batch.send();
 	Promise.all([alltv, allradio]).then(function(res) {
-		adapter.setState('PVR.ChannelsIPTV', {val: JSON.stringify(res[0]), ack: true});
-		adapter.setState('PVR.ChannelsRadio', {val: JSON.stringify(res[1]), ack: true});
+		setObject('playlist_tv', JSON.stringify(res[0]), 'pvr');
+		setObject('playlist_radio', JSON.stringify(res[1]), 'pvr');
 	}, function (error) {
 		adapter.log.warn(error);
 		connection = null;
@@ -234,30 +234,27 @@ function GetPlayerProperties(){
 		adapter.log.debug('Response GetPlayerProperties '+ JSON.stringify(res));
 		
 		playlist_id = res[0].playlistid;
-		
-		adapter.setState('PlayingTime', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
-		adapter.setState('PlayingTotalTime', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
-		
-		adapter.setState('Canseek', {val: res[0].canseek, ack: true});
-		adapter.setState('Repeat', {val: res[0].repeat, ack: true});
-		adapter.setState('Shuffle', {val: res[0].shuffled, ack: true});
-		adapter.setState('Speed', {val: res[0].speed, ack: true});
-		adapter.setState('Position', {val: res[0].position, ack: true});
-		adapter.setState('Playlistid', {val: res[0].playlistid, ack: true});
-		adapter.setState('Partymode', {val: res[0].partymode, ack: true});
-		//adapter.log.error('---------------:' + res[0].audiostreams.length);
+		setObject('playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
+		setObject('playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
+		setObject('canseek', res[0].canseek);
+		setObject('repeat', res[0].repeat);
+		setObject('shuffle', res[0].shuffled);
+		setObject('speed', res[0].speed);
+		setObject('position', res[0].position);
+		setObject('playlistid', res[0].playlistid);
+		setObject('partymode', res[0].partymode);
 		if (res[0].audiostreams.length > 0){
-			adapter.setState('Codec', {val: res[0].audiostreams[0].codec, ack: true});
-			adapter.setState('BitRate', {val: res[0].audiostreams[0].bitrate, ack: true});
-			adapter.setState('Channels', {val: res[0].audiostreams[0].channels, ack: true});
-			adapter.setState('Language', {val: res[0].audiostreams[0].language, ack: true});
-			adapter.setState('Audiostreams', {val: res[0].audiostreams[0].name, ack: true});
+			setObject('codec', res[0].audiostreams[0].codec);
+			setObject('bitrate', res[0].audiostreams[0].bitrate);
+			setObject('channels', res[0].audiostreams[0].channels);
+			setObject('language', res[0].audiostreams[0].language);
+			setObject('audiostream', res[0].audiostreams[0].name);
 		} else {
-			adapter.setState('Codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
-			adapter.setState('SampleRate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
-			adapter.setState('BitRate', {val: res[1]['MusicPlayer.BitRate'], ack: true});	
+			setObject('codec', res[1]['MusicPlayer.Codec']);
+			setObject('samplerate', res[1]['MusicPlayer.SampleRate']);
+			setObject('bitrate', res[1]['MusicPlayer.BitRate']);
 		}
-		adapter.setState('Type', {val: res[0].type, ack: true});
+		setObject('type', res[0].type);
 
 	}, function (error) {
 		adapter.log.error(error);
@@ -279,12 +276,11 @@ function GetPlayerId(){
 		adapter.log.debug('Response GetPlayerId '+ JSON.stringify(res));
 		if (res[0][0]){
 			adapter.log.debug('Active players = ' + res[0][0].playerid +'. Type = '+ res[0][0].type);
-			adapter.setState('Mute', {val: res[1].muted, ack: true});
-			adapter.setState('Volume', {val: res[1].volume, ack: true});
+			setObject('mute', res[1].muted);
+			setObject('volume', res[1].volume);
 			player_id = res[0][0].playerid;
 			player_type = res[0][0].type;
 			GetPlayerProperties();
-			//GetPlayList();//////////////////
 		}
 		setTimeout(function() { GetPlayerId(); }, 2000);
 	}, function (error) {
