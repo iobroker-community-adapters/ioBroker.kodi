@@ -22,6 +22,8 @@ You can find kodi's official documentation of the JSON-RCP API [here](http://kod
 
 ## Changelog
 
+#### 0.0.3 (2016-05-01)
+
 #### 0.0.2 (2016-04-24)
 * (instalator) remote player
 * (instalator) ShowNotification
