@@ -39,7 +39,7 @@ adapter.on('stateChange', function (id, state) {
 	}
     if (state && !state.ack) {
 		adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
-		var param = state.val.toString();
+		var param = state.val;
 		var ids = id.split(".");
 		var method = ids[ids.length - 2].toString();
 		if (method === '0'){ //
@@ -50,39 +50,105 @@ adapter.on('stateChange', function (id, state) {
 		ConstructorCmd(method, ids, param);
 	}
 });
+
 function ConstructorCmd(method, ids, param){
 	//adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
 		if (method === 'input'){
+			method = 'Input.' + ids;
 			param = [];
+		} else {
+			switch(ids) {
+			  case "switchPVR":
+					method = null;
+					switchPVR(param, function(res){
+						sendCommand('Player.Open', res);
+						setTimeout(function() { sendCommand('GUI.SetFullscreen', {"fullscreen":true}); }, 5000);
+					});
+				break;
+			  case "shownotif":
+					ShowNotification(param, function(res){
+						method = 'GUI.ShowNotification';
+						param = res;
+					});
+				break;
+			  case "zoom":
+					method = 'Player.Zoom'; //
+					param = {"playerid":player_id,"zoom": param}
+				break;
+			  case "setsubtitle":
+					method = 'Player.SetSubtitle'; //
+					param = {"playerid":player_id,"subtitle": param}
+				break;
+			  case "GoTo":
+					method = 'Player.GoTo'; //
+					param = {"playerid":player_id,"to": param}
+				break;
+			  case "seek":
+					method = 'Player.Seek'; //int 0-100
+					param = {"playerid":player_id,"value": param}
+				break;
+			  case "volume":
+					method = 'Application.SetVolume'; //int
+				break;
+			  case "mute":
+					method = 'Application.SetMute'; //bool
+				break;
+			  case "repeat":
+					method = 'Player.SetRepeat'; 
+					param = {'playerid': player_id,"repeat": param}; //off, on, all
+				break;
+			  case "shuffle":
+					method = 'Player.SetShuffle';
+					param = {'playerid': player_id,"repeat": param}; //bool
+				break;
+			  case "next":
+					method = 'Input.ExecuteAction';
+					param = 'skipnext';
+				break;
+			  case "previous":
+					method = 'Input.ExecuteAction';
+					param = 'skipprevious';
+				break;
+			  case "playpause":
+					method = 'Player.PlayPause';
+					param = {'playerid': player_id};
+				break;
+			  case "stop":
+					method = 'Player.Stop';
+					param = {'playerid': player_id};
+				break;
+			  case "youtube":
+					method = 'Player.Open';
+					param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + param.toString() }};
+				break;
+			  case "ActivateWindow":
+					method = 'GUI.ActivateWindow';
+					param = {"window": param };
+				break;
+			  case "ExecuteAction":
+					method = 'Input.ExecuteAction';
+					param = param.toString();
+				break;
+			  case "open":
+					method = 'Player.Open';
+					param = {'item': {'file' : param.toString() }};
+				break;
+			
+			default:
+			
+			}
 		}
-		switch(ids) {
-		  case "shownotif":
-				ShowNotification(param, function(res){
-					method = 'GUI.ShowNotification';
-					param = res;
-				});
-			break;
-		  case "123":
-				param = [];
-			break;
-		
-		default:
-		
-		}
-	adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + JSON.stringify(param));
+	//adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + JSON.stringify(param));
 	sendCommand(method, param);
 }
-
 
 function sendCommand(method, param) {
 	if (method){
 		getConnection(function (err, _connection) {
 			if (_connection){
-			// call your command here
 				adapter.log.info('sending in KODI: '+ method +' - '+JSON.stringify(param));
 				_connection.run(method, param).then(function(result) {
 						adapter.log.debug('response from KODI: '+JSON.stringify(result));
-					//adapter.setState(id, {val: JSON.stringify(result), ack: true});
 				}, function (error) {
 					adapter.log.error(error);
 					connection = null;
@@ -166,7 +232,7 @@ function main() {
 	
 	//SetSpeed', { //-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32
 	//SetSubtitle', { //"previous","next","off","on"
-	var input = ['back','contextmenu','down','home','info','left','right','select','sendtext','showcodec','showOSD','up',];
+	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up',];
 	var media = ['setsubtitle','zoom','ExecuteAction','GoTo','ActivateWindow','shownotif','seek','open','youtube','switchPVR','next','previous','stop','playpause'];
 	
 	input.forEach(function(item, i, arr) {
@@ -174,7 +240,7 @@ function main() {
 			type: 'state',
 			common: {
 				name: item,
-				type: 'boolean',
+				type: 'string',
 				role: 'button'
 			},
 			native: {}
@@ -420,4 +486,18 @@ function time(hour,min,sec){
 		time = hour + '-' + min + '-' + sec;
 	}
 	return time;
+}
+
+function switchPVR(val, callback){
+	adapter.getState('kodi.0.pvr.playlist_tv', function (err, state) {
+		var obj = JSON.parse(state.val);
+		val = val.toString().toLowerCase();
+		obj.channels.forEach(function(item, i, arr) {
+			var channel = item.label.toString().toLowerCase();
+			if (~channel.indexOf(val)){
+				adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
+				callback ({"item":{"channelid":item.channelid}});
+			}
+		});
+	}); 
 }
