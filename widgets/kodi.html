@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" href="widgets/kodi/css/style.css" />
 <script type="text/javascript" src="widgets/kodi/js/kodi.js"></script>
+<script type="text/javascript" src="widgets/kodi/js/jquery.audioControls.min.js"></script>
 
 <script id="tplkodiProgressBar"
         type="text/ejs"
@@ -24,16 +25,85 @@
 	</div>
 </script>
 
-<script id="tplkodiHelper"
+<script id="tplkodiPlayer"
         type="text/ejs"
         class="vis-tpl"
-        data-vis-prev='<div id="prev_tplkodiHelper" style="position: relative; text-align: initial;padding: 4px "><div class="vis-widget_prev " style="width: 280px; height: 159px;" > <div class="myset-class vis-widget-prev-body " style="padding:2px"> OID: hm-rpc.0.EEQ0006629.1.STATE<br> OID value: true<br> Color: <span style="color: rgb(128, 0, 0);">#800000</span><br> htmlText: <textarea readonly="" style="width:100%">asda</textarea></div>'
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png">'
         data-vis-attrs="oid/id;myColor/color;htmlText/text;"
         data-vis-attrs0="group.extrakodi;extraAttr"
         data-vis-set="kodi"
-        data-vis-type="helper"
-        data-vis-name="Helper">
-    <div class="vis-widget <%== this.data.attr('class') %>" style="overflow:visible; width: 230px; height: 210px" id="<%= this.data.attr('wid') %>"><%vis.binds.kodi.createWidget(this.data.wid, this.view, this.data, this.style);%>
+        data-vis-type="val"
+        data-vis-name="Player">
+    <div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
+		
+		<div class="containerPlayer">
+		<div id="listContainer" class="playlistContainer">
+		<ul id="playListContainer">
+			 <li data-src="https://s3.amazonaws.com/9lessonslabs/songs/Everything+But+Mine.mp3">
+				<a href="#">
+					BSB - Everything But Mine
+				</a>
+			</li>
+			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/Linkin+Park+-+Numb.mp3">
+				<a href="#">
+					Linkin Park - Numb
+				</a>
+			</li>
+			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/love-the-way-you-lie-rihanna-feat-eminem.mp3">
+				<a href="#">
+					Eminem - Love The Way You 
+				</a>
+			</li>
+			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/rolling-in-the-deep-adele.mp3">
+				<a href="#">
+					Adele - Rolling In The Deep
+				</a>
+			</li>
+			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/when-i-was-your-man-bruno-mars.mp3">
+				<a href="#">
+					Bruno - When I Was Your Man
+				</a>
+			</li>
+		</ul>
+	</div>
+		<div id="playerContainer">
+		<div id="controlContainer">  
+			
+			<ul class="controls">
+			<li>
+				<a href="#" class="shuffle shuffleActive" data-attr="shuffled"></a>
+			</li>
+				<li>
+					<a href="#" class="left" data-attr="prevAudio"></a>
+				</li>
+				<li>
+					<a href="#" class="play" data-attr="playPauseAudio"></a>
+				</li>
+				<li>
+					<a href="#" class="right" data-attr="nextAudio"></a>
+				</li>
+				<li>
+					<a href="#" class="repeat" data-attr="repeatSong"></a>
+				</li>
+			</ul>
+			<div class="audioDetails">
+				<span class="songPlay"></span>
+				<span data-attr="timer" class="audioTime"></span>
+			</div>
+			<div class="progress">
+				<div data-attr="seekableTrack" class="seekableTrack"></div>
+				<div class="updateProgress"></div>
+			</div>
+			
+		</div>
+		
+		<div class="volumeControl">
+			<div class="volume volume1"></div>
+			<input class="bar" data-attr="rangeVolume" type="range" min="0" max="1" step="0.1" value="0.7" />
+		</div>
+	</div>
+	</div>
+	<% vis.binds.kodi.createWidgetPlayer(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>
 

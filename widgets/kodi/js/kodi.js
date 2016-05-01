@@ -61,7 +61,57 @@ vis.binds.kodi = {
 		*/
 		//debugger;
 	},
+	createWidgetPlaylist: function (widgetID, view, data, style) {
+        var $div = $('#' + widgetID);
+        // if nothing found => wait
+        if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.createWidgetPlaylist(widgetID, view, data, style);
+            }, 100);
+        }
+	},
 	
+	createWidgetPlayer: function (widgetID, view, data, style) {
+        var $div = $('#' + widgetID);
+        // if nothing found => wait
+        if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.createWidgetPlayer(widgetID, view, data, style);
+            }, 100);
+        }
+
+       $("#playListContainer").audioControls(
+		   {
+			   autoPlay : false,
+			   timer: 'increment',
+			   onAudioChange : function(response){
+				   $('.songPlay').text(response.title + ' ...'); //Song title information
+			   },
+			   onVolumeChange : function(vol){
+				   var obj = $('.volume');
+				   if(vol <= 0){
+					   obj.attr('class','volume mute');
+				   }
+				   else if(vol <= 33)
+				   {
+					   obj.attr('class','volume volume1');
+				   }
+				   else if(vol > 33 && vol <= 66)
+				   {
+					   obj.attr('class','volume volume2');
+				   }
+				   else if(vol > 66)
+				   {
+					   obj.attr('class','volume volume3');
+				   }
+				   else
+				   {
+					   obj.attr('class','volume volume1');
+				   }
+			   }
+		   });
+
+	},
 	createWidget: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait

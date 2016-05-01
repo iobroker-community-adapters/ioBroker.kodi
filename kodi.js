@@ -404,10 +404,12 @@ function GetPlayerProperties(){
 	batch.send();
 	Promise.all([Properties, InfoLabels, CurrentPlay]).then(function(res) {
 		adapter.log.debug('Response GetPlayerProperties '+ JSON.stringify(res));
-
+		var total = (res[0].totaltime.hours * 3600) + (res[0].totaltime.minutes * 60) + res[0].totaltime.seconds;
+		var cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
 		playlist_id = res[0].playlistid;
 		setObject('playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
 		setObject('playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
+		setObject('seek', parseInt(cur * 100 / total));
 		setObject('canseek', res[0].canseek);
 		setObject('repeat', res[0].repeat);
 		setObject('shuffle', res[0].shuffled);
