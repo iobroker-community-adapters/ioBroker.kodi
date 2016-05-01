@@ -22,12 +22,12 @@ You can find kodi's official documentation of the JSON-RCP API [here](http://kod
 
 Так же сообщения можно отправлять из javascript:
 ```
-	sendTo("kodi.0", {
-            message:  'Возможно протечка воды ',
-            title:    'ВНИМАНИЕ!!!',
-            image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png',
-            delay: ''
-        });
+sendTo("kodi.0", {
+    message:  'Возможно протечка воды ',
+    title:    'ВНИМАНИЕ!!!',
+    image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png',
+    delay: ''
+});
 ```
 
 ## Changelog
