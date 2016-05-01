@@ -28,7 +28,23 @@ adapter.on('objectChange', function (id, obj) {
     // Warning, obj can be null if it was deleted
     adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
+// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
+adapter.on('message', function (obj) {
 
+	adapter.log.error('//////////////////////////send command ' + JSON.stringify(obj));
+	
+	if (obj && obj.command == "send"){
+		console.log('//////////////////////////send command');
+	}
+   /* if (typeof obj == 'object' && obj.message) {
+        if (obj.command == 'send') {
+            // e.g. send email or pushover or whatever
+            console.log('//////////////////////////send command');
+            // Send response in callback if required
+           // if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+        }
+    }*/
+});
 // is called if a subscribed state changes
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
@@ -196,17 +212,6 @@ function ShowNotification(param, callback){
 	}
 	callback ({'title': title, 'message': message, 'image': image, 'displaytime': displaytime});
 }
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on('message', function (obj) {
-    if (typeof obj == 'object' && obj.message) {
-        if (obj.command == 'send') {
-            // e.g. send email or pushover or whatever
-            console.log('send command');
-            // Send response in callback if required
-            if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-        }
-    }
-});
 
 // is called when databases are connected and adapter received configuration.
 // start here!

@@ -7,19 +7,23 @@
  			             "en": "KODI Adapter",
  			             "de": "KODI Adapter",
  			             "ru": "KODI драйвер"
-	},
+		},
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
+		"availableModes":           ["daemon", "subscribe"],
         "icon":                     "kodi.png",
         "enabled":                  true,
-	"extIcon":                  "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
-	"keywords":                 ["iobroker.kodi", "vis", "GUI", "graphical", "scada"],
+		"messagebox":               true,
+		"subscribe":                "messagebox",
+		"extIcon":                  "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
+		"keywords":                 ["iobroker.kodi", "vis", "GUI", "graphical"],
         "readme":                   "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
-	"loglevel":                 "info",
+		"loglevel":                 "info",
         "type":                     "media",
         "restartAdapters":          ["vis"]
-    },
-    "native": {
+		},
+		
+		"native": {
         "ip":                       "192.168.1.205",
         "port":             		9090,
         "login":                	"",
