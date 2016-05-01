@@ -1,5 +1,3 @@
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
 "use strict";
 
 var kodi = require('kodi-ws');
@@ -13,7 +11,6 @@ var player_type = null;
 var playlist_id = null;
 var mem = null;
 
-// is called when adapter shuts down - callback has to be called under any circumstances!
 adapter.on('unload', function (callback) {
     try {
         adapter.log.info('cleaned everything up...');
@@ -23,34 +20,38 @@ adapter.on('unload', function (callback) {
     }
 });
 
-// is called if a subscribed object changes
 adapter.on('objectChange', function (id, obj) {
     // Warning, obj can be null if it was deleted
     adapter.log.info('objectChange ' + id + ' ' + JSON.stringify(obj));
 });
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on('message', function (obj) {
 
-	adapter.log.error('//////////////////////////send command ' + JSON.stringify(obj));
-	
-	if (obj && obj.command == "send"){
-		console.log('//////////////////////////send command');
-	}
-   /* if (typeof obj == 'object' && obj.message) {
+adapter.on('message', function (obj) {
+	if (typeof obj == 'object' && obj.message) {
         if (obj.command == 'send') {
-            // e.g. send email or pushover or whatever
-            console.log('//////////////////////////send command');
-            // Send response in callback if required
-           // if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-        }
-    }*/
+            adapter.log.debug('send command ' + JSON.stringify(obj));
+			var _obj = obj.message;
+			var param = {'title': '', 'message': '', 'image': 'info', 'displaytime': 5000};
+			if (typeof _obj.message != "object") {
+				param.message = _obj.message;
+			}
+			param.title		  = _obj.title     || '';
+			param.image		  = _obj.image     || 'info';
+			param.displaytime = _obj.delay     || 5000;
+			
+			sendCommand('GUI.ShowNotification', param);
+			
+			if (obj.callback){
+				adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+			}
+		}
+    }
 });
-// is called if a subscribed state changes
+
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
-	if (id == 'kodi.0.currentplay' && state.val !== mem){
+	if (id == adapter.namespace + '.currentplay' && state.val !== mem){
 		mem = state.val;
-		GetPlayList();
+		setTimeout(function() { GetPlayList(); }, 1000);
 	}
     if (state && !state.ack) {
 		adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
@@ -213,18 +214,16 @@ function ShowNotification(param, callback){
 	callback ({'title': title, 'message': message, 'image': image, 'displaytime': displaytime});
 }
 
-// is called when databases are connected and adapter received configuration.
-// start here!
 adapter.on('ready', function () {
     main();
 });
 
 function main() {
-
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
-
+	
 	getConnection(function (err, _connection) {
 		if (_connection){
+		adapter.sendTo(adapter.namespace, 'send','', function(r){});//Иначе не работает подписка на message
 			GetNameVersion();
 			GetPlayerId();
 			GetChannels();
@@ -269,7 +268,7 @@ function GetPlayList(){
 adapter.getStates('info.*',function (err, obj) {
 	for (var state in obj) {
 		adapter.setState(state, {val: '', ack: true});
-	}	
+	}
 	var batch = connection.batch();	//*********** playlistid
 	var GetItem = batch.Player.GetItem({"playerid":player_id,"properties":["album","albumartist","artist","director","episode","fanart","file","genre","plot","rating","season","showtitle","studio","imdbnumber","tagline","thumbnail","title","track","writer","year","streamdetails","originaltitle","cast","playcount"]});
 	var GetItems = batch.Playlist.GetItems({"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"],"limits":{"start":0,"end":750}});
@@ -495,7 +494,7 @@ function time(hour,min,sec){
 }
 
 function switchPVR(val, callback){
-	adapter.getState('kodi.0.pvr.playlist_tv', function (err, state) {
+	adapter.getState(adapter.namespace + '.pvr.playlist_tv', function (err, state) {
 		var obj = JSON.parse(state.val);
 		val = val.toString().toLowerCase();
 		obj.channels.forEach(function(item, i, arr) {
