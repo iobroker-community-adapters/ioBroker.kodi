@@ -88,11 +88,13 @@ function ConstructorCmd(method, ids, param){
 					});
 				break;
 			  case "zoom":
-					method = 'Player.Zoom'; //
-					param = {"playerid":player_id,"zoom": param}
+					if (param >= 0 && param <= 10){
+						method = 'Player.Zoom'; //
+						param = {"playerid":player_id,"zoom": param}
+					}
 				break;
 			  case "setsubtitle":
-					method = 'Player.SetSubtitle'; //
+					method = 'Player.SetSubtitle'; //"previous", "next", "off", "on
 					param = {"playerid":player_id,"subtitle": param}
 				break;
 			  case "GoTo":
@@ -100,22 +102,26 @@ function ConstructorCmd(method, ids, param){
 					param = {"playerid":player_id,"to": param}
 				break;
 			  case "seek":
-					method = 'Player.Seek'; //int 0-100
-					param = {"playerid":player_id,"value": param}
+					if (param >= 0 && param <= 100){
+						method = 'Player.Seek'; //int 0-100
+						param = {"playerid":player_id,"value": param}
+					}
 				break;
 			  case "volume":
-					method = 'Application.SetVolume'; //int
+					if (param >= 0 && param <= 100){
+						method = 'Application.SetVolume'; //int 0-100
+					}
 				break;
 			  case "mute":
 					method = 'Application.SetMute'; //bool
 				break;
 			  case "repeat":
-					method = 'Player.SetRepeat'; 
-					param = {'playerid': player_id,"repeat": param}; //off, on, all
+					method = 'Player.SetRepeat'; //off, on, all
+					param = {'playerid': player_id,"repeat": param}; 
 				break;
 			  case "shuffle":
-					method = 'Player.SetShuffle';
-					param = {'playerid': player_id,"repeat": param}; //bool
+					method = 'Player.SetShuffle'; //bool
+					param = {'playerid': player_id,"repeat": param}; 
 				break;
 			  case "next":
 					method = 'Input.ExecuteAction';
@@ -149,6 +155,12 @@ function ConstructorCmd(method, ids, param){
 					method = 'Player.Open';
 					param = {'item': {'file' : param.toString() }};
 				break;
+			case "speed":
+					if (~[-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32].indexOf(parseInt(param))){
+						method = 'Player.SetSpeed';
+						param = {'playerid': player_id,'speed': parseInt(param)};
+					}
+				break;
 			
 			default:
 			
@@ -175,7 +187,7 @@ function sendCommand(method, param) {
 			}
 		});
 	} else {
-		adapter.log.warn('Not set command!');
+		adapter.log.warn('It does not specify commands or invalid value!');
 	}
 }
 function ShowNotification(param, callback){
