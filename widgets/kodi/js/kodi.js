@@ -1,7 +1,7 @@
 /*
     kodi Widget-Set
 
-    version: "0.5.0"
+    version: "0.0.3"
 
     Copyright 10.2015-2016 instalator<vvvalt@mail.ru>
 
@@ -30,13 +30,38 @@ $.extend(true, systemDictionary, {
 
 // this code can be placed directly in kodi.html
 vis.binds.kodi = {
-    version: "0.5.0",
+    version: "0.0.3",
     showVersion: function () {
         if (vis.binds.kodi.version) {
             console.log('Version kodi: ' + vis.binds.kodi.version);
             vis.binds.kodi.version = null;
         }
     },
+	states: {
+		oid_curtime:		{val: undefined, selector: '', objName: 'curtime'},
+		oid_curtimetotal:	{val: undefined, selector: '', objName: 'curtimetotal'}
+	},
+	
+	createWidgetProgress: function (widgetID, view, data, style) {
+		var $div = $('#' + widgetID);
+		
+		if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.createWidgetProgress(widgetID, view, data, style);
+            }, 100);
+        }
+		$(function() {
+            $('#progressbar').progressbar({
+                value: 21
+            });
+        });
+		/*	$( "#progressbar" ).progressbar({
+			  value: vis.states[data.oid + '.val'];
+			});
+		*/
+		//debugger;
+	},
+	
 	createWidget: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
@@ -64,5 +89,21 @@ vis.binds.kodi = {
         }
     }
 };
-	
+	if (vis.editMode) {
+		vis.binds.kodi.changeOid = function (widgetID, view, newId, attr, isCss) {
+			//console.log('---------: ' + widgetID +' - '+view+' - '+newId+' - '+attr+' - '+isCss);
+			newId = newId ? newId.substring(0, newId.length - attr.length + 'oid_'.length) : '';
+			var changed = [];
+			for (var s in vis.binds.kodi.states) {
+				if (s === 'oid_curtime' || !vis.binds.kodi.states[s].objName) continue;
+				if (vis.objects[newId + vis.binds.kodi.states[s].objName]) {
+					changed.push(s);
+					vis.views[view].widgets[widgetID].data[s] 	= newId + vis.binds.kodi.states[s].objName;
+					vis.widgets[widgetID].data[s] 				= newId + vis.binds.kodi.states[s].objName;
+				}
+			}
+			return changed;
+	};
+}
+
 vis.binds.kodi.showVersion();
