@@ -8,11 +8,10 @@
  			             "de": "KODI Adapter",
  			             "ru": "KODI драйвер"
 		},
+		"license":                  "MIT",
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
-		"availableModes":           ["daemon", "subscribe"],
         "icon":                     "kodi.png",
-        "enabled":                  true,
 		"messagebox":               true,
 		"subscribe":                "messagebox",
 		"extIcon":                  "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
