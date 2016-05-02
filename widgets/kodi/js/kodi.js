@@ -74,6 +74,24 @@ vis.binds.kodi = {
 		}
 	},
 /**************************************************************************/
+createWidgetButton: function (widgetID, view, data, style) {
+		var $div = $('#' + widgetID);
+		
+		if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.createWidgetButton(widgetID, view, data, style);
+            }, 100);
+        }
+		
+
+		// subscribe on updates of value
+		if (data.prev) {
+			vis.states.bind(data.prev + '.val', function (e, newVal, oldVal) {
+				
+			});
+		}
+	},
+/**************************************************************************/
 	createWidgetPlaylist: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait

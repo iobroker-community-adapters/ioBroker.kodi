@@ -43,6 +43,31 @@
 	</div>
 </script>
 
+<script id="tplkodiButton"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_play/id/;oid_pause/id;oid_prev/id;oid_next/id;oid_stop/id;oid_mute/id;oid_rpt/id;oid_shf/id;"
+		data-vis-attrs0="group.extrakodi;extraAttr"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI Button">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
+			<div id="kodibutton">
+				<ul class="kodicontrols">
+					<li class="prev"></li>
+					<li class="seekdn"></li>
+					<li class="pause"></li>
+					<li class="stop"></li>
+					<li class="seekup"></li>
+					<li class="repeat"></li>
+					<li class="shuffle"></li>
+				</ul>
+			</div>
+       <% vis.binds.kodi.createWidgetButton(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
 <script id="tplkodiPlayer"
         type="text/ejs"
         class="vis-tpl"

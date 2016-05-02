@@ -26,6 +26,37 @@
 	cursor: pointer;  
 }
 
+.kodicontrols li { 
+	float:left; 
+	display:inline-block; 
+	width:50px;
+	height: 50px;
+	text-align:center; 
+	/*margin-top:8px;
+	margin-left:10px */
+}
+.prev 		{ background: url("../img/btn/prevtracknf.png") repeat scroll 0 0; }
+.prev:hover { background: url("../img/btn/prevtrackfo.png") repeat scroll 0 0;}
+.seekdn 		{ background: url("../img/btn/rewindnf.png") repeat scroll 0 0;}
+.seekdn:hover { background: url("../img/btn/rewindfo.png") repeat scroll 0 0;}
+.pause 		{ background: url("../img/btn/pausenf.png") repeat scroll 0 0;}
+.pause:hover { background: url("../img/btn/pausefo.png") repeat scroll 0 0;}
+.stop 		{ background: url("../img/btn/stopnf.png") repeat scroll 0 0;}
+.stop:hover { background: url("../img/btn/stopfo.png") repeat scroll 0 0;}
+.seekup 		{ background: url("../img/btn/forwardnf.png") repeat scroll 0 0;}
+.seekup:hover { background: url("../img/btn/forwardfo.png") repeat scroll 0 0;}
+.repeat 		{ background: url("../img/btn/repeatnf.png") repeat scroll 0 0;}
+.repeat:hover { background: url("../img/btn/repeatfo.png") repeat scroll 0 0;}
+.repeat.one 	{ background: url("../img/btn/repeatonenf.png") repeat scroll 0 0;}
+.repeat.one:hover { background: url("../img/btn/repeatonefo.png") repeat scroll 0 0;}
+.repeat.all 		{ background: url("../img/btn/repeatallnf.png") repeat scroll 0 0;}
+.repeat.all:hover { background: url("../img/btn/repeatallfo.png") repeat scroll 0 0;}
+.shuffle 		{ background: url("../img/btn/randomoffnf.png") repeat scroll 0 0;}
+.shuffle:hover { background: url("../img/btn/randomofffo.png") repeat scroll 0 0;}
+.shuffle.on		{ background: url("../img/btn/randomonnf.png") repeat scroll 0 0;}
+.shuffle.on:hover { background: url("../img/btn/randomonfo.png") repeat scroll 0 0;}
+
+
 
 
 ul, li { list-style: none; }
@@ -47,7 +78,7 @@ ul, li { list-style: none; }
 #listContainer li.activeAudio { background-color:#00bd9b; }
 
 
-/* Player Controls */
+/* Player Controls *//*
 #playerContainer { width:310px; height:130px; background-color:#333333;  }
 .controls li:first{margin-right:10px}
 .controls li { float:left; display:inline-block; width:50px; text-align:center; margin-top:8px;margin-left:10px }
@@ -81,4 +112,4 @@ input[type="range"] { -webkit-appearance: none; -moz-appearance: none; backgroun
 .songPlay { display:inline-block; }
 .seekableTrack { width: 0%; background-color:#666666; height: 4px; position: absolute; z-index: 0; display: block; }
 .seekableTrack, .progress .updateProgress { -webkit-transition: width 0.6s ease; -moz-transition: width 0.6s ease; -o-transition: width 0.6s ease; transition: width 0.6s ease; }
-
+*/
