@@ -38,10 +38,10 @@ vis.binds.kodi = {
         }
     },
 	states: {
-		oid_curtime:		{val: undefined, selector: '', objName: 'curtime'},
+		oid_seek:			{val: 0, selector: '', objName: 'oid_seek'},
 		oid_curtimetotal:	{val: undefined, selector: '', objName: 'curtimetotal'}
 	},
-	
+/***********************************************************************/	
 	createWidgetProgress: function (widgetID, view, data, style) {
 		var $div = $('#' + widgetID);
 		
@@ -50,17 +50,30 @@ vis.binds.kodi = {
                 vis.binds.kodi.createWidgetProgress(widgetID, view, data, style);
             }, 100);
         }
-		$(function() {
-            $('#progressbar').progressbar({
-                value: 21
-            });
-        });
-		/*	$( "#progressbar" ).progressbar({
-			  value: vis.states[data.oid + '.val'];
+		
+		$(function(){
+			$("#progressbar").progressbar({
+				value: 0
 			});
-		*/
-		//debugger;
+		});
+		
+		$("#progressbar").on('click', function(e){
+			var maxWidth = $($div).css("width").slice(0, -2);
+			var left = $($div).css("left").slice(0, -2);
+			var clickPos = e.pageX - this.offsetLeft - left;
+			var percentage = clickPos / maxWidth * 100;
+			vis.setValue(data.oid_seek, percentage);
+			$('#progressbar').progressbar("option","value", percentage);
+		});
+
+		// subscribe on updates of value
+		if (data.oid_seek) {
+			vis.states.bind(data.oid_seek + '.val', function (e, newVal, oldVal) {
+				$('#progressbar').progressbar("value", newVal);
+			});
+		}
 	},
+/**************************************************************************/
 	createWidgetPlaylist: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
@@ -69,8 +82,38 @@ vis.binds.kodi = {
                 vis.binds.kodi.createWidgetPlaylist(widgetID, view, data, style);
             }, 100);
         }
+
+		function SetPlaylist(val){
+			var playlist = JSON.parse(val);
+			playlist = playlist.items;
+			$("#playListContainer").empty();
+			playlist.forEach(function(item, i, arr) {
+				$("#playListContainer").append("<li class='item"+i+"'>"+i+' - '+playlist[i].label+"</li>");
+			});
+			$("#playListContainer .item"+vis.states[data.oid_position + '.val']).addClass("active");			
+			$('#playListContainer').on('click', "li", function(){
+				  var n=$(this).index();
+				  vis.setValue(data.oid_position, n);
+			});
+		}
+		// subscribe on updates of value
+		if (data.oid_playlist) {
+			vis.states.bind(data.oid_playlist + '.val', function (e, newVal, oldVal) {
+				SetPlaylist(newVal);
+			});
+		}
+		if (data.oid_position) {
+			vis.states.bind(data.oid_position + '.val', function (e, newVal, oldVal) {
+				$("#playListContainer li").removeClass("active");
+				$("#playListContainer .item"+newVal).addClass("active");
+			});
+		}
+		if ($div.length){
+			SetPlaylist(vis.states[data.oid_playlist + '.val']);
+		}
+		
 	},
-	
+/************************************************************************/
 	createWidgetPlayer: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
@@ -112,6 +155,7 @@ vis.binds.kodi = {
 		   });
 
 	},
+/***********************************************************************/
 	createWidget: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
@@ -139,7 +183,7 @@ vis.binds.kodi = {
         }
     }
 };
-	if (vis.editMode) {
+	/*if (vis.editMode) {
 		vis.binds.kodi.changeOid = function (widgetID, view, newId, attr, isCss) {
 			//console.log('---------: ' + widgetID +' - '+view+' - '+newId+' - '+attr+' - '+isCss);
 			newId = newId ? newId.substring(0, newId.length - attr.length + 'oid_'.length) : '';
@@ -154,6 +198,6 @@ vis.binds.kodi = {
 			}
 			return changed;
 	};
-}
+}*/
 
 vis.binds.kodi.showVersion();

@@ -1,8 +1,33 @@
 .iobroker.kodi-class {
     font-style: italic;
 }
-* { padding: 0px; margin :0px; }
-body { background-color:#999999; font-family: SourceSansPro-Regular, Helvetica, Arial, 'sans-serif'; font-size: 14px; line-height: 1.428571429; }
+#progressbar {
+	width: 100%;
+	height: 100%;
+}
+
+
+#kodiplaylist {
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+}
+#kodiplaylist li:hover, #kodiplaylist li:nth-child(even):hover { background-color:#00bd9b; color:#fff; }
+
+#kodiplaylist li.active{
+	background-color:#00bd9b;
+	color:#fff;
+}
+
+#kodiplaylist ul { 
+	margin: 0;
+	padding-left: 5px;
+	clear: both;
+	cursor: pointer;  
+}
+
+
+
 ul, li { list-style: none; }
 .mainContainer { margin:0 auto; width:800px }
 .containerPlayer, .containerSource { display:inline-block; float:left; padding:10px; margin:0px 10px; }

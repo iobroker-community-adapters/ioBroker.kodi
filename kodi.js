@@ -101,6 +101,10 @@ function ConstructorCmd(method, ids, param){
 					method = 'Player.GoTo'; //
 					param = {"playerid":player_id,"to": param}
 				break;
+			  case "position": //
+					method = 'Player.GoTo'; //
+					param = {"playerid":player_id,"to": param}
+				break;
 			  case "seek":
 					if (param >= 0 && param <= 100){
 						method = 'Player.Seek'; //int 0-100
@@ -123,6 +127,10 @@ function ConstructorCmd(method, ids, param){
 					method = 'Player.SetShuffle'; //bool
 					param = {'playerid': player_id,"repeat": param}; 
 				break;
+			  case "play":
+					method = 'Input.ExecuteAction';
+					param = 'play';
+				break;
 			  case "next":
 					method = 'Input.ExecuteAction';
 					param = 'skipnext';
@@ -131,7 +139,7 @@ function ConstructorCmd(method, ids, param){
 					method = 'Input.ExecuteAction';
 					param = 'skipprevious';
 				break;
-			  case "playpause":
+			  case "pause":
 					method = 'Player.PlayPause';
 					param = {'playerid': player_id};
 				break;
@@ -248,7 +256,7 @@ function main() {
 	//SetSpeed', { //-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32
 	//SetSubtitle', { //"previous","next","off","on"
 	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up',];
-	var media = ['setsubtitle','zoom','ExecuteAction','GoTo','ActivateWindow','shownotif','seek','open','youtube','switchPVR','next','previous','stop','playpause'];
+	var media = ['play','setsubtitle','zoom','ExecuteAction','GoTo','ActivateWindow','shownotif','seek','open','youtube','switchPVR','next','previous','stop','pause'];
 	
 	input.forEach(function(item, i, arr) {
 		adapter.setObject('input.'+item, {

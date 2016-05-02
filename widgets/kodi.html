@@ -14,14 +14,32 @@
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
-		data-vis-attrs="oid_curtime/id/changeOid;oid_curtimetotal/id;"
+		data-vis-attrs="oid_seek/id/;oid_q/id;"
 		data-vis-attrs0="group.extrakodi;extraAttr"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="Progress Bar">
-	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px; overflow: initial" id="<%= this.data.attr('wid') %>" >
 			<div id="progressbar"></div>
        <% vis.binds.kodi.createWidgetProgress(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script id="tplkodiPlaylist"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_playlist/id/;oid_pvrplaylist/id;oid_position/id;"
+		data-vis-attrs0="group.extrakodi;extraAttr"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI Playlist">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
+			<div id="kodiplaylist">
+				<ul id="playListContainer">
+				</ul>
+			</div>
+       <% vis.binds.kodi.createWidgetPlaylist(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>
 
