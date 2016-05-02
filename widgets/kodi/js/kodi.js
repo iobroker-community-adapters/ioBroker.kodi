@@ -83,11 +83,85 @@ createWidgetButton: function (widgetID, view, data, style) {
             }, 100);
         }
 		
+		$("#kodicontrols .prev").on('click',function(){
+			vis.setValue(data.oid_prev, '');
+		});
+		$("#kodicontrols .seekdn").on('click',function(){
+			var seek = vis.states[data.oid_seek + '.val'];
+			vis.setValue(data.oid_seek, seek-10);
+		});
+		$("#kodicontrols .playpause").on('click',function(){
+			var speed = vis.states[data.oid_speed + '.val'];
+			if (speed !== 0){
+				vis.setValue(data.oid_speed, 0);
+			} else {
+				vis.setValue(data.oid_speed, 1);
+			}
+		});
+		$("#kodicontrols .stop").on('click',function(){
+			vis.setValue(data.oid_stop, '');
+		});
+		$("#kodicontrols .seekup").on('click',function(){
+			var seek = vis.states[data.oid_seek + '.val'];
+			vis.setValue(data.oid_seek, seek+10);
+		});
+		$("#kodicontrols .next").on('click',function(){
+			vis.setValue(data.oid_next, '');
+		});
+		$("#kodicontrols .repeat").on('click',function(){
+			var rpt = vis.states[data.oid_rpt + '.val'];
+			if (rpt === 'off'){
+				vis.setValue(data.oid_rpt, 'one');
+			} else if (rpt === 'one'){
+				vis.setValue(data.oid_rpt, 'all');
+			} else if (rpt === 'all'){
+				vis.setValue(data.oid_rpt, 'off');
+			}
+		});
+		$("#kodicontrols .shuffle").on('click',function(){
+			var shf = vis.states[data.oid_shf + '.val'];
+			if (shf === false){
+				vis.setValue(data.oid_shf, true);
+			} else {
+				vis.setValue(data.oid_shf, false);
+			}
+		});
+		
 
 		// subscribe on updates of value
-		if (data.prev) {
-			vis.states.bind(data.prev + '.val', function (e, newVal, oldVal) {
-				
+		if (data.oid_speed) {
+			vis.states.bind(data.oid_speed + '.val', function (e, newVal, oldVal) {
+				var sp = $("#kodicontrols > .playpause");
+				if (newVal == 0){
+					sp.removeClass().addClass('playpause on');
+				} else {
+					sp.removeClass().addClass('playpause');
+				}
+			});
+		}
+		if (data.oid_rpt) {
+			vis.states.bind(data.oid_rpt + '.val', function (e, newVal, oldVal) {
+				var r = $("#kodicontrols > .repeat");
+				if (newVal == 'off'){
+					r.removeClass();
+					r.addClass("repeat off");
+				} else if (newVal == 'one'){
+					r.removeClass();
+					r.addClass("repeat one");
+				} else if (newVal == 'all'){
+					r.removeClass();
+					r.addClass("repeat all");
+				}
+			});
+		}
+		if (data.oid_shf) {
+			vis.states.bind(data.oid_shf + '.val', function (e, newVal, oldVal) {
+				var s = $("#kodicontrols > .shuffle");
+				if (newVal === true || newVal === 'true'){
+					s.removeClass('off').addClass('on');
+				} else {
+					s.removeClass('on').addClass('off');
+				}
 			});
 		}
 	},
@@ -106,9 +180,9 @@ createWidgetButton: function (widgetID, view, data, style) {
 			playlist = playlist.items;
 			$("#playListContainer").empty();
 			playlist.forEach(function(item, i, arr) {
-				$("#playListContainer").append("<li class='item"+i+"'>"+i+' - '+playlist[i].label+"</li>");
+				$("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+playlist[i].label+"</li>");
 			});
-			$("#playListContainer .item"+vis.states[data.oid_position + '.val']).addClass("active");			
+			$("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
 			$('#playListContainer').on('click', "li", function(){
 				  var n=$(this).index();
 				  vis.setValue(data.oid_position, n);
@@ -123,6 +197,7 @@ createWidgetButton: function (widgetID, view, data, style) {
 		if (data.oid_position) {
 			vis.states.bind(data.oid_position + '.val', function (e, newVal, oldVal) {
 				$("#playListContainer li").removeClass("active");
+				newVal++;
 				$("#playListContainer .item"+newVal).addClass("active");
 			});
 		}

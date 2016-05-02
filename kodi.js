@@ -125,7 +125,7 @@ function ConstructorCmd(method, ids, param){
 				break;
 			  case "shuffle":
 					method = 'Player.SetShuffle'; //bool
-					param = {'playerid': player_id,"repeat": param}; 
+					param = {'playerid': player_id,"shuffle": param}; 
 				break;
 			  case "play":
 					method = 'Input.ExecuteAction';
@@ -141,7 +141,7 @@ function ConstructorCmd(method, ids, param){
 				break;
 			  case "pause":
 					method = 'Player.PlayPause';
-					param = {'playerid': player_id};
+					param = {'playerid': player_id, "play": "toggle"};
 				break;
 			  case "stop":
 					method = 'Player.Stop';
