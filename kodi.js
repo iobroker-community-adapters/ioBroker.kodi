@@ -374,6 +374,7 @@ function setObject(name, val, type){
 	});
 }
 function GetNameVersion(){
+if (connection){
 	var batch = connection.batch();
 	var GetProperties = batch.Application.GetProperties({"properties":["name","version"]});
 	var GetInfoBooleans = batch.XBMC.GetInfoBooleans({"booleans":["System.Platform.Linux","System.Platform.Linux.RaspberryPi","System.Platform.Windows","System.Platform.OSX","System.Platform.IOS","System.Platform.Darwin","System.Platform.ATV2","System.Platform.Android"]});
@@ -405,7 +406,9 @@ function GetNameVersion(){
 		getConnection();
 	});	
 }
+}
 function GetChannels(){
+if (connection){
 	var batch = connection.batch();
 	var alltv = batch.PVR.GetChannels({"channelgroupid":"alltv","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
 	var allradio = batch.PVR.GetChannels({"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
@@ -423,7 +426,9 @@ function GetChannels(){
 		getConnection();
 	});
 }
+}
 function GetPlayerProperties(){
+if (connection){
 	var batch = connection.batch();
 	var Properties = batch.Player.GetProperties({"playerid":player_id,"properties":["audiostreams","canseek","currentaudiostream","currentsubtitle","partymode","playlistid","position","repeat","shuffled","speed","subtitleenabled","subtitles","time","totaltime","type"]});
 	var InfoLabels = batch.XBMC.GetInfoLabels({"labels":["MusicPlayer.Codec","MusicPlayer.SampleRate","MusicPlayer.BitRate"]});
@@ -471,8 +476,10 @@ function GetPlayerProperties(){
 		getConnection();
 	});	
 }
+}
 
 function GetPlayerId(){
+if (connection){
 	var batch = connection.batch();
 	var ActivePlayers = batch.Player.GetActivePlayers();
 	var Properties = batch.Application.GetProperties({'properties':['volume','muted']});
@@ -498,6 +505,7 @@ function GetPlayerId(){
 		getConnection();
 	});
 }
+}
 
 function getConnection(cb) {
 	if (connection) {
@@ -508,7 +516,6 @@ function getConnection(cb) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
 		cb && cb(null, connection);
-		//main();
 	}, function (error) {
 		//do something if error
 		adapter.log.debug(error);
