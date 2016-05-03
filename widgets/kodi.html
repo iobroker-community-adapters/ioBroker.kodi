@@ -19,7 +19,6 @@
         data-vis-type="val"
         data-vis-name="Progress Bar">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px; overflow: initial" id="<%= this.data.attr('wid') %>" >
-			
        <% vis.binds.kodi.Progress(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>
@@ -32,7 +31,7 @@
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Playlist">
-	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:500px; height:240px" id="<%= this.data.attr('wid') %>" >
 			<div id="kodiplaylist">
 				<ul id="playListContainer">
 				</ul>
@@ -65,7 +64,7 @@
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI AspectRatio info">
-	<div class="vis-widget <%== this.data.attr('class') %>" style="width:50px; height:50px" id="<%= this.data.attr('wid') %>" >
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:70px; height:50px" id="<%= this.data.attr('wid') %>" >
 				<ul class="kodiinfo">
 					<li class="aspect"></li>
 				</ul>
@@ -81,7 +80,7 @@
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Video Resolution info">
-	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:70px; height:50px" id="<%= this.data.attr('wid') %>" >
 				<ul class="kodiinfo">
 					<li class="resolut"></li>
 				</ul>
@@ -97,7 +96,7 @@
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Audio Channel info">
-	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:70px; height:50px" id="<%= this.data.attr('wid') %>" >
 				<ul class="kodiinfo">
 					<li class="channel"></li>
 				</ul>

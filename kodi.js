@@ -35,9 +35,9 @@ adapter.on('message', function (obj) {
 			if (typeof _obj.message != "object") {
 				param.message = _obj.message;
 			}
-			param.title		  = _obj.title     || '';
-			param.image		  = _obj.image     || 'info';
-			param.displaytime = _obj.delay     || 5000;
+			param.title		  = _obj.title || '';
+			param.image		  = _obj.image || 'info';
+			param.displaytime = _obj.delay || 5000;
 			
 			sendCommand('GUI.ShowNotification', param);
 			
@@ -294,8 +294,8 @@ function main() {
 function GetPlayList(){  
 	if (connection){
 		connection.run('Playlist.GetItems', {"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"]/*,"limits":{"start":0,"end":750}*/}).then(function(res) {
-				adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
-				setObject('playlist', JSON.stringify(res));
+			adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
+			setObject('playlist', JSON.stringify(res));
 		}, function (error) {
 			adapter.log.error(error);
 			connection = null;
@@ -451,6 +451,9 @@ function GetPlayerProperties(){
 			setObject('language', res[0].audiostreams[0].language);
 			setObject('audiostream', res[0].audiostreams[0].name);
 		} else {
+			setObject('channels', 2);
+			setObject('audiostream', '');
+			setObject('language', '');
 			setObject('codec', res[1]['MusicPlayer.Codec']);
 			setObject('samplerate', res[1]['MusicPlayer.SampleRate']);
 			setObject('bitrate', res[1]['MusicPlayer.BitRate']);
@@ -508,7 +511,7 @@ function getConnection(cb) {
 		main();
 	}, function (error) {
 		//do something if error
-		adapter.log.warn(error);
+		adapter.log.debug(error);
 		// try again in 5 seconds
 		setTimeout(getConnection, 5000, cb);
 	}).catch(function(error) {
