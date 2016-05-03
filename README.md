@@ -32,6 +32,10 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.0.4 (2016-05-03)
+* (instalator) fix error
+* (instalator) added VIS widgets
+
 #### 0.0.3 (2016-05-01)
 * (instalator) fix error
 * (instalator) added send message from JS
