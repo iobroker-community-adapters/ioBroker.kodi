@@ -508,7 +508,7 @@ function getConnection(cb) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
 		cb && cb(null, connection);
-		main();
+		//main();
 	}, function (error) {
 		//do something if error
 		adapter.log.debug(error);
