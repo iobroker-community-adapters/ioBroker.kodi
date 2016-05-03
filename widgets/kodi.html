@@ -1,7 +1,7 @@
 <!--
     ioBroker.iobroker.kodi Widget-Set
 
-    version: "0.5.0"
+    version: "0.0.4"
 
     Copyright 10.2015-2016 instalator<vvvalt@mail.ru>
 -->
@@ -21,7 +21,7 @@
         data-vis-name="Progress Bar">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px; overflow: initial" id="<%= this.data.attr('wid') %>" >
 			<div id="progressbar"></div>
-       <% vis.binds.kodi.createWidgetProgress(this.data.wid, this.view, this.data, this.style);%>
+       <% vis.binds.kodi.Progress(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>
 
@@ -30,7 +30,6 @@
         class="vis-tpl"
         data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
 		data-vis-attrs="oid_playlist/id/;oid_pvrplaylist/id;oid_position/id;"
-		data-vis-attrs0="group.extrakodi;extraAttr"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Playlist">
@@ -39,7 +38,87 @@
 				<ul id="playListContainer">
 				</ul>
 			</div>
-       <% vis.binds.kodi.createWidgetPlaylist(this.data.wid, this.view, this.data, this.style);%>
+       <% vis.binds.kodi.Playlist(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script id="tplkodiCodec"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_codec/id/;"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI codec info">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
+				<ul class="kodiinfo">
+					<li class="codec"></li>
+				</ul>
+       <% vis.binds.kodi.CodecInfo(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script id="tplkodiAspect"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_aspect/id/;"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI AspectRatio info">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:50px; height:50px" id="<%= this.data.attr('wid') %>" >
+				<ul class="kodiinfo">
+					<li class="aspect"></li>
+				</ul>
+       <% vis.binds.kodi.AspectInfo(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script id="tplkodiResolut"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_resolut/id/;"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI Video Resolution info">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
+				<ul class="kodiinfo">
+					<li class="resolut"></li>
+				</ul>
+       <% vis.binds.kodi.ResolutInfo(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script id="tplkodiChannel"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_channel/id/;"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI Audio Channel info">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
+				<ul class="kodiinfo">
+					<li class="channel"></li>
+				</ul>
+       <% vis.binds.kodi.ChannelInfo(this.data.wid, this.view, this.data, this.style);%>
+	</div>
+</script>
+
+<script id="tplkodiVideoCodec"
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
+		data-vis-attrs="oid_videocodec/id/;"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI VideoCodec info">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
+				<ul class="kodiinfo">
+					<li class="videocodec"></li>
+				</ul>
+       <% vis.binds.kodi.VideoCodec(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>
 
@@ -48,12 +127,10 @@
         class="vis-tpl"
         data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png"></img>'
 		data-vis-attrs="oid_play/id/;oid_speed/id;oid_prev/id;oid_next/id;oid_stop/id;oid_mute/id;oid_rpt/id;oid_shf/id;oid_seek/id;"
-		data-vis-attrs0="group.extrakodi;extraAttr"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Button">
-	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
-			<div id="kodibutton">
+	<div class="vis-widget <%== this.data.attr('class') %>" style="width:400px; height:50px" id="<%= this.data.attr('wid') %>" >
 				<ul id="kodicontrols">
 					<li class="prev"></li>
 					<li class="seekdn"></li>
@@ -64,90 +141,7 @@
 					<li class="repeat"></li>
 					<li class="shuffle"></li>
 				</ul>
-			</div>
-       <% vis.binds.kodi.createWidgetButton(this.data.wid, this.view, this.data, this.style);%>
-	</div>
-</script>
-
-<script id="tplkodiPlayer"
-        type="text/ejs"
-        class="vis-tpl"
-        data-vis-prev='<img style="width:80px; height:80px" src="widgets/kodi/img/test.png">'
-        data-vis-attrs="oid/id;myColor/color;htmlText/text;"
-        data-vis-attrs0="group.extrakodi;extraAttr"
-        data-vis-set="kodi"
-        data-vis-type="val"
-        data-vis-name="Player">
-    <div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px" id="<%= this.data.attr('wid') %>" >
-		
-		<div class="containerPlayer">
-		<div id="listContainer" class="playlistContainer">
-		<ul id="playListContainer">
-			 <li data-src="https://s3.amazonaws.com/9lessonslabs/songs/Everything+But+Mine.mp3">
-				<a href="#">
-					BSB - Everything But Mine
-				</a>
-			</li>
-			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/Linkin+Park+-+Numb.mp3">
-				<a href="#">
-					Linkin Park - Numb
-				</a>
-			</li>
-			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/love-the-way-you-lie-rihanna-feat-eminem.mp3">
-				<a href="#">
-					Eminem - Love The Way You 
-				</a>
-			</li>
-			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/rolling-in-the-deep-adele.mp3">
-				<a href="#">
-					Adele - Rolling In The Deep
-				</a>
-			</li>
-			<li data-src="https://s3.amazonaws.com/9lessonslabs/songs/when-i-was-your-man-bruno-mars.mp3">
-				<a href="#">
-					Bruno - When I Was Your Man
-				</a>
-			</li>
-		</ul>
-	</div>
-		<div id="playerContainer">
-		<div id="controlContainer">  
-			
-			<ul class="controls">
-			<li>
-				<a href="#" class="shuffle shuffleActive" data-attr="shuffled"></a>
-			</li>
-				<li>
-					<a href="#" class="left" data-attr="prevAudio"></a>
-				</li>
-				<li>
-					<a href="#" class="play" data-attr="playPauseAudio"></a>
-				</li>
-				<li>
-					<a href="#" class="right" data-attr="nextAudio"></a>
-				</li>
-				<li>
-					<a href="#" class="repeat" data-attr="repeatSong"></a>
-				</li>
-			</ul>
-			<div class="audioDetails">
-				<span class="songPlay"></span>
-				<span data-attr="timer" class="audioTime"></span>
-			</div>
-			<div class="progress">
-				<div data-attr="seekableTrack" class="seekableTrack"></div>
-				<div class="updateProgress"></div>
-			</div>
-			
-		</div>
-		
-		<div class="volumeControl">
-			<div class="volume volume1"></div>
-			<input class="bar" data-attr="rangeVolume" type="range" min="0" max="1" step="0.1" value="0.7" />
-		</div>
-	</div>
-	</div>
-	<% vis.binds.kodi.createWidgetPlayer(this.data.wid, this.view, this.data, this.style);%>
+       <% vis.binds.kodi.Button(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>
 

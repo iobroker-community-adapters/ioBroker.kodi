@@ -6,7 +6,6 @@
 	height: 100%;
 }
 
-
 #kodiplaylist {
 	height: 100%;
 	width: 100%;
@@ -25,15 +24,26 @@
 	clear: both;
 	cursor: pointer;  
 }
-
+#kodicontrols, .kodiinfo{
+	height: 100%;
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+}
 #kodicontrols li { 
 	float:left; 
 	display:inline-block; 
 	width:50px;
 	height: 50px;
 	text-align:center; 
-	/*margin-top:8px;
-	margin-left:10px */
+}
+.kodiinfo li{ 
+	width: 100%;
+	height: 100%;
+	text-align:center; 
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 .prev 		{ background: url("../img/btn/btn_sprite.png") -48px -48px }
 .prev:hover { background: url("../img/btn/btn_sprite.png") -48px -0px;}

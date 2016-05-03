@@ -42,12 +42,12 @@ vis.binds.kodi = {
 		oid_curtimetotal:	{val: undefined, selector: '', objName: 'curtimetotal'}
 	},
 /***********************************************************************/	
-	createWidgetProgress: function (widgetID, view, data, style) {
+Progress: function (widgetID, view, data, style) {
 		var $div = $('#' + widgetID);
 		
 		if (!$div.length) {
             return setTimeout(function () {
-                vis.binds.kodi.createWidgetProgress(widgetID, view, data, style);
+                vis.binds.kodi.Progress(widgetID, view, data, style);
             }, 100);
         }
 		
@@ -74,12 +74,12 @@ vis.binds.kodi = {
 		}
 	},
 /**************************************************************************/
-createWidgetButton: function (widgetID, view, data, style) {
+Button: function (widgetID, view, data, style) {
 		var $div = $('#' + widgetID);
 		
 		if (!$div.length) {
             return setTimeout(function () {
-                vis.binds.kodi.createWidgetButton(widgetID, view, data, style);
+                vis.binds.kodi.Button(widgetID, view, data, style);
             }, 100);
         }
 		
@@ -166,12 +166,12 @@ createWidgetButton: function (widgetID, view, data, style) {
 		}
 	},
 /**************************************************************************/
-	createWidgetPlaylist: function (widgetID, view, data, style) {
+Playlist: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
         if (!$div.length) {
             return setTimeout(function () {
-                vis.binds.kodi.createWidgetPlaylist(widgetID, view, data, style);
+                vis.binds.kodi.Playlist(widgetID, view, data, style);
             }, 100);
         }
 
@@ -207,74 +207,118 @@ createWidgetButton: function (widgetID, view, data, style) {
 		
 	},
 /************************************************************************/
-	createWidgetPlayer: function (widgetID, view, data, style) {
+CodecInfo: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
         if (!$div.length) {
             return setTimeout(function () {
-                vis.binds.kodi.createWidgetPlayer(widgetID, view, data, style);
+                vis.binds.kodi.CodecInfo(widgetID, view, data, style);
             }, 100);
         }
-
-       $("#playListContainer").audioControls(
-		   {
-			   autoPlay : false,
-			   timer: 'increment',
-			   onAudioChange : function(response){
-				   $('.songPlay').text(response.title + ' ...'); //Song title information
-			   },
-			   onVolumeChange : function(vol){
-				   var obj = $('.volume');
-				   if(vol <= 0){
-					   obj.attr('class','volume mute');
-				   }
-				   else if(vol <= 33)
-				   {
-					   obj.attr('class','volume volume1');
-				   }
-				   else if(vol > 33 && vol <= 66)
-				   {
-					   obj.attr('class','volume volume2');
-				   }
-				   else if(vol > 66)
-				   {
-					   obj.attr('class','volume volume3');
-				   }
-				   else
-				   {
-					   obj.attr('class','volume volume1');
-				   }
-			   }
-		   });
-
+		function SetCodecInfo(val){
+			$('.kodiinfo > .codec').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
+		}
+		// subscribe on updates of value
+		if (data.oid_codec) {
+			vis.states.bind(data.oid_codec + '.val', function (e, newVal, oldVal) {
+				SetCodecInfo(newVal);
+			});
+		}
+		if ($div.length){
+			SetCodecInfo(vis.states[data.oid_codec + '.val']);
+		}	
 	},
-/***********************************************************************/
-	createWidget: function (widgetID, view, data, style) {
+/************************************************************************/
+AspectInfo: function (widgetID, view, data, style) {
         var $div = $('#' + widgetID);
         // if nothing found => wait
         if (!$div.length) {
             return setTimeout(function () {
-                vis.binds.kodi.createWidget(widgetID, view, data, style);
+                vis.binds.kodi.AspectInfo(widgetID, view, data, style);
             }, 100);
         }
-
-        var text = '';
-        text += 'OID: ' + data.oid + '</div><br>';
-        text += 'OID value: <span class="myset-value">' + vis.states[data.oid + '.val'] + '</span><br>';
-        text += 'Color: <span style="color: ' + data.myColor + '">' + data.myColor + '</span><br>';
-        text += 'extraAttr: ' + data.extraAttr + '<br>';
-        text += 'Browser instance: ' + vis.instance + '<br>';
-        text += 'htmlText: <textarea readonly style="width:100%">' + (data.htmlText || '') + '</textarea><br>';
-
-        $('#' + widgetID).html(text);
-
-        // subscribe on updates of value
-        if (data.oid) {
-            vis.states.bind(data.oid + '.val', function (e, newVal, oldVal) {
-                $div.find('.kodi-value').html(newVal);
-            });
+		function SetAspectInfo(val){
+			val = parseFloat(val).toFixed(2);
+			$('.kodiinfo > .aspect').css('backgroundImage', 'url(./widgets/kodi/img/aspectratio/'+val+'.png)');
+		}
+		// subscribe on updates of value
+		if (data.oid_aspect) {
+			vis.states.bind(data.oid_aspect + '.val', function (e, newVal, oldVal) {
+				SetAspectInfo(newVal);
+			});
+		}
+		if ($div.length){
+			SetAspectInfo(vis.states[data.oid_aspect + '.val']);
+		}	
+	},
+/************************************************************************/
+ResolutInfo: function (widgetID, view, data, style) {
+        var $div = $('#' + widgetID);
+        // if nothing found => wait
+        if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.ResolutInfo(widgetID, view, data, style);
+            }, 100);
         }
-    }
+		function SetResolutInfo(val){
+			$('.kodiinfo > .resolut').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
+		}
+		// subscribe on updates of value
+		if (data.oid_resolut) {
+			vis.states.bind(data.oid_resolut + '.val', function (e, newVal, oldVal) {
+				SetResolutInfo(newVal);
+			});
+		}
+		if ($div.length){
+			SetResolutInfo(vis.states[data.oid_resolut + '.val']);
+		}	
+	},
+/************************************************************************/
+ChannelInfo: function (widgetID, view, data, style) {
+        var $div = $('#' + widgetID);
+        // if nothing found => wait
+        if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.ChannelInfo(widgetID, view, data, style);
+            }, 100);
+        }
+		function SetResolutInfo(val){
+			$('.kodiinfo > .channel').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
+		}
+		// subscribe on updates of value
+		if (data.oid_channel) {
+			vis.states.bind(data.oid_channel + '.val', function (e, newVal, oldVal) {
+				SetResolutInfo(newVal);
+			});
+		}
+		if ($div.length){
+			SetResolutInfo(vis.states[data.oid_channel + '.val']);
+		}	
+	},
+/************************************************************************/
+VideoCodec: function (widgetID, view, data, style) {
+        var $div = $('#' + widgetID);
+        // if nothing found => wait
+        if (!$div.length) {
+            return setTimeout(function () {
+                vis.binds.kodi.VideoCodec(widgetID, view, data, style);
+            }, 100);
+        }
+		function SetResolutInfo(val){
+			$('.kodiinfo > .videocodec').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
+		}
+		// subscribe on updates of value
+		if (data.oid_videocodec) {
+			vis.states.bind(data.oid_videocodec + '.val', function (e, newVal, oldVal) {
+				SetResolutInfo(newVal);
+			});
+		}
+		if ($div.length){
+			SetResolutInfo(vis.states[data.oid_videocodec + '.val']);
+		}
+	}
+/***********************************************************************/
+
 };
 	/*if (vis.editMode) {
 		vis.binds.kodi.changeOid = function (widgetID, view, newId, attr, isCss) {
