@@ -17,9 +17,23 @@ if (vis.editMode) {
             "de": "Beschreibung von\x0AmyColor",
             "ru": "Описание\x0AmyColor"
         },
-        "htmlText":         {"en": "htmlText",      "de": "htmlText",   "ru": "htmlText"},
-        "group_extraMyset": {"en": "extraMyset",    "de": "extraMyset", "ru": "extraMyset"},
-        "extraAttr":        {"en": "extraAttr",     "de": "extraAttr",  "ru": "extraAttr"}
+        "oid_playlist":		{"en": "playlist",    	"de": "playlist", 		"ru": "playlist"},
+        "oid_pvrplaylist":	{"en": "PVR playlist",  "de": "PVR playlist",  	"ru": "PVR playlist"},
+		"oid_position":		{"en": "position",    	"de": "position",  		"ru": "position"},
+		"oid_codec":		{"en": "codec",    		"de": "codec",  		"ru": "codec"},
+		"oid_aspect":		{"en": "video_aspect",  "de": "video_aspect",  	"ru": "video_aspect"},
+		"oid_channel":		{"en": "channels",     	"de": "channels",  		"ru": "channels"},
+		"oid_videocodec":	{"en": "video_codec",   "de": "video_codec",  	"ru": "video_codec"},
+		"oid_play":			{"en": "play",     		"de": "play",  			"ru": "play"},
+		"oid_speed":		{"en": "speed",     	"de": "speed",  		"ru": "speed"},
+		"oid_prev":			{"en": "previous",     	"de": "previous",		"ru": "previous"},
+		"oid_next":			{"en": "next",     		"de": "next",  			"ru": "next"},
+		"oid_stop":			{"en": "stop",     		"de": "stop",  			"ru": "stop"},
+		"oid_mute":			{"en": "mute",     		"de": "mute",  			"ru": "mute"},
+		"oid_rpt":			{"en": "repeat",     	"de": "repeat",  		"ru": "repeat"},
+		"oid_shf":			{"en": "shuffle",     	"de": "shuffle",  		"ru": "shuffle"},
+		"oid_seek":			{"en": "seek",     		"de": "seek",  			"ru": "seek"},
+		"oid_resolut":		{"en": "video_height",  "de": "video_height",  	"ru": "video_height"}
     });
 }
 
@@ -30,7 +44,7 @@ $.extend(true, systemDictionary, {
 
 // this code can be placed directly in kodi.html
 vis.binds.kodi = {
-    version: "0.0.3",
+    version: "0.0.4",
     showVersion: function () {
         if (vis.binds.kodi.version) {
             console.log('Version kodi: ' + vis.binds.kodi.version);
@@ -52,24 +66,24 @@ Progress: function (widgetID, view, data, style) {
         }
 		
 		$(function(){
-			$("#progressbar").progressbar({
+			$div.progressbar({
 				value: 0
 			});
 		});
 		
-		$("#progressbar").on('click', function(e){
-			var maxWidth = $($div).css("width").slice(0, -2);
-			var left = $($div).css("left").slice(0, -2);
-			var clickPos = e.pageX - this.offsetLeft - left;
+		$div.on('click', function(e){
+			var maxWidth = $(this).css("width").slice(0, -2);
+			//var left = $(this).css("left").slice(0, -2);
+			var clickPos = e.pageX - this.offsetLeft;
 			var percentage = clickPos / maxWidth * 100;
 			vis.setValue(data.oid_seek, percentage);
-			$('#progressbar').progressbar("option","value", percentage);
+			$div.progressbar("option","value", percentage);
 		});
 
 		// subscribe on updates of value
 		if (data.oid_seek) {
 			vis.states.bind(data.oid_seek + '.val', function (e, newVal, oldVal) {
-				$('#progressbar').progressbar("value", newVal);
+				$div.progressbar("value", newVal);
 			});
 		}
 	},
@@ -224,9 +238,11 @@ CodecInfo: function (widgetID, view, data, style) {
 				SetCodecInfo(newVal);
 			});
 		}
-		if ($div.length){
+		if (vis.editMode) {
+			SetCodecInfo('dtshd_ma');
+		} else {
 			SetCodecInfo(vis.states[data.oid_codec + '.val']);
-		}	
+		}
 	},
 /************************************************************************/
 AspectInfo: function (widgetID, view, data, style) {
@@ -247,9 +263,11 @@ AspectInfo: function (widgetID, view, data, style) {
 				SetAspectInfo(newVal);
 			});
 		}
-		if ($div.length){
+		if (vis.editMode) {
+			SetAspectInfo('1.78');
+		} else {
 			SetAspectInfo(vis.states[data.oid_aspect + '.val']);
-		}	
+		}
 	},
 /************************************************************************/
 ResolutInfo: function (widgetID, view, data, style) {
@@ -269,9 +287,12 @@ ResolutInfo: function (widgetID, view, data, style) {
 				SetResolutInfo(newVal);
 			});
 		}
-		if ($div.length){
+		if (vis.editMode) {
+			SetResolutInfo('1080');
+		} else {
 			SetResolutInfo(vis.states[data.oid_resolut + '.val']);
-		}	
+		}
+		
 	},
 /************************************************************************/
 ChannelInfo: function (widgetID, view, data, style) {
@@ -282,18 +303,20 @@ ChannelInfo: function (widgetID, view, data, style) {
                 vis.binds.kodi.ChannelInfo(widgetID, view, data, style);
             }, 100);
         }
-		function SetResolutInfo(val){
+		function SetChannelInfo(val){
 			$('.kodiinfo > .channel').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
 		}
 		// subscribe on updates of value
 		if (data.oid_channel) {
 			vis.states.bind(data.oid_channel + '.val', function (e, newVal, oldVal) {
-				SetResolutInfo(newVal);
+				SetChannelInfo(newVal);
 			});
 		}
-		if ($div.length){
-			SetResolutInfo(vis.states[data.oid_channel + '.val']);
-		}	
+		if (vis.editMode) {
+			SetChannelInfo('6');
+		} else {
+			SetChannelInfo(vis.states[data.oid_channel + '.val']);
+		}
 	},
 /************************************************************************/
 VideoCodec: function (widgetID, view, data, style) {
@@ -304,17 +327,19 @@ VideoCodec: function (widgetID, view, data, style) {
                 vis.binds.kodi.VideoCodec(widgetID, view, data, style);
             }, 100);
         }
-		function SetResolutInfo(val){
+		function SetVideoCodecInfo(val){
 			$('.kodiinfo > .videocodec').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
 		}
 		// subscribe on updates of value
 		if (data.oid_videocodec) {
 			vis.states.bind(data.oid_videocodec + '.val', function (e, newVal, oldVal) {
-				SetResolutInfo(newVal);
+				SetVideoCodecInfo(newVal);
 			});
 		}
-		if ($div.length){
-			SetResolutInfo(vis.states[data.oid_videocodec + '.val']);
+		if (vis.editMode) {
+			SetVideoCodecInfo('vhs');
+		} else {
+			SetVideoCodecInfo(vis.states[data.oid_videocodec + '.val']);
 		}
 	}
 /***********************************************************************/
