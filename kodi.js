@@ -62,7 +62,7 @@ adapter.on('stateChange', function (id, state) {
 		setTimeout(function() { GetPlayList(); }, 1000);
 	}
     if (state && !state.ack) {
-		adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
+		adapter.log.info('stateChange ' + id + ' ' + JSON.stringify(state));
 		var param = state.val;
 		var ids = id.split(".");
 		var method = ids[ids.length - 2].toString();
@@ -517,6 +517,7 @@ function getConnection(cb) {
 	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
+		setObject('Kodi_Connected', true);
 		clearTimeout(timer);
 		GetPlayerId();
 		cb && cb(null, connection);
@@ -524,6 +525,7 @@ function getConnection(cb) {
 		//do something if error
 		adapter.log.debug(error);
 		// try again in 5 seconds
+		setObject('Kodi_Connected', false);
 		setTimeout(getConnection, 5000, cb);
 	}).catch(function(error) {
 		// Handle errors 
@@ -532,6 +534,7 @@ function getConnection(cb) {
 		} else {
 			adapter.log.error(error);
 		}
+		setObject('Kodi_Connected', false);
 		// try again in 5 seconds
 		setTimeout(getConnection, 5000, cb);
 	});
