@@ -7,7 +7,7 @@
 
 */
 "use strict";
-
+//http://192.168.1.205/image/smb://192.168.1.205:445/Userdata/1/24493899.png
 // add translations for edit mode
 if (vis.editMode) {
     $.extend(true, systemDictionary, {
