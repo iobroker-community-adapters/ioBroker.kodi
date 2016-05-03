@@ -11,6 +11,7 @@ var player_type = null;
 var playlist_id = null;
 var mem = null;
 var mem_pos = null;
+var timer;
 
 adapter.on('unload', function (callback) {
     try {
@@ -480,6 +481,7 @@ if (connection){
 
 function GetPlayerId(){
 if (connection){
+	clearTimeout(timer);
 	var batch = connection.batch();
 	var ActivePlayers = batch.Player.GetActivePlayers();
 	var Properties = batch.Application.GetProperties({'properties':['volume','muted']});
@@ -494,7 +496,7 @@ if (connection){
 			player_type = res[0][0].type;
 			GetPlayerProperties();
 		}
-		setTimeout(function() { GetPlayerId(); }, 2000);
+		timer = setTimeout(function() { GetPlayerId(); }, 2000);
 	}, function (error) {
 		adapter.log.error(error);
 		connection = null;
@@ -515,6 +517,8 @@ function getConnection(cb) {
 	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
+		clearTimeout(timer);
+		GetPlayerId();
 		cb && cb(null, connection);
 	}, function (error) {
 		//do something if error
