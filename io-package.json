@@ -32,6 +32,18 @@
 
     ],
 	"instanceObjects": [
-	
+		{
+            "_id":  "info.connection",
+            "type": "state",
+            "common": {
+                "role":  "indicator.connected",
+                "name":  "If connected to KODI",
+                "type":  "boolean",
+                "read":  true,
+                "write": false,
+                "def":   false
+            },
+            "native": {}
+        }
 	]
 }
