@@ -508,14 +508,17 @@ function time(hour,min,sec){
 
 function SwitchPVR(val, callback){
 	adapter.getState(adapter.namespace + '.pvr.playlist_tv', function (err, state) {
-		var obj = JSON.parse(state.val);
-		val = val.toString().toLowerCase();
-		obj.channels.forEach(function(item, i, arr) {
-			var channel = item.label.toString().toLowerCase();
-			if (~channel.indexOf(val)){
+		if (state){
+			var obj = JSON.parse(state.val);
+			val = val.toString().toLowerCase();
+			obj.channels.forEach(function(item, i, arr) {
+				var channel = item.label.toString().toLowerCase();
 				adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
-				callback ({"item":{"channelid":item.channelid}});
-			}
-		});
+				if (~channel.indexOf(val)){
+					adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
+					callback ({"item":{"channelid":item.channelid}});
+				}
+			});
+		}
 	}); 
 }
