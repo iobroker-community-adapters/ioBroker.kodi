@@ -249,7 +249,6 @@ adapter.on('ready', function () {
 function main() {
 	adapter.setState('info.connection', false, true);
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
-	
 	getConnection(function (err, _connection) {
 		if (_connection){
 		adapter.sendTo(adapter.namespace, 'send','', function(r){});//Иначе не работает подписка на message
@@ -258,10 +257,8 @@ function main() {
 			GetChannels();
 		}
 	});
-	
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
-	
 }
 
 function GetPlayList(){  
@@ -283,7 +280,9 @@ function GetCurrentItem(){
 if (connection){
 	adapter.getStates('info.*',function (err, obj) {
 		for (var state in obj) {
-			adapter.setState(state, {val: '', ack: true});
+			if (state !== adapter.namespace + '.info.connection'){
+				adapter.setState(state, {val: '', ack: true});
+			}
 		}
 		connection.run('Player.GetItem', {"playerid":player_id,"properties":["album","albumartist","artist","director","episode","fanart","file","genre","plot","rating","season","showtitle","studio","imdbnumber","tagline","thumbnail","title","track","writer","year","streamdetails","originaltitle","cast","playcount"]}).then(function(res) {
 			adapter.log.debug('GetCurrentItem: ' + JSON.stringify(res));
@@ -468,11 +467,11 @@ function getConnection(cb) {
 		cb && cb(null, connection);
 		return;
 	}
+	clearTimeout(timer);
 	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
 		adapter.setState('info.connection', true, true);
-		clearTimeout(timer);
 		GetPlayerId();
 		cb && cb(null, connection);
 	}, function (error) {
@@ -513,10 +512,12 @@ function SwitchPVR(val, callback){
 			val = val.toString().toLowerCase();
 			obj.channels.forEach(function(item, i, arr) {
 				var channel = item.label.toString().toLowerCase();
-				adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
-				if (~channel.indexOf(val)){
+				var pos = channel.indexOf(val);
+				adapter.log.error(pos);
+				if (pos === 0){ //TODO
 					adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
 					callback ({"item":{"channelid":item.channelid}});
+					return;
 				}
 			});
 		}

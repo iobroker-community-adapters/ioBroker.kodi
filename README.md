@@ -3,7 +3,7 @@
 You can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).
 
 ## Using
-###ShowNotification: 
+###ShowNotif: 
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 ####Image:
 Уровень сообщения
@@ -29,8 +29,16 @@ sendTo("kodi.0", {
     delay: ''
 });
 ```
+###SwitchPVR: 
+Переключение PVR IPTV каналов по названию канала в плейлисте.
+Пример:
+	ТВ канал - Discovery Science найдет как по полному наименованию так и по discover,
 
 ## Changelog
+
+#### 0.0.5 (2016-05-04)
+* (instalator) change creating object
+* (instalator) added info.connection state
 
 #### 0.0.4 (2016-05-03)
 * (instalator) fix error
