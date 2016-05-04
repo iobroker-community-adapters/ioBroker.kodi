@@ -247,6 +247,7 @@ adapter.on('ready', function () {
 });
 
 function main() {
+	adapter.setState('info.connection', false, true);
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
 	
 	getConnection(function (err, _connection) {
@@ -517,7 +518,7 @@ function getConnection(cb) {
 	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
 		connection = _connection;
 		adapter.log.info('KODI connected');
-		setObject('Kodi_Connected', true);
+		adapter.setState('info.connection', true, true);
 		clearTimeout(timer);
 		GetPlayerId();
 		cb && cb(null, connection);
@@ -525,7 +526,7 @@ function getConnection(cb) {
 		//do something if error
 		adapter.log.debug(error);
 		// try again in 5 seconds
-		setObject('Kodi_Connected', false);
+		adapter.setState('info.connection', false, true);
 		setTimeout(getConnection, 5000, cb);
 	}).catch(function(error) {
 		// Handle errors 
@@ -534,7 +535,7 @@ function getConnection(cb) {
 		} else {
 			adapter.log.error(error);
 		}
-		setObject('Kodi_Connected', false);
+		adapter.setState('info.connection', false, true);
 		// try again in 5 seconds
 		setTimeout(getConnection, 5000, cb);
 	});
