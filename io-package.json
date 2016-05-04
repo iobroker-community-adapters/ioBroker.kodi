@@ -33,17 +33,1099 @@
     ],
 	"instanceObjects": [
 		{
-            "_id":  "info.connection",
-            "type": "state",
-            "common": {
-                "role":  "indicator.connected",
-                "name":  "If connected to KODI",
-                "type":  "boolean",
-                "read":  true,
-                "write": false,
-                "def":   false
-            },
-            "native": {}
-        }
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "If connected to KODI",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "playlist",
+			"type": "state",
+			"common": {
+				"name": "playlist",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "currentplay",
+			"type": "state",
+			"common": {
+				"name": "currentplay",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Back",
+			"type": "state",
+			"common": {
+				"name": "Back",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.ContextMenu",
+			"type": "state",
+			"common": {
+				"name": "ContextMenu",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Down",
+			"type": "state",
+			"common": {
+				"name": "Down",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Home",
+			"type": "state",
+			"common": {
+				"name": "Home",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Info",
+			"type": "state",
+			"common": {
+				"name": "Info",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Left",
+			"type": "state",
+			"common": {
+				"name": "Left",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Right",
+			"type": "state",
+			"common": {
+				"name": "Right",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Select",
+			"type": "state",
+			"common": {
+				"name": "Select",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.SendText",
+			"type": "state",
+			"common": {
+				"name": "SendText",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.ShowCodec",
+			"type": "state",
+			"common": {
+				"name": "ShowCodec",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.ShowOSD",
+			"type": "state",
+			"common": {
+				"name": "ShowOSD",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "input.Up",
+			"type": "state",
+			"common": {
+				"name": "Up",
+				"type": "string",
+				"role": "button"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "setsubtitle",
+			"type": "state",
+			"common": {
+				"name": "setsubtitle",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "zoom",
+			"type": "state",
+			"common": {
+				"name": "zoom",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "ExecuteAction",
+			"type": "state",
+			"common": {
+				"name": "ExecuteAction",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "GoTo",
+			"type": "state",
+			"common": {
+				"name": "GoTo",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "ActivateWindow",
+			"type": "state",
+			"common": {
+				"name": "ActivateWindow",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "ShowNotif",
+			"type": "state",
+			"common": {
+				"name": "ShowNotif",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "seek",
+			"type": "state",
+			"common": {
+				"name": "seek",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "open",
+			"type": "state",
+			"common": {
+				"name": "open",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "youtube",
+			"type": "state",
+			"common": {
+				"name": "youtube",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "SwitchPVR",
+			"type": "state",
+			"common": {
+				"name": "SwitchPVR",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "next",
+			"type": "state",
+			"common": {
+				"name": "next",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "previous",
+			"type": "state",
+			"common": {
+				"name": "previous",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "stop",
+			"type": "state",
+			"common": {
+				"name": "stop",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "playpause",
+			"type": "state",
+			"common": {
+				"name": "playpause",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "mute",
+			"type": "state",
+			"common": {
+				"name": "mute",
+				"role": "media",
+				"type": "boolean"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "volume",
+			"type": "state",
+			"common": {
+				"name": "volume",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "pvr.playlist_tv",
+			"type": "state",
+			"common": {
+				"name": "pvr.playlist_tv",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "pvr.playlist_radio",
+			"type": "state",
+			"common": {
+				"name": "pvr.playlist_radio",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "playing_time",
+			"type": "state",
+			"common": {
+				"name": "playing_time",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "playing_time_total",
+			"type": "state",
+			"common": {
+				"name": "playing_time_total",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "canseek",
+			"type": "state",
+			"common": {
+				"name": "canseek",
+				"role": "media",
+				"type": "boolean"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "repeat",
+			"type": "state",
+			"common": {
+				"name": "repeat",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "shuffle",
+			"type": "state",
+			"common": {
+				"name": "shuffle",
+				"role": "media",
+				"type": "boolean"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "speed",
+			"type": "state",
+			"common": {
+				"name": "speed",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "position",
+			"type": "state",
+			"common": {
+				"name": "position",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "playlistid",
+			"type": "state",
+			"common": {
+				"name": "playlistid",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "partymode",
+			"type": "state",
+			"common": {
+				"name": "partymode",
+				"role": "media",
+				"type": "boolean"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "codec",
+			"type": "state",
+			"common": {
+				"name": "codec",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "samplerate",
+			"type": "state",
+			"common": {
+				"name": "samplerate",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "bitrate",
+			"type": "state",
+			"common": {
+				"name": "bitrate",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "type",
+			"type": "state",
+			"common": {
+				"name": "type",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.album",
+			"type": "state",
+			"common": {
+				"name": "info.album",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.artist",
+			"type": "state",
+			"common": {
+				"name": "info.artist",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.fanart",
+			"type": "state",
+			"common": {
+				"name": "info.fanart",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.file",
+			"type": "state",
+			"common": {
+				"name": "info.file",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.genre",
+			"type": "state",
+			"common": {
+				"name": "info.genre",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.label",
+			"type": "state",
+			"common": {
+				"name": "info.label",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.playcount",
+			"type": "state",
+			"common": {
+				"name": "info.playcount",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.rating",
+			"type": "state",
+			"common": {
+				"name": "info.rating",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.thumbnail",
+			"type": "state",
+			"common": {
+				"name": "info.thumbnail",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.title",
+			"type": "state",
+			"common": {
+				"name": "info.title",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.track",
+			"type": "state",
+			"common": {
+				"name": "info.track",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.type",
+			"type": "state",
+			"common": {
+				"name": "info.type",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.year",
+			"type": "state",
+			"common": {
+				"name": "info.year",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "playlist",
+			"type": "state",
+			"common": {
+				"name": "playlist",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "systeminfo.name",
+			"type": "state",
+			"common": {
+				"name": "systeminfo.name",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "systeminfo.version",
+			"type": "state",
+			"common": {
+				"name": "systeminfo.version",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "systeminfo.system",
+			"type": "state",
+			"common": {
+				"name": "systeminfo.system",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "systeminfo.kernel",
+			"type": "state",
+			"common": {
+				"name": "systeminfo.kernel",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "channels",
+			"type": "state",
+			"common": {
+				"name": "channels",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "language",
+			"type": "state",
+			"common": {
+				"name": "language",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "audiostream",
+			"type": "state",
+			"common": {
+				"name": "audiostream",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.id",
+			"type": "state",
+			"common": {
+				"name": "info.id",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.albumartist",
+			"type": "state",
+			"common": {
+				"name": "info.albumartist",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "play",
+			"type": "state",
+			"common": {
+				"name": "play",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "pause",
+			"type": "state",
+			"common": {
+				"name": "pause",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.episode",
+			"type": "state",
+			"common": {
+				"name": "info.episode",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.imdbnumber",
+			"type": "state",
+			"common": {
+				"name": "info.imdbnumber",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.originaltitle",
+			"type": "state",
+			"common": {
+				"name": "info.originaltitle",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.plot",
+			"type": "state",
+			"common": {
+				"name": "info.plot",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.season",
+			"type": "state",
+			"common": {
+				"name": "info.season",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.showtitle",
+			"type": "state",
+			"common": {
+				"name": "info.showtitle",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.audio",
+			"type": "state",
+			"common": {
+				"name": "info.audio",
+				"role": "media",
+				"type": "object"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.subtitle",
+			"type": "state",
+			"common": {
+				"name": "info.subtitle",
+				"role": "media",
+				"type": "object"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video",
+			"type": "state",
+			"common": {
+				"name": "info.video",
+				"role": "media",
+				"type": "object"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.tagline",
+			"type": "state",
+			"common": {
+				"name": "info.tagline",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.audio_channels",
+			"type": "state",
+			"common": {
+				"name": "info.audio_channels",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.audio_codec",
+			"type": "state",
+			"common": {
+				"name": "info.audio_codec",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.audio_language",
+			"type": "state",
+			"common": {
+				"name": "info.audio_language",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video_aspect",
+			"type": "state",
+			"common": {
+				"name": "info.video_aspect",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video_codec",
+			"type": "state",
+			"common": {
+				"name": "info.video_codec",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video_duration",
+			"type": "state",
+			"common": {
+				"name": "info.video_duration",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video_height",
+			"type": "state",
+			"common": {
+				"name": "info.video_height",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video_stereomode",
+			"type": "state",
+			"common": {
+				"name": "info.video_stereomode",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.video_width",
+			"type": "state",
+			"common": {
+				"name": "info.video_width",
+				"role": "media",
+				"type": "number"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "info.subtitle_language",
+			"type": "state",
+			"common": {
+				"name": "info.subtitle_language",
+				"role": "media",
+				"type": "string"
+			},
+			"native": {
+				
+			}
+		}		
 	]
 }

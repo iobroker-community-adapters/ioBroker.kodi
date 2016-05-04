@@ -28,12 +28,12 @@ adapter.on('objectChange', function (id, obj) {
 });
 
 adapter.on('message', function (obj) {
-	if (typeof obj == 'object' && obj.message) {
-        if (obj.command == 'send') {
+	if (typeof obj === 'object' && obj.message) {
+        if (obj.command === 'send') {
             adapter.log.debug('send command ' + JSON.stringify(obj));
 			var _obj = obj.message;
 			var param = {'title': '', 'message': '', 'image': 'info', 'displaytime': 5000};
-			if (typeof _obj.message != "object") {
+			if (typeof _obj.message !== "object") {
 				param.message = _obj.message;
 			}
 			param.title		  = _obj.title || '';
@@ -51,12 +51,12 @@ adapter.on('message', function (obj) {
 
 adapter.on('stateChange', function (id, state) {
 		// adapter.log.error('stateChange ' + id + ' ' + JSON.stringify(state));
-	if (id == adapter.namespace + '.currentplay' && state.val !== mem){
+	if ( id == adapter.namespace + '.currentplay' && state.val !== mem ){
 		mem = state.val;
 		GetCurrentItem();
 		setTimeout(function() { GetPlayList(); }, 1000);
 	}
-	if (id == adapter.namespace + '.position' && state.val !== mem_pos){
+	if ( id == adapter.namespace + '.position' && state.val !== mem_pos ){
 		mem_pos = state.val;
 		GetCurrentItem();
 		setTimeout(function() { GetPlayList(); }, 1000);
@@ -75,21 +75,21 @@ adapter.on('stateChange', function (id, state) {
 	}
 });
 
-function ConstructorCmd(method, ids, param){
+function ConstructorCmd( method, ids, param ){
 	//adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
 		if (method === 'input'){
 			method = 'Input.' + ids;
 			param = [];
 		} else {
 			switch(ids) {
-			  case "switchPVR":
+			  case "SwitchPVR":
 					method = null;
-					switchPVR(param, function(res){
+					SwitchPVR(param, function(res){
 						sendCommand('Player.Open', res);
 						setTimeout(function() { sendCommand('GUI.SetFullscreen', {"fullscreen":true}); }, 5000);
 					});
 				break;
-			  case "shownotif":
+			  case "ShowNotif":
 					ShowNotification(param, function(res){
 						method = 'GUI.ShowNotification';
 						param = res;
@@ -262,42 +262,12 @@ function main() {
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
 	
-	//SetSpeed', { //-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32
-	//SetSubtitle', { //"previous","next","off","on"
-	var input = ['Back','ContextMenu','Down','Home','Info','Left','Right','Select','SendText','ShowCodec','ShowOSD','Up',];
-	var media = ['play','setsubtitle','zoom','ExecuteAction','GoTo','ActivateWindow','shownotif','seek','open','youtube','switchPVR','next','previous','stop','pause'];
-	
-	input.forEach(function(item, i, arr) {
-		adapter.setObject('input.'+item, {
-			type: 'state',
-			common: {
-				name: item,
-				type: 'string',
-				role: 'button'
-			},
-			native: {}
-		});
-		adapter.setState('input.'+item, {val: false, ack: true});
-	});
-	media.forEach(function(item, i, arr) {
-		adapter.setObject(item, {
-			type: 'state',
-			common: {
-				name: item,
-				type: 'string',
-				role: 'media'
-			},
-			native: {}
-		});
-		adapter.setState(item, {val: '', ack: true});
-	});
 }
 
 function GetPlayList(){  
 	if (connection){
 		connection.run('Playlist.GetItems', {"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"]/*,"limits":{"start":0,"end":750}*/}).then(function(res) {
 			adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
-			setObject('playlist', JSON.stringify(res));
 		}, function (error) {
 			adapter.log.error(error);
 			connection = null;
@@ -326,22 +296,22 @@ if (connection){
 							if (obj[_key].length > 0){
 								var _obj = obj[_key][0];
 								for (var __key in _obj) {
-									setObject(_key+'_'+__key, _obj[__key], 'info');
+									adapter.setState('info.'+_key+'_'+__key, {val: _obj[__key], ack: true});
 									//adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
 								}
 							} else {
-								setObject(_key, obj[_key], 'info');
+								adapter.setState('info.'+_key, {val: obj[_key], ack: true});
 								//adapter.log.debug('GetPlayList: ' +_key+' = '+ JSON.stringify(obj[_key]) +' - '+typeof obj[_key] +' length = '+obj[_key].length);
 							}
 						}
 					} else {
 						for (var id in obj) { //TODO
-							setObject(key, obj[id], 'info');
+							adapter.setState('info.'+key, {val: obj[id], ack: true});
 							//adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
 						}
 					}
 				} else {
-					setObject(key, res[key], 'info');
+					adapter.setState('info.'+key, {val: res[key], ack: true});
 					//adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
 				}
 				//adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
@@ -358,23 +328,6 @@ if (connection){
 	});
 }
 }
-function setObject(name, val, type){
-	if (type){
-		name = type +'.'+ name;
-	}
-	object = {
-		type: 'state',
-		common: {
-			name: name,
-			role: 'media',
-			type: typeof val
-		},
-		native: {}
-	};
-	adapter.setObject(name, object, function (err, obj) {
-		adapter.setState(name, {val: val, ack: true});
-	});
-}
 function GetNameVersion(){
 if (connection){
 	var batch = connection.batch();
@@ -387,16 +340,16 @@ if (connection){
 		if (res[2]['System.KernelVersion'] === 'Ждите…'){
 			setTimeout(function() { GetNameVersion(); }, 10000);
 		} else {
-			setObject('name', res[0].name, 'systeminfo');
-			setObject('version', res[0].version.major+'.'+res[0].version.minor, 'systeminfo');
+			adapter.setState('systeminfo.name', {val: res[0].name, ack: true});
+			adapter.setState('systeminfo.version', {val: res[0].version.major+'.'+res[0].version.minor, ack: true});
 			for (var key in res[1]) {
 				if (res[1][key] === true){
 					var system = key.split(".");
 					system = system[system.length - 1];
-					setObject('system', system, 'systeminfo');
+					adapter.setState('systeminfo.system', {val: system, ack: true});
 				}
 			}
-			setObject('kernel', res[2]['System.KernelVersion'], 'systeminfo');
+			adapter.setState('systeminfo.kernel', {val: res[2]['System.KernelVersion'], ack: true});
 		}
 	}, function (error) {
 		adapter.log.error(error);
@@ -416,8 +369,8 @@ if (connection){
 	var allradio = batch.PVR.GetChannels({"channelgroupid":"allradio","properties":["channel","channeltype","hidden","lastplayed","locked","thumbnail","broadcastnow"]});
 	batch.send();
 	Promise.all([alltv, allradio]).then(function(res) {
-		setObject('playlist_tv', JSON.stringify(res[0]), 'pvr');
-		setObject('playlist_radio', JSON.stringify(res[1]), 'pvr');
+		adapter.setState('pvr.playlist_tv', {val: JSON.stringify(res[0]), ack: true});
+		adapter.setState('pvr.playlist_radio', {val: JSON.stringify(res[1]), ack: true});
 	}, function (error) {
 		adapter.log.warn(error);
 		connection = null;
@@ -441,32 +394,32 @@ if (connection){
 		var total = (res[0].totaltime.hours * 3600) + (res[0].totaltime.minutes * 60) + res[0].totaltime.seconds;
 		var cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
 		playlist_id = res[0].playlistid;
-		setObject('playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
-		setObject('playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
-		setObject('seek', parseInt(cur * 100 / total));
-		setObject('canseek', res[0].canseek);
-		setObject('repeat', res[0].repeat);
-		setObject('shuffle', res[0].shuffled);
-		setObject('speed', res[0].speed);
-		setObject('position', res[0].position);
-		setObject('playlistid', res[0].playlistid);
-		setObject('partymode', res[0].partymode);
+		adapter.setState('playing_time', {val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds), ack: true});
+		adapter.setState('playing_time_total', {val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds), ack: true});
+		adapter.setState('seek', {val: parseInt(cur * 100 / total), ack: true});
+		adapter.setState('canseek', {val: res[0].canseek, ack: true});
+		adapter.setState('repeat', {val: res[0].repeat, ack: true});
+		adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
+		adapter.setState('speed', {val: res[0].speed, ack: true});
+		adapter.setState('position', {val: res[0].position, ack: true});
+		adapter.setState('playlistid', {val: res[0].playlistid, ack: true});
+		adapter.setState('partymode', {val: res[0].partymode, ack: true});
 		if (res[0].audiostreams.length > 0){
-			setObject('codec', res[0].audiostreams[0].codec);
-			setObject('bitrate', res[0].audiostreams[0].bitrate);
-			setObject('channels', res[0].audiostreams[0].channels);
-			setObject('language', res[0].audiostreams[0].language);
-			setObject('audiostream', res[0].audiostreams[0].name);
+			adapter.setState('codec', {val: res[0].audiostreams[0].codec, ack: true});
+			adapter.setState('bitrate', {val: res[0].audiostreams[0].bitrate, ack: true});
+			adapter.setState('channels', {val: res[0].audiostreams[0].channels, ack: true});
+			adapter.setState('language', {val: res[0].audiostreams[0].language, ack: true});
+			adapter.setState('audiostream', {val: res[0].audiostreams[0].name, ack: true});
 		} else {
-			setObject('channels', 2);
-			setObject('audiostream', '');
-			setObject('language', '');
-			setObject('codec', res[1]['MusicPlayer.Codec']);
-			setObject('samplerate', res[1]['MusicPlayer.SampleRate']);
-			setObject('bitrate', res[1]['MusicPlayer.BitRate']);
+			adapter.setState('channels', {val: 2, ack: true});
+			adapter.setState('audiostream', {val: '', ack: true});
+			adapter.setState('language', {val: '', ack: true});
+			adapter.setState('codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
+			adapter.setState('samplerate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
+			adapter.setState('bitrate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
 		}
-		setObject('type', res[0].type);
-		setObject('currentplay', res[2].item.label);
+		adapter.setState('type', {val: res[0].type, ack: true});
+		adapter.setState('currentplay', {val: res[2].item.label, ack: true});
 
 	}, function (error) {
 		adapter.log.error(error);
@@ -491,8 +444,8 @@ if (connection){
 		adapter.log.debug('Response GetPlayerId '+ JSON.stringify(res));
 		if (res[0][0]){
 			adapter.log.debug('Active players = ' + res[0][0].playerid +'. Type = '+ res[0][0].type);
-			setObject('mute', res[1].muted);
-			setObject('volume', res[1].volume);
+			adapter.setState('mute', {val: res[1].muted, ack: true});
+			adapter.setState('volume', {val: res[1].volume, ack: true});
 			player_id = res[0][0].playerid;
 			player_type = res[0][0].type;
 			GetPlayerProperties();
@@ -553,7 +506,7 @@ function time(hour,min,sec){
 	return time;
 }
 
-function switchPVR(val, callback){
+function SwitchPVR(val, callback){
 	adapter.getState(adapter.namespace + '.pvr.playlist_tv', function (err, state) {
 		var obj = JSON.parse(state.val);
 		val = val.toString().toLowerCase();
