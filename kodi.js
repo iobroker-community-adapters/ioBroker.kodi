@@ -98,7 +98,7 @@ function ConstructorCmd( method, ids, param ){
 			  case "zoom":
 					if (param >= 0 && param <= 10){
 						method = 'Player.Zoom'; //
-						param = {"playerid":player_id,"zoom": param}
+						param = {"playerid":player_id,"zoom": parseInt(param)}
 					}
 				break;
 			  case "setsubtitle":
@@ -116,16 +116,18 @@ function ConstructorCmd( method, ids, param ){
 			  case "seek":
 					if (param >= 0 && param <= 100){
 						method = 'Player.Seek'; //int 0-100
-						param = {"playerid":player_id,"value": param}
+						param = {"playerid":player_id,"value": parseInt(param)}
 					}
 				break;
 			  case "volume":
 					if (param >= 0 && param <= 100){
 						method = 'Application.SetVolume'; //int 0-100
+						param = parseInt(param);
 					}
 				break;
 			  case "mute":
 					method = 'Application.SetMute'; //bool
+					param = bool(param);
 				break;
 			  case "repeat":
 					method = 'Player.SetRepeat'; //off, on, all
@@ -133,7 +135,7 @@ function ConstructorCmd( method, ids, param ){
 				break;
 			  case "shuffle":
 					method = 'Player.SetShuffle'; //bool
-					param = {'playerid': player_id,"shuffle": param}; 
+					param = {'playerid': player_id,"shuffle": bool(param)}; 
 				break;
 			  case "play":
 					method = 'Input.ExecuteAction';
@@ -508,41 +510,31 @@ function time(hour,min,sec){
 function SwitchPVR(val, callback){
 	adapter.getState(adapter.namespace + '.pvr.playlist_tv', function (err, state) {
 		if (state){
-			var obj = JSON.parse(state.val);
+			var Break = {};
 			val = val.toString().toLowerCase();
-			obj.channels.forEach(function(item, i, arr) {
-				var channel = item.label.toString().toLowerCase();
-				var pos = channel.indexOf(val);
-				adapter.log.error(pos);
-				if (pos === 0){ //TODO
-					adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
-					callback ({"item":{"channelid":item.channelid}});
-					return;
-				}
-			});
+			var obj = JSON.parse(state.val);
+			try {
+				obj.channels.forEach(function(item, i, a) {
+					var channel = item.label.toString().toLowerCase();
+					var pos = channel.indexOf(val);
+					if (pos === 0){ //TODO
+						//adapter.log.debug('PVR.GetChannelsIPTV: '+item.channelid);
+						callback ({"item":{"channelid":item.channelid}});
+						throw Break;
+					}
+				});
+			} catch(e){
+				if (e !== Break) throw e;
+			}
 		}
 	}); 
 }
-/*
-var a = [];
 
-function SwitchPVR( a, s )
-{
-  var i;
-  if( s.length > 3 ) {
-    i = s.length - 3;
-    var r = s.substr( i, 3 );
-    while( --i >= 0 )
-      r += "|" + s.substr( i, 3 );
-    r = new RegExp( r );
-    for( i = 0; i < a.length; ++i )
-      if( r.test( a[i] ) )
-        return i;
-  } else {
-    for( i = 0; i < a.length; ++i )
-      if( a[i].indexOf( s ) >= 0 )
-        return i;
-  }
-  return -1;
+function bool(s){
+	//s = s.toString();
+	if (s === 1 || s === '1' || s === 'true' || s === true){
+		return true;
+	} else {
+		return false;
+	}
 }
-*/
