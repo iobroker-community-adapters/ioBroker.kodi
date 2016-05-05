@@ -248,25 +248,31 @@ adapter.on('ready', function () {
     main();
 });
 
-function main() {
+function connect () {
 	adapter.setState('info.connection', false, true);
 	adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
 	getConnection(function (err, _connection) {
 		if (_connection){
-		adapter.sendTo(adapter.namespace, 'send','', function(r){});//Иначе не работает подписка на message
-			GetNameVersion();
-			GetPlayerId();
-			GetChannels();
+			//adapter.sendTo(adapter.namespace, 'send','', function(r){});//Иначе не работает подписка на message
+			//		GetNameVersion();
+			//		GetPlayerId();
+			//		GetChannels();
 		}
 	});
+
+}
+
+function main() {
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
+	connect();
 }
 
 function GetPlayList(){  
 	if (connection){
 		connection.run('Playlist.GetItems', {"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"]/*,"limits":{"start":0,"end":750}*/}).then(function(res) {
 			adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
+			adapter.setState('playlist', {val: JSON.stringify(res), ack: true});
 		}, function (error) {
 			adapter.log.error(error);
 			connection = null;
@@ -472,9 +478,20 @@ function getConnection(cb) {
 	clearTimeout(timer);
 	kodi(adapter.config.ip, adapter.config.port).then(function (_connection) {
 		connection = _connection;
+		_connection.on('error', function (err) {
+			adapter.log.warn('Error: ' + err);
+		}).on('close', function () {
+			if (connection) {
+				console.log('Connection closed');
+				if (connection.socket) connection.socket.close();
+				connection = null;
+				setTimeout(connect, 5000);
+			}
+		});
+
 		adapter.log.info('KODI connected');
 		adapter.setState('info.connection', true, true);
-		GetPlayerId();
+//		GetPlayerId();
 		cb && cb(null, connection);
 	}, function (error) {
 		//do something if error
