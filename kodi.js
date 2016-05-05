@@ -523,3 +523,26 @@ function SwitchPVR(val, callback){
 		}
 	}); 
 }
+/*
+var a = [];
+
+function SwitchPVR( a, s )
+{
+  var i;
+  if( s.length > 3 ) {
+    i = s.length - 3;
+    var r = s.substr( i, 3 );
+    while( --i >= 0 )
+      r += "|" + s.substr( i, 3 );
+    r = new RegExp( r );
+    for( i = 0; i < a.length; ++i )
+      if( r.test( a[i] ) )
+        return i;
+  } else {
+    for( i = 0; i < a.length; ++i )
+      if( a[i].indexOf( s ) >= 0 )
+        return i;
+  }
+  return -1;
+}
+*/
