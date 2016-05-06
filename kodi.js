@@ -254,12 +254,11 @@ function connect () {
 	getConnection(function (err, _connection) {
 		if (_connection){
 			//adapter.sendTo(adapter.namespace, 'send','', function(r){});//Иначе не работает подписка на message
-			//		GetNameVersion();
-			//		GetPlayerId();
-			//		GetChannels();
+			GetNameVersion();
+			GetPlayerId();
+			GetChannels();
 		}
 	});
-
 }
 
 function main() {
@@ -425,7 +424,11 @@ if (connection){
 			adapter.setState('samplerate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
 			adapter.setState('bitrate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
 		}
-		adapter.setState('type', {val: res[0].type, ack: true});
+		if (res[2].item.type == 'channel'){
+			adapter.setState('type', {val: res[2].item.type, ack: true});
+		} else {
+			adapter.setState('type', {val: res[0].type, ack: true});
+		}
 		adapter.setState('currentplay', {val: res[2].item.label, ack: true});
 
 	}, function (error) {
