@@ -177,6 +177,9 @@ function ConstructorCmd( method, ids, param ){
 					if (~[-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32].indexOf(parseInt(param))){
 						method = 'Player.SetSpeed';
 						param = {'playerid': player_id,'speed': parseInt(param)};
+					} else if (param == 'increment' || param == 'decrement'){
+						method = 'Player.SetSpeed';
+						param = {'playerid': player_id,'speed': param};
 					}
 				break;
 			

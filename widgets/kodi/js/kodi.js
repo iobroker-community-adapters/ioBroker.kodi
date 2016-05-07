@@ -33,6 +33,10 @@ if (vis.editMode) {
 		"oid_rpt":			{"en": "repeat",     	"de": "repeat",  		"ru": "repeat"},
 		"oid_shf":			{"en": "shuffle",     	"de": "shuffle",  		"ru": "shuffle"},
 		"oid_seek":			{"en": "seek",     		"de": "seek",  			"ru": "seek"},
+		"oid_server":		{
+								"en": "IP адрес и порт веб сервера коди. Например: 127.0.0.1:80",
+								"de": "IP адрес и порт веб сервера коди. Например: 127.0.0.1:80", 
+								"ru": "IP адрес и порт веб сервера коди. Например: 127.0.0.1:80"},
 		"oid_resolut":		{"en": "video_height",  "de": "video_height",  	"ru": "video_height"}
     });
 }
@@ -56,7 +60,7 @@ vis.binds.kodi = {
 		oid_curtimetotal:	{val: undefined, selector: '', objName: 'curtimetotal'}
 	},
 /***********************************************************************/
-	Thumbnail: function (widgetID, view, data, style) {
+Thumbnail: function (widgetID, view, data, style) {
 		var $div = $('#' + widgetID);
 		var type = null;
 		// if nothing found => wait
@@ -71,7 +75,7 @@ vis.binds.kodi = {
 				$('.kodicover li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
 			} else {
 				if (cover && cover !== 'image://DefaultAlbumCover.png/'){ 
-					var url = 'http://192.168.1.10:8041/image/' + encodeURI(cover);
+					var url = 'http://'+data.oid_server+'/image/' + encodeURI(cover);
 					$('.kodicover li').removeClass().addClass("cover").css('backgroundImage', 'url('+ url +')');
 				} else {
 					if (type == 'video'){
@@ -82,14 +86,11 @@ vis.binds.kodi = {
 				}
 			}
 		}
-		//http://192.168.1.10:8041/image/image://24494006.png/
-		////http://192.168.1.205/image/smb://192.168.1.205:445/Userdata/1/24493899.png
-		//http://192.168.1.205/image/image://smb%253a%252f%252f192.168.1.205%253a445%252fUserdata%252f1%252f55753428.png/
-		
 		// subscribe on updates of value
 		if (data.oid_thumbnail) {
 			vis.states.bind(data.oid_thumbnail + '.val', function (e, newVal, oldVal) {
 				Thumb(newVal);
+				
 			});
 		}
 		if (data.oid_type) {
@@ -98,11 +99,11 @@ vis.binds.kodi = {
 				Thumb();
 			});
 		}
-		if (vis.editMode) {
-			Thumb('https://192.168.1.190:8082/vis/widgets/kodi/img/defaultplaylist.png');
-		} else {
+		//if (vis.editMode) {
+		//	Thumb('https://192.168.1.190:8082/vis/widgets/kodi/img/defaultplaylist.png');
+//} else {
 			Thumb(vis.states[data.oid_thumbnail + '.val']);
-		}
+//}
 	},
 /************************************************************************/
 Progress: function (widgetID, view, data, style) {
@@ -149,13 +150,13 @@ Button: function (widgetID, view, data, style) {
 		$("#kodicontrols .prev").on('click',function(){
 			vis.setValue(data.oid_prev, '');
 		});
-		$("#kodicontrols .seekdn").on('click',function(){
+		$("#kodicontrols .rewind").on('click',function(){
 			var seek = vis.states[data.oid_seek + '.val'];
-			vis.setValue(data.oid_seek, seek-10);
+			vis.setValue(data.oid_speed, 'decrement');
 		});
 		$("#kodicontrols .playpause").on('click',function(){
 			var speed = vis.states[data.oid_speed + '.val'];
-			if (speed !== 0){
+			if (speed === 1){
 				vis.setValue(data.oid_speed, 0);
 			} else {
 				vis.setValue(data.oid_speed, 1);
@@ -164,9 +165,9 @@ Button: function (widgetID, view, data, style) {
 		$("#kodicontrols .stop").on('click',function(){
 			vis.setValue(data.oid_stop, '');
 		});
-		$("#kodicontrols .seekup").on('click',function(){
+		$("#kodicontrols .forward").on('click',function(){
 			var seek = vis.states[data.oid_seek + '.val'];
-			vis.setValue(data.oid_seek, seek+10);
+			vis.setValue(data.oid_speed, 'increment');
 		});
 		$("#kodicontrols .next").on('click',function(){
 			vis.setValue(data.oid_next, '');
@@ -195,8 +196,8 @@ Button: function (widgetID, view, data, style) {
 		if (data.oid_speed) {
 			vis.states.bind(data.oid_speed + '.val', function (e, newVal, oldVal) {
 				var sp = $("#kodicontrols > .playpause");
-				if (newVal == 0){
-					sp.removeClass().addClass('playpause on');
+				if (newVal !== 1){
+					sp.removeClass().addClass('playpause play');
 				} else {
 					sp.removeClass().addClass('playpause');
 				}

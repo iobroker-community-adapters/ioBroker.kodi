@@ -44,7 +44,7 @@
 		type="text/ejs"
 		class="vis-tpl"
 		data-vis-prev='<img style="width:110px; height:110px" src="widgets/kodi/img/defaultplaylist.png"></img>'
-		data-vis-attrs="oid_thumbnail/id/;oid_type/id/;"
+		data-vis-attrs="oid_thumbnail/id/;oid_type/id/;oid_server/id/;"
 		data-vis-set="kodi"
 		data-vis-type="val"
 		data-vis-name="KODI Thumbnail">
@@ -147,10 +147,10 @@
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:400px; height:50px" id="<%= this.data.attr('wid') %>" >
 				<ul id="kodicontrols">
 					<li class="prev"></li>
-					<li class="seekdn"></li>
+					<li class="rewind"></li>
 					<li class="playpause"></li>
 					<li class="stop"></li>
-					<li class="seekup"></li>
+					<li class="forward"></li>
 					<li class="next"></li>
 					<li class="repeat"></li>
 					<li class="shuffle"></li>

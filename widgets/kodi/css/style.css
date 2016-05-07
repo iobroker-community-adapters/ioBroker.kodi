@@ -78,16 +78,16 @@ padding: 0;
 }
 .prev 		{ background: url("../img/btn/btn_sprite.png") -48px -48px }
 .prev:hover { background: url("../img/btn/btn_sprite.png") -48px -0px;}
-.seekdn 		{ background: url("../img/btn/btn_sprite.png") -144px 48px;}
-.seekdn:hover { background: url("../img/btn/btn_sprite.png") -144px -0px;}
+.rewind 		{ background: url("../img/btn/btn_sprite.png") -144px 48px;}
+.rewind:hover { background: url("../img/btn/btn_sprite.png") -144px -0px;}
 .playpause 		{ background: url("../img/btn/btn_sprite.png") -192px -48px }
 .playpause:hover { background: url("../img/btn/btn_sprite.png") -192px -0px;}
-.playpause.on	{ background: url("../img/btn/btn_sprite.png") -240px -48px;}
-.playpause.on:hover { background: url("../img/btn/btn_sprite.png") -240px -0px}
+.playpause.play	{ background: url("../img/btn/btn_sprite.png") -240px -48px;}
+.playpause.play:hover { background: url("../img/btn/btn_sprite.png") -240px -0px}
 .stop 		{ background: url("../img/btn/btn_sprite.png") -528px 48px;}
 .stop:hover { background: url("../img/btn/btn_sprite.png") -528px -0px;}
-.seekup 		{ background: url("../img/btn/btn_sprite.png") -96px -48px}
-.seekup:hover { background: url("../img/btn/btn_sprite.png") -96px -0px}
+.forward 		{ background: url("../img/btn/btn_sprite.png") -96px -48px}
+.forward:hover { background: url("../img/btn/btn_sprite.png") -96px -0px}
 .next 		{ background: url("../img/btn/btn_sprite.png") -0px -48px}
 .next:hover { background: url("../img/btn/btn_sprite.png") -0px -0px}
 .repeat 		{ background: url("../img/btn/btn_sprite.png") -480px -48px;}
