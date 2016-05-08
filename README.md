@@ -36,6 +36,13 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.0.6 (2016-05-08)
+* (bluefox) fixed crash when the driver turned on the KODI
+* (bluefox) make adapter disabled by default, because no IP set
+* (instalator) Thumbnail widget
+* (instalator) added GetDirectory, GetVideoLibrary
+* (instalator) added Scan & Clean Library
+
 #### 0.0.5 (2016-05-04)
 * (instalator) change creating object
 * (instalator) added info.connection state
