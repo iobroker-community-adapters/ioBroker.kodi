@@ -170,8 +170,13 @@ function ConstructorCmd( method, ids, param ){
 					param = param.toString();
 				break;
 			  case "open":
+					param = param.toString();
+					var type = {'playlistid': playlist_id,'item': {'file' : param }};
+					if (param.slice(-1) === '\\'){
+						type = {'playlistid': playlist_id,'item': {'directory' : param }};
+					}
 					sendCommand('Playlist.Clear', {'playlistid': playlist_id}, function(){
-						sendCommand('Playlist.Add', {'playlistid': playlist_id,'item': {'file' : param.toString() }}, function(){
+						sendCommand('Playlist.Add', type, function(){
 							sendCommand('Player.Open', {'item': {'playlistid': playlist_id,'position': 1}}, function(){
 								sendCommand('GUI.SetFullscreen', {"fullscreen":true});
 							});
@@ -182,7 +187,7 @@ function ConstructorCmd( method, ids, param ){
 					if (~[-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32].indexOf(parseInt(param))){
 						method = 'Player.SetSpeed';
 						param = {'playerid': player_id,'speed': parseInt(param)};
-					} else if (param == 'increment' || param == 'decrement'){
+					} else if (param === 'increment' || param === 'decrement'){
 						method = 'Player.SetSpeed';
 						param = {'playerid': player_id,'speed': param};
 					}
