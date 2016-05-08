@@ -8,7 +8,7 @@ var object = {};
 var connection = null;
 var player_id =  null;
 var player_type = null;
-var playlist_id = null;
+var playlist_id = 0;
 var mem = null;
 var mem_pos = null;
 var timer;
@@ -170,8 +170,13 @@ function ConstructorCmd( method, ids, param ){
 					param = param.toString();
 				break;
 			  case "open":
-					method = 'Player.Open';
-					param = {'item': {'file' : param.toString() }};
+					sendCommand('Playlist.Clear', {'playlistid': playlist_id}, function(){
+						sendCommand('Playlist.Add', {'playlistid': playlist_id,'item': {'file' : param.toString() }}, function(){
+							sendCommand('Player.Open', {'item': {'playlistid': playlist_id,'position': 1}}, function(){
+								sendCommand('GUI.SetFullscreen', {"fullscreen":true});
+							});
+						});
+					});
 				break;
 			case "speed":
 					if (~[-32,-16,-8,-4,-2,-1,0,1,2,4,8,16,32].indexOf(parseInt(param))){
@@ -182,6 +187,10 @@ function ConstructorCmd( method, ids, param ){
 						param = {'playerid': player_id,'speed': param};
 					}
 				break;
+			case "Directory":
+					param = param.toString().replace("\\", "\\\\");
+					GetDirectory(param);
+				break;
 			
 			default:
 			
@@ -191,13 +200,14 @@ function ConstructorCmd( method, ids, param ){
 	sendCommand(method, param);
 }
 
-function sendCommand(method, param) {
+function sendCommand(method, param, callback) {
 	if (method){
 		getConnection(function (err, _connection) {
 			if (_connection){
 				adapter.log.info('sending in KODI: '+ method +' - '+JSON.stringify(param));
 				_connection.run(method, param).then(function(result) {
 						adapter.log.debug('response from KODI: '+JSON.stringify(result));
+					if (callback) callback();
 				}, function (error) {
 					adapter.log.error(error);
 					connection = null;
@@ -210,41 +220,6 @@ function sendCommand(method, param) {
 	} else {
 		adapter.log.warn('It does not specify commands or invalid value!');
 	}
-}
-function ShowNotification(param, callback){
-	var title = '';
-	var message = '';
-	var displaytime = 5000;
-	var img = ['info','warning','error'];
-	var image = 'info';
-	var c = (';' + param).split(';');
-	var flag = false;
-	c.forEach(function(item, i, arr) {
-		if (!isNaN(item)){
-			var num = parseInt(item);
-			if (num >= 1500 && num <= 30000){
-				displaytime = num;
-			}
-			else if (num >= 0 && num <= 2){
-				image = img[num];
-			}
-		}
-		if (isNaN(arr[i]) && isNaN(arr[i+1]) && flag === false){
-			if (arr[i] && arr[i+1]){
-				title = arr[i].toString();
-				message = arr[i+1].toString();
-				flag = true;
-			}
-		}
-	});
-	if (!flag){
-		c.forEach(function(item, i, arr) {
-			if (isNaN(arr[i]) && arr[i]){
-				message = arr[i].toString();
-			}
-		});
-	}
-	callback ({'title': title, 'message': message, 'image': image, 'displaytime': displaytime});
 }
 
 adapter.on('ready', function () {
@@ -260,16 +235,52 @@ function connect () {
 			GetNameVersion();
 			GetPlayerId();
 			GetChannels();
+			GetVideoLibrary();
 		}
 	});
 }
 
 function main() {
+	/***/
+	//adapter.setState('Directory', false, true);
+	
     // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
 	connect();
 }
 
+function GetDirectory(path){
+	if (connection){
+		connection.run('Files.GetDirectory', {"directory":path,"media":"files","properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file","mimetype","size","lastmodified","resume"],"sort":{"method":"none","order":"ascending"}}).then(function(res) {
+			adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
+			adapter.setState('Directory', {val: JSON.stringify(res), ack: true});
+		}, function (error) {
+			adapter.log.error(error);
+			connection = null;
+			getConnection();
+		}).catch(function (error) {
+			adapter.log.error(error);
+			connection = null;
+			getConnection();
+		})
+	}
+}
+function GetVideoLibrary(){
+	if (connection){
+		connection.run('VideoLibrary.GetMovies', {"properties":["genre","director","trailer","tagline","plot","plotoutline","title","originaltitle","lastplayed","runtime","year","playcount","rating","thumbnail","file"],"limits":{"start":0},"sort":{"method":"dateadded","ignorearticle":true}}).then(function(res) {
+			adapter.log.debug('GetVideoLibrary: ' + JSON.stringify(res));
+			adapter.setState('VideoLibrary', {val: JSON.stringify(res), ack: true});
+		}, function (error) {
+			adapter.log.error(error);
+			connection = null;
+			getConnection();
+		}).catch(function (error) {
+			adapter.log.error(error);
+			connection = null;
+			getConnection();
+		})
+	}
+}
 function GetPlayList(){  
 	if (connection){
 		connection.run('Playlist.GetItems', {"playlistid":playlist_id,"properties":["title","thumbnail","fanart","rating","genre","artist","track","season","episode","year","duration","album","showtitle","playcount","file"]/*,"limits":{"start":0,"end":750}*/}).then(function(res) {
@@ -551,6 +562,41 @@ function SwitchPVR(val, callback){
 			}
 		}
 	}); 
+}
+function ShowNotification(param, callback){
+	var title = '';
+	var message = '';
+	var displaytime = 5000;
+	var img = ['info','warning','error'];
+	var image = 'info';
+	var c = (';' + param).split(';');
+	var flag = false;
+	c.forEach(function(item, i, arr) {
+		if (!isNaN(item)){
+			var num = parseInt(item);
+			if (num >= 1500 && num <= 30000){
+				displaytime = num;
+			}
+			else if (num >= 0 && num <= 2){
+				image = img[num];
+			}
+		}
+		if (isNaN(arr[i]) && isNaN(arr[i+1]) && flag === false){
+			if (arr[i] && arr[i+1]){
+				title = arr[i].toString();
+				message = arr[i+1].toString();
+				flag = true;
+			}
+		}
+	});
+	if (!flag){
+		c.forEach(function(item, i, arr) {
+			if (isNaN(arr[i]) && arr[i]){
+				message = arr[i].toString();
+			}
+		});
+	}
+	callback ({'title': title, 'message': message, 'image': image, 'displaytime': displaytime});
 }
 
 function bool(s){

@@ -241,16 +241,33 @@ Playlist: function (widgetID, view, data, style) {
 
 		function SetPlaylist(val){
 			var playlist = JSON.parse(val);
-			playlist = playlist.items;
-			$("#playListContainer").empty();
-			playlist.forEach(function(item, i, arr) {
-				$("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+playlist[i].label+"</li>");
-			});
-			$("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
-			$('#playListContainer').on('click', "li", function(){
-				  var n=$(this).index();
-				  vis.setValue(data.oid_position, n);
-			});
+			
+			if (playlist.items){
+				playlist = playlist.items;
+				$("#playListContainer").empty();
+				playlist.forEach(function(item, i, arr) {
+					$("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+playlist[i].label+"</li>");
+				});
+				$("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
+				$('#playListContainer').on('click', "li", function(){
+					  var n=$(this).index();
+					  vis.setValue(data.oid_position, n);
+				});
+			} else if (playlist.channels){
+				playlist = playlist.channels;
+				$("#playListContainer").empty();
+				playlist.forEach(function(item, i, arr) {
+					//<a href=""><img src="http://567567.ru/iptv/55753428.png" width="50" height="50" alt="Пример">Первый</a>
+					var url = 'http://'+data.oid_server+'/image/' + encodeURI(playlist[i].thumbnail);
+					$("#playListContainer").append("<li class='item"+(i+1)+"'><img src='"+url+"' style='width: 50px; height: 50px; vertical-align: middle;'> "+playlist[i].label+"</li>");
+				});
+				$("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
+				$('#playListContainer').on('click', "li", function(){
+					  var n=$(this).index();
+					  vis.setValue(data.oid_position, n);
+				});
+			
+			}
 		}
 		// subscribe on updates of value
 		if (data.oid_playlist) {

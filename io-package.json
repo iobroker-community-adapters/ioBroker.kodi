@@ -47,11 +47,35 @@
 			}
 		},
 		{
+			"_id": "Directory",
+			"type": "state",
+			"common": {
+				"name": "Directory",
+				"type": "string",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
+			"_id": "VideoLibrary",
+			"type": "state",
+			"common": {
+				"name": "VideoLibrary",
+				"type": "object",
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
 			"_id": "playlist",
 			"type": "state",
 			"common": {
 				"name": "playlist",
-				"type": "string",
+				"type": "object",
 				"role": "media"
 			},
 			"native": {
