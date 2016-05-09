@@ -1,6 +1,8 @@
 .iobroker.kodi-class {
     font-style: italic;
 }
+
+
 .kodicover, .cover{
 	width: 100%;
 	height: 100%;
@@ -48,6 +50,10 @@ padding: 0;
 #kodiplaylist li.active{
 	background-color:#00bd9b;
 	color:#fff;
+}
+#kodiplaylist li img{
+	box-shadow: 0 0 5px 0px #FFF, 0 0 0 1px #000, 0 0 0 1px #484848;
+    border-radius: 5px;
 }
 #kodiplaylist ul { 
 	margin: 0;

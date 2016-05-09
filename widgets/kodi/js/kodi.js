@@ -7,7 +7,7 @@
 
 */
 "use strict";
-//http://192.168.1.205/image/smb://192.168.1.205:445/Userdata/1/24493899.png
+
 // add translations for edit mode
 if (vis.editMode) {
     $.extend(true, systemDictionary, {
@@ -71,17 +71,18 @@ Thumbnail: function (widgetID, view, data, style) {
 		}
 
 		function Thumb(cover){
+			var url_thumb;
 			if (vis.editMode) {
-				$('.kodicover li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
+				$div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
 			} else {
-				if (cover && cover !== 'image://DefaultAlbumCover.png/'){ 
-					var url = 'http://'+data.oid_server+'/image/' + encodeURI(cover);
-					$('.kodicover li').removeClass().addClass("cover").css('backgroundImage', 'url('+ url +')');
+				if (cover && cover !== 'image://DefaultAlbumCover.png/'){
+					url_thumb = 'http://' + data.oid_server + '/image/' + encodeURI(cover);
+					$div.find('li').removeClass().addClass("cover").css('backgroundImage', 'url('+url_thumb+')');
 				} else {
 					if (type == 'video'){
-						$('.kodicover li').removeClass().addClass("cover vdef").css('backgroundImage', 'url()');
+						$div.find('li').removeClass().addClass("cover vdef").css('backgroundImage', 'url()');
 					} else {
-						$('.kodicover li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
+						$div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
 					}
 				}
 			}
@@ -90,7 +91,6 @@ Thumbnail: function (widgetID, view, data, style) {
 		if (data.oid_thumbnail) {
 			vis.states.bind(data.oid_thumbnail + '.val', function (e, newVal, oldVal) {
 				Thumb(newVal);
-				
 			});
 		}
 		if (data.oid_type) {
@@ -99,11 +99,7 @@ Thumbnail: function (widgetID, view, data, style) {
 				Thumb();
 			});
 		}
-		//if (vis.editMode) {
-		//	Thumb('https://192.168.1.190:8082/vis/widgets/kodi/img/defaultplaylist.png');
-//} else {
-			Thumb(vis.states[data.oid_thumbnail + '.val']);
-//}
+		Thumb(vis.states[data.oid_thumbnail + '.val']);
 	},
 /************************************************************************/
 Progress: function (widgetID, view, data, style) {
@@ -238,35 +234,34 @@ Playlist: function (widgetID, view, data, style) {
                 vis.binds.kodi.Playlist(widgetID, view, data, style);
             }, 100);
         }
-
+		var playlist;
 		function SetPlaylist(val){
-			var playlist = JSON.parse(val);
-			
+			playlist = JSON.parse(val);
+			var _playlist = {};
 			if (playlist.items){
-				playlist = playlist.items;
-				$("#playListContainer").empty();
-				playlist.forEach(function(item, i, arr) {
-					$("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+playlist[i].label+"</li>");
+				_playlist = playlist.items;
+				$div.find("#playListContainer").empty();
+				_playlist.forEach(function(item, i, arr) {
+					$div.find("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+_playlist[i].label+"</li>");
 				});
-				$("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
-				$('#playListContainer').on('click', "li", function(){
+				$div.find("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
+				$div.find('#playListContainer').on('click', "li", function(){
 					  var n=$(this).index();
 					  vis.setValue(data.oid_position, n);
 				});
 			} else if (playlist.channels){
-				playlist = playlist.channels;
-				$("#playListContainer").empty();
-				playlist.forEach(function(item, i, arr) {
-					//<a href=""><img src="http://567567.ru/iptv/55753428.png" width="50" height="50" alt="Пример">Первый</a>
-					var url = 'http://'+data.oid_server+'/image/' + encodeURI(playlist[i].thumbnail);
-					$("#playListContainer").append("<li class='item"+(i+1)+"'><img src='"+url+"' style='width: 50px; height: 50px; vertical-align: middle;'> "+playlist[i].label+"</li>");
+				_playlist = playlist.channels;
+				$div.find("#playListContainer").empty();
+				_playlist.forEach(function(item, i, arr) {
+					var url = 'http://'+data.oid_server+'/image/' + encodeURI(_playlist[i].thumbnail);
+					$div.find("#playListContainer").append("<li class='item"+(i+1)+"'><img src='"+url+"' style='width: 50px; height: 50px; vertical-align: middle; margin: 2px;'> "+_playlist[i].label+"</li>");
 				});
-				$("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");			
-				$('#playListContainer').on('click', "li", function(){
-					  var n=$(this).index();
+				$div.find("#playListContainer .item"+(parseInt(vis.states[data.oid_position + '.val'])+1)).addClass("active");
+				
+				$div.find('#playListContainer').on('click', "li", function(){
+					  var n=$(this).index()+1;
 					  vis.setValue(data.oid_position, n);
 				});
-			
 			}
 		}
 		// subscribe on updates of value
@@ -277,9 +272,12 @@ Playlist: function (widgetID, view, data, style) {
 		}
 		if (data.oid_position) {
 			vis.states.bind(data.oid_position + '.val', function (e, newVal, oldVal) {
-				$("#playListContainer li").removeClass("active");
-				newVal++;
-				$("#playListContainer .item"+newVal).addClass("active");
+				$div.find("#playListContainer li").removeClass("active");
+				newVal = parseInt(newVal);
+				if (playlist.items){
+					newVal++;
+				}
+				$div.find("#playListContainer .item"+ newVal).addClass("active");
 			});
 		}
 		if ($div.length){
@@ -297,7 +295,9 @@ CodecInfo: function (widgetID, view, data, style) {
             }, 100);
         }
 		function SetCodecInfo(val){
-			$('.kodiinfo > .codec').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
+			if (val){
+				$('.kodiinfo > .codec').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
+			}
 		}
 		// subscribe on updates of value
 		if (data.oid_codec) {
@@ -321,8 +321,10 @@ AspectInfo: function (widgetID, view, data, style) {
             }, 100);
         }
 		function SetAspectInfo(val){
-			val = parseFloat(val).toFixed(2);
-			$('.kodiinfo > .aspect').css('backgroundImage', 'url(./widgets/kodi/img/aspectratio/'+val+'.png)');
+			if (val){
+				val = parseFloat(val).toFixed(2);
+				$('.kodiinfo > .aspect').css('backgroundImage', 'url(./widgets/kodi/img/aspectratio/'+val+'.png)');
+			}
 		}
 		// subscribe on updates of value
 		if (data.oid_aspect) {
@@ -346,7 +348,9 @@ ResolutInfo: function (widgetID, view, data, style) {
             }, 100);
         }
 		function SetResolutInfo(val){
-			$('.kodiinfo > .resolut').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
+			if (val){
+				$('.kodiinfo > .resolut').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
+			}
 		}
 		// subscribe on updates of value
 		if (data.oid_resolut) {
@@ -371,7 +375,9 @@ ChannelInfo: function (widgetID, view, data, style) {
             }, 100);
         }
 		function SetChannelInfo(val){
-			$('.kodiinfo > .channel').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
+			if (val){
+				$('.kodiinfo > .channel').css('backgroundImage', 'url(./widgets/kodi/img/audio/'+val+'.png)');
+			}
 		}
 		// subscribe on updates of value
 		if (data.oid_channel) {
@@ -395,7 +401,9 @@ VideoCodec: function (widgetID, view, data, style) {
             }, 100);
         }
 		function SetVideoCodecInfo(val){
-			$('.kodiinfo > .videocodec').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
+			if (val){
+				$('.kodiinfo > .videocodec').css('backgroundImage', 'url(./widgets/kodi/img/video/'+val+'.png)');
+			}
 		}
 		// subscribe on updates of value
 		if (data.oid_videocodec) {
