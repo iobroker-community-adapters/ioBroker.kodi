@@ -226,11 +226,9 @@ function sendCommand(method, param, callback) {
 						adapter.log.debug('response from KODI: '+JSON.stringify(result));
 					if (callback) callback();
 				}, function (error) {
-					adapter.log.error(error);
-					connection = null;
+					ErrProcessing(error);
 				}).catch(function (error) {
-					adapter.log.error(error);
-					connection = null;
+					ErrProcessing(error);
 				})
 			}
 		});
@@ -272,15 +270,16 @@ function GetDirectory(path){
 			adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
 			adapter.setState('Directory', {val: JSON.stringify(res), ack: true});
 		}, function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		})
 	}
+}
+function ErrProcessing(error){
+	adapter.log.error(error);
+	connection = null;
+	getConnection();
 }
 function GetVideoLibrary(){
 	if (connection){
@@ -288,13 +287,9 @@ function GetVideoLibrary(){
 			adapter.log.debug('GetVideoLibrary: ' + JSON.stringify(res));
 			adapter.setState('VideoLibrary', {val: JSON.stringify(res), ack: true});
 		}, function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		})
 	}
 }
@@ -304,13 +299,9 @@ function GetPlayList(){
 			adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
 			adapter.setState('playlist', {val: JSON.stringify(res), ack: true});
 		}, function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		})
 	}
 }
@@ -354,13 +345,9 @@ function GetCurrentItem(){
 					//adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
 				}
 			}, function (error) {
-				adapter.log.error(error);
-				connection = null;
-				getConnection();
+				ErrProcessing(error);
 			}).catch(function (error) {
-				adapter.log.error(error);
-				connection = null;
-				getConnection();
+				ErrProcessing(error);
 			});	
 		});
 	}
@@ -389,13 +376,9 @@ function GetNameVersion(){
 				adapter.setState('systeminfo.kernel', {val: res[2]['System.KernelVersion'], ack: true});
 			}
 		}, function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		});	
 	}
 }
@@ -409,13 +392,9 @@ function GetChannels(){
 			adapter.setState('pvr.playlist_tv', {val: JSON.stringify(res[0]), ack: true});
 			adapter.setState('pvr.playlist_radio', {val: JSON.stringify(res[1]), ack: true});
 		}, function (error) {
-			adapter.log.warn(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		});
 	}
 }
@@ -463,13 +442,9 @@ function GetPlayerProperties(){
 			adapter.setState('currentplay', {val: res[2].item.label, ack: true});
 
 		}, function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		});	
 	}
 }
@@ -492,13 +467,9 @@ function GetPlayerId(){
 			}
 			timer = setTimeout(function() { GetPlayerId(); }, 2000);
 		}, function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		}).catch(function (error) {
-			adapter.log.error(error);
-			connection = null;
-			getConnection();
+			ErrProcessing(error);
 		});
 	}
 }
