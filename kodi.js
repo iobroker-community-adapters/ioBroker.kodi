@@ -171,13 +171,14 @@ function ConstructorCmd( method, ids, param ){
 				break;
 			  case "open":
 					param = param.toString();
+					playlist_id = 0;
 					var type = {'playlistid': playlist_id,'item': {'file' : param }};
 					if (param.slice(-1) === '\\'){
-						type = {'playlistid': playlist_id,'item': {'directory' : param }};
+						type = {'playlistid': playlist_id,'item': {'directory' : param}};
 					}
 					sendCommand('Playlist.Clear', {'playlistid': playlist_id}, function(){
 						sendCommand('Playlist.Add', type, function(){
-							sendCommand('Player.Open', {'item': {'playlistid': playlist_id,'position': 1}}, function(){
+							sendCommand('Player.Open', {'item': {'playlistid': playlist_id,'position': 0}}, function(){
 								sendCommand('GUI.SetFullscreen', {"fullscreen":true});
 							});
 						});
