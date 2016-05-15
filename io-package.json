@@ -47,6 +47,19 @@
 			}
 		},
 		{
+			"_id": "Sources",
+			"type": "state",
+			"common": {
+				"name": "Sources",
+				"type": "string",
+				"def": false,
+				"role": "media"
+			},
+			"native": {
+				
+			}
+		},
+		{
 			"_id": "CleanAudioLibrary",
 			"type": "state",
 			"common": {
