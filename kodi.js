@@ -254,7 +254,7 @@ function sendCommand(method, param, callback){
 adapter.on('ready', function (){
     main();
 });
-
+var testvol = null;
 function connect(){
     adapter.setState('info.connection', false, true);
     adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
@@ -268,6 +268,17 @@ function connect(){
             setTimeout(function (){
                 GetSources();
             }, 10000);
+
+        connection.notification('Application.OnVolumeChanged', function(res) {
+            adapter.setState('mute', {val: res.data.muted, ack: true});
+            adapter.setState('volume', {val: res.data.volume, ack: true});
+        });
+
+        /*    connection.notification('Player.OnPropertyChanged', function(res) {
+                adapter.log.error('Notification: ' + JSON.stringify(res));
+
+            });
+          */
         }
     });
 }
