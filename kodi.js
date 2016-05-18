@@ -9,6 +9,7 @@ var connection = null;
 var player_id = null;
 var player_type = null;
 var channel = false;
+var canseek = false;
 var playlist_id = 0;
 var mem = null;
 var mem_pos = null;
@@ -41,9 +42,7 @@ adapter.on('message', function (obj){
             param.title = _obj.title || '';
             param.image = _obj.image || 'info';
             param.displaytime = _obj.delay || 5000;
-
             sendCommand('GUI.ShowNotification', param);
-
             if (obj.callback){
                 adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
             }
@@ -128,7 +127,7 @@ function ConstructorCmd(method, ids, param){
                 param = {"playerid": player_id, "to": param}
                 break;
             case "seek":
-                if (param >= 0 && param <= 100){
+                if (param >= 0 && param <= 100 && canseek){
                     method = 'Player.Seek'; //int 0-100
                     param = {"playerid": player_id, "value": parseInt(param)}
                 }
@@ -240,10 +239,10 @@ function sendCommand(method, param, callback){
                 _connection.run(method, param).then(function (result){
                     adapter.log.debug('response from KODI: ' + JSON.stringify(result));
                     if (callback) callback();
-                }, function (error){
-                    ErrProcessing(error);
-                }).catch(function (error){
-                    ErrProcessing(error);
+                }, function (e){
+                    ErrProcessing(e);
+                }).catch(function (e){
+                    ErrProcessing(e);
                 })
             }
         });
@@ -306,10 +305,10 @@ function GetSources(){
                 if(count === type.length) {
                     adapter.setState('Sources', {val: JSON.stringify(obj), ack: true});
                 }
-            }, function (error){
-                ErrProcessing(error);
-            }).catch(function (error){
-                ErrProcessing(error);
+            }, function (e){
+                ErrProcessing(e);
+            }).catch(function (e){
+                ErrProcessing(e);
             })
         });
     }
@@ -324,17 +323,12 @@ function GetDirectory(path){
         }).then(function (res){
             adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
             adapter.setState('Directory', {val: JSON.stringify(res), ack: true});
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         })
     }
-}
-function ErrProcessing(error){
-    adapter.log.error(error);
-    connection = null;
-    getConnection();
 }
 function GetVideoLibrary(){
     if (connection){
@@ -345,10 +339,10 @@ function GetVideoLibrary(){
         }).then(function (res){
             adapter.log.debug('GetVideoLibrary: ' + JSON.stringify(res));
             adapter.setState('VideoLibrary', {val: JSON.stringify(res), ack: true});
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         })
     }
 }
@@ -360,10 +354,10 @@ function GetPlayList(){
         }).then(function (res){
             adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
             adapter.setState('playlist', {val: JSON.stringify(res), ack: true});
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         })
     }
 }
@@ -409,10 +403,10 @@ function GetCurrentItem(){
                     }
                     //adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
                 }
-            }, function (error){
-                ErrProcessing(error);
-            }).catch(function (error){
-                ErrProcessing(error);
+            }, function (e){
+                ErrProcessing(e);
+            }).catch(function (e){
+                ErrProcessing(e);
             });
         });
     }
@@ -445,10 +439,10 @@ function GetNameVersion(){
                 }
                 adapter.setState('systeminfo.kernel', {val: res[2]['System.KernelVersion'], ack: true});
             }
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         });
     }
 }
@@ -467,10 +461,10 @@ function GetChannels(){
         Promise.all([alltv, allradio]).then(function (res){
             adapter.setState('pvr.playlist_tv', {val: JSON.stringify(res[0]), ack: true});
             adapter.setState('pvr.playlist_radio', {val: JSON.stringify(res[1]), ack: true});
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         });
     }
 }
@@ -497,6 +491,7 @@ function GetPlayerProperties(){
                 val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds),
                 ack: true
             });
+            canseek = res[0].canseek;
             adapter.setState('seek', {val: parseInt(cur * 100 / total), ack: true});
             adapter.setState('canseek', {val: res[0].canseek, ack: true});
             adapter.setState('repeat', {val: res[0].repeat, ack: true});
@@ -528,10 +523,10 @@ function GetPlayerProperties(){
             }
             adapter.setState('currentplay', {val: res[2].item.label, ack: true});
 
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         });
     }
 }
@@ -555,10 +550,10 @@ function GetPlayerId(){
             timer = setTimeout(function (){
                 GetPlayerId();
             }, 2000);
-        }, function (error){
-            ErrProcessing(error);
-        }).catch(function (error){
-            ErrProcessing(error);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
         });
     }
 }
@@ -580,26 +575,21 @@ function getConnection(cb){
                 setTimeout(connect, 5000);
             }
         });
-
         adapter.log.info('KODI connected');
         adapter.setState('info.connection', true, true);
-//		GetPlayerId();
+		GetPlayerId();
         cb && cb(null, connection);
     }, function (error){
-        //do something if error
         adapter.log.debug(error);
-        // try again in 5 seconds
         adapter.setState('info.connection', false, true);
         setTimeout(getConnection, 5000, cb);
     }).catch(function (error){
-        // Handle errors
         if (error.stack){
             adapter.log.error(error.stack);
         } else {
             adapter.log.error(error);
         }
         adapter.setState('info.connection', false, true);
-        // try again in 5 seconds
         setTimeout(getConnection, 5000, cb);
     });
 }
@@ -679,4 +669,9 @@ function bool(s){
     } else {
         return false;
     }
+}
+function ErrProcessing(error){
+    adapter.log.error(error);
+    connection = null;
+    getConnection();
 }
