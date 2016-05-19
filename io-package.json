@@ -47,6 +47,19 @@
 			}
 		},
 		{
+			"_id": "OnInputRequested",
+			"type": "state",
+			"common": {
+				"name": "OnInputRequested",
+				"type": "string",
+				"def": false,
+				"role": "media"
+			},
+			"native": {
+
+			}
+		},
+		{
 			"_id": "Sources",
 			"type": "state",
 			"common": {
@@ -480,19 +493,6 @@
 			"type": "state",
 			"common": {
 				"name": "stop",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playpause",
-			"type": "state",
-			"common": {
-				"name": "playpause",
 				"type": "string",
 				"def": false,
 				"role": "media"

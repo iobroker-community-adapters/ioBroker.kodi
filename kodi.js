@@ -151,8 +151,15 @@ function ConstructorCmd(method, ids, param){
                 param = {'playerid': player_id, "shuffle": bool(param)};
                 break;
             case "play":
-                method = 'Input.ExecuteAction';
-                param = 'play';
+                param = bool(param);
+                if (param){
+                    method = 'Input.ExecuteAction';
+                    param = 'play';
+                } else {
+                    method = 'Player.SetSpeed';
+                    param = {'playerid': player_id, 'speed': 0};
+                }
+
                 break;
             case "next":
                 method = 'Input.ExecuteAction';
@@ -267,13 +274,46 @@ function connect(){
             setTimeout(function (){
                 GetSources();
             }, 10000);
-        
-        /*  connection.notification('Player.OnPropertyChanged', function(res) {
-                adapter.log.error('Notification: ' + JSON.stringify(res));
-            });
-        */
+            connection_emit();
         }
     });
+}
+function connection_emit(){
+    connection.notification('Player.OnPlay', function(res) {
+        adapter.setState('play', {val: true, ack: true});
+        adapter.setState('stop', {val: false, ack: true});
+    });
+    connection.notification('Player.OnPause', function(res) {
+        adapter.setState('play', {val: false, ack: true});
+    });
+    connection.notification('Player.OnStop', function(res) {
+        adapter.setState('stop', {val: true, ack: true});
+    });
+    connection.notification('Input.OnInputRequested', function(res) {
+        //adapter.log.error('OnInputRequested: ' + JSON.stringify(res));
+        //{"data":{"title":"Строка поиска","type":"keyboard","value":""},"sender":"xbmc"}
+        //adapter.setState('OnInputRequested', {val: true, ack: true});
+    });
+
+}
+function GetVolume(){
+    if (connection){
+        connection.run('Application.GetProperties', {'properties': ['volume', 'muted']
+        }).then(function (res){
+            adapter.log.debug('GetVolume: ' + JSON.stringify(res));
+            adapter.setState('mute', {val: res.muted, ack: true});
+            adapter.setState('volume', {val: res.volume, ack: true});
+            connection.notification('Application.OnVolumeChanged', function(res) {
+                adapter.log.debug('OnVolumeChanged: ' + JSON.stringify(res));
+                adapter.setState('mute', {val: res.data.muted, ack: true});
+                adapter.setState('volume', {val: res.data.volume, ack: true});
+            });
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
+        })
+    }
 }
 
 function main(){
@@ -284,7 +324,6 @@ function main(){
 }
 
 function GetSources(){
-    var  type = ["video","music","pictures","files","programs"];
     var obj = {
         'video':[],
         'music':[],
@@ -294,17 +333,17 @@ function GetSources(){
     };
     var count = 0;
     if (connection){
-        type.forEach(function (item, i, arr){
-            connection.run('Files.GetSources', {"media":item}).then(function (res){
+        Object.keys(obj).forEach(function(key) {
+            connection.run('Files.GetSources', {"media": key}).then(function (res){
                 adapter.log.debug('GetSources: ' + JSON.stringify(res));
                 if (res.limits.total > 0){
                     for (var i = 0; i < res.limits.total; i++) {
-                        obj[item][i] = res.sources[i];
+                        obj[key][i] = res.sources[i];
                         adapter.log.debug('GetSources: ' + JSON.stringify(obj));
                     }
                 }
                 count++;
-                if(count === type.length) {
+                if (count === 5){
                     adapter.setState('Sources', {val: JSON.stringify(obj), ack: true});
                 }
             }, function (e){
@@ -523,7 +562,16 @@ function GetPlayerProperties(){
                 adapter.setState('type', {val: res[0].type, ack: true});
                 channel = false;
             }
-            adapter.setState('currentplay', {val: res[2].item.label, ack: true});
+            if (res[2].item.label.toString().length < 2){
+                setTimeout(function (){
+                    adapter.getState(adapter.namespace + '.info.file', function (err, state){
+                        state = state.val.substring(state.val.lastIndexOf('/')+1, state.val.length-4);
+                        adapter.setState('currentplay', {val: state, ack: true});
+                    });
+                }, 1000);
+            } else {
+                adapter.setState('currentplay', {val: res[2].item.label, ack: true});
+            }
 
         }, function (e){
             ErrProcessing(e);
@@ -532,41 +580,15 @@ function GetPlayerProperties(){
         });
     }
 }
-/*function GetPlayerId(){
-    if (connection){
-        clearTimeout(timer);
-        var batch = connection.batch();
-        var ActivePlayers = batch.Player.GetActivePlayers();
-        var Properties = batch.Application.GetProperties({'properties': ['volume', 'muted']});
-        batch.send();
-        Promise.all([ActivePlayers, Properties]).then(function (res){
-            adapter.log.debug('Response GetPlayerId ' + JSON.stringify(res));
-            if (res[0][0]){
-                adapter.log.debug('Active players = ' + res[0][0].playerid + '. Type = ' + res[0][0].type);
-                adapter.setState('mute', {val: res[1].muted, ack: true});
-                adapter.setState('volume', {val: res[1].volume, ack: true});
-                player_id = res[0][0].playerid;
-                player_type = res[0][0].type;
-                GetPlayerProperties();
-            }
-            timer = setTimeout(function (){
-                GetPlayerId();
-            }, 2000);
-        }, function (e){
-            ErrProcessing(e);
-        }).catch(function (e){
-            ErrProcessing(e);
-        });
-    }
-}*/
+
 function GetPlayerId(){
+    clearTimeout(timer);
     if (connection){
-    	clearTimeout(timer);
         connection.run('Player.GetActivePlayers').then(function (res){
             adapter.log.debug('Response GetPlayerId: ' + JSON.stringify(res));
             if (res){
-				player_id = res.playerid;
-				player_type = res.type;
+				player_id = res[0].playerid;
+				player_type = res[0].type;
 				GetPlayerProperties();
             }
             timer = setTimeout(function (){
@@ -577,26 +599,11 @@ function GetPlayerId(){
         }).catch(function (e){
             ErrProcessing(e);
         })
+    } else {
+        connect();
     }
 }
-function GetVolume(){
-    if (connection){
-        connection.run('Application.GetProperties', {'properties': ['volume', 'muted']
-        }).then(function (res){
-            adapter.log.debug('GetVolume: ' + JSON.stringify(res));
-            adapter.setState('mute', {val: res.muted, ack: true});
-            adapter.setState('volume', {val: res.volume, ack: true});
-            connection.notification('Application.OnVolumeChanged', function(res) {
-				adapter.setState('mute', {val: res.data.muted, ack: true});
-				adapter.setState('volume', {val: res.data.volume, ack: true});
-    		});
-        }, function (e){
-            ErrProcessing(e);
-        }).catch(function (e){
-            ErrProcessing(e);
-        })
-    }
-}
+
 function getConnection(cb){
     if (connection){
         cb && cb(null, connection);
@@ -622,7 +629,7 @@ function getConnection(cb){
     }, function (error){
         adapter.log.debug(error);
         adapter.setState('info.connection', false, true);
-        setTimeout(getConnection, 5000, cb);
+        setTimeout(connect, 5000, cb);
     }).catch(function (error){
         if (error.stack){
             adapter.log.error(error.stack);
@@ -630,7 +637,7 @@ function getConnection(cb){
             adapter.log.error(error);
         }
         adapter.setState('info.connection', false, true);
-        setTimeout(getConnection, 5000, cb);
+        setTimeout(connect, 5000, cb);
     });
 }
 function time(hour, min, sec){
