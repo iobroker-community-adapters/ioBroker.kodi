@@ -224,7 +224,6 @@ function ConstructorCmd(method, ids, param){
                 break;
 
             default:
-
         }
     }
     //adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + JSON.stringify(param));
@@ -254,31 +253,25 @@ function sendCommand(method, param, callback){
 adapter.on('ready', function (){
     main();
 });
-var testvol = null;
+
 function connect(){
     adapter.setState('info.connection', false, true);
     adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
     getConnection(function (err, _connection){
         if (_connection){
-            //adapter.sendTo(adapter.namespace, 'send','', function(r){});//Иначе не работает подписка на message
             GetNameVersion();
             GetPlayerId();
+        		GetVolume();
             GetChannels();
             GetVideoLibrary();
             setTimeout(function (){
                 GetSources();
             }, 10000);
-
-        connection.notification('Application.OnVolumeChanged', function(res) {
-            adapter.setState('mute', {val: res.data.muted, ack: true});
-            adapter.setState('volume', {val: res.data.volume, ack: true});
-        });
-
-        /*    connection.notification('Player.OnPropertyChanged', function(res) {
+        
+        /*  connection.notification('Player.OnPropertyChanged', function(res) {
                 adapter.log.error('Notification: ' + JSON.stringify(res));
-
             });
-          */
+        */
         }
     });
 }
@@ -286,8 +279,6 @@ function connect(){
 function main(){
     /***/
     //adapter.setState('Directory', false, true);
-
-    // in this template all states changes inside the adapters namespace are subscribed
     adapter.subscribeStates('*');
     connect();
 }
@@ -541,7 +532,7 @@ function GetPlayerProperties(){
         });
     }
 }
-function GetPlayerId(){
+/*function GetPlayerId(){
     if (connection){
         clearTimeout(timer);
         var batch = connection.batch();
@@ -566,6 +557,44 @@ function GetPlayerId(){
         }).catch(function (e){
             ErrProcessing(e);
         });
+    }
+}*/
+function GetPlayerId(){
+    if (connection){
+    	clearTimeout(timer);
+        connection.run('Player.GetActivePlayers').then(function (res){
+            adapter.log.debug('Response GetPlayerId: ' + JSON.stringify(res));
+            if (res){
+				player_id = res.playerid;
+				player_type = res.type;
+				GetPlayerProperties();
+            }
+            timer = setTimeout(function (){
+                GetPlayerId();
+            }, 2000);
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
+        })
+    }
+}
+function GetVolume(){
+    if (connection){
+        connection.run('Application.GetProperties', {'properties': ['volume', 'muted']
+        }).then(function (res){
+            adapter.log.debug('GetVolume: ' + JSON.stringify(res));
+            adapter.setState('mute', {val: res.muted, ack: true});
+            adapter.setState('volume', {val: res.volume, ack: true});
+            connection.notification('Application.OnVolumeChanged', function(res) {
+				adapter.setState('mute', {val: res.data.muted, ack: true});
+				adapter.setState('volume', {val: res.data.volume, ack: true});
+    		});
+        }, function (e){
+            ErrProcessing(e);
+        }).catch(function (e){
+            ErrProcessing(e);
+        })
     }
 }
 function getConnection(cb){
