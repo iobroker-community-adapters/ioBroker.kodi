@@ -1,6 +1,6 @@
 {
   "name": "iobroker.kodi",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "iobroker.kodi Adapter",
   "author": {
     "name": "instalator",
@@ -41,10 +41,5 @@
   "bugs": {
     "url": "https://github.com/instalator/ioBroker.kodi/issues"
   },
-  "readmeFilename": "README.md",
-  "readme": "![Logo](admin/kodi.png)\n# Kodi's JSON-RPC API for IoBroker\nYou can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).\n\n## Using\n###ShowNotification: \nОдин важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.\n####Image:\nУровень сообщения\n  * 'info' - 0 (default),\n  * 'warning' - 1,\n  * 'error' - 2.\n\n####displaytime:\nВремя отображения сообщения в милисекундах, минимум 1500 макс 30000 мс.\n\nПример: \n * 1;Внимание;Протечка воды;15000\n * Внимание;Протечка воды;2;10000\n * Внимание;Протечка воды\n * Протечка воды\n\nТак же сообщения можно отправлять из javascript:\n```\nsendTo(\"kodi.0\", {\n    message:  'Возможно протечка воды ',\n    title:    'ВНИМАНИЕ!!!',\n    image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png',\n    delay: ''\n});\n```\n\n## Changelog\n\n#### 0.0.4 (2016-05-03)\n* (instalator) fix error\n* (instalator) added VIS widgets\n\n#### 0.0.3 (2016-05-01)\n* (instalator) fix error\n* (instalator) added send message from JS\n\n#### 0.0.2 (2016-04-24)\n* (instalator) remote player\n* (instalator) ShowNotification\n* (instalator) info playing\n* (instalator) GetPVRChannel\n\n#### 0.0.1\n* (instalator) initial (17.04.2016)\n",
-  "_id": "iobroker.kodi@0.0.4",
-  "_shasum": "5df3c094b962bb4a6cfb0bd8d12a4f9841b3e03a",
-  "_resolved": "https://github.com/instalator/iobroker.kodi/tarball/master",
-  "_from": "https://github.com/instalator/iobroker.kodi/tarball/master"
+  "readmeFilename": "README.md"
 }
