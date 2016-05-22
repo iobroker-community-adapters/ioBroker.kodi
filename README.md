@@ -77,6 +77,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.0 (2016-05-22)
+* (instalator) beta
+
 #### 0.0.6 (2016-05-08)
 * (bluefox) fixed crash when the driver turned on the KODI
 * (bluefox) make adapter disabled by default, because no IP set
