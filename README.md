@@ -8,6 +8,21 @@
 # Kodi's JSON-RPC API for IoBroker
 You can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).
 
+## Конфигурация KODI
+Remote control enable.
+
+JSON-RPC API использует по умолчанию порт 9090, для того чтобы его изменить необходимо внести изменения в файл [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
+Note: The advancedsettings.xml file does not exist by default. You have to create it first!
+```
+<jsonrpc>
+    <compactoutput>false</compactoutput>
+    <tcpport>9999</tcpport>
+</jsonrpc>
+```
+
+## Конфигурация драйвера
+В найстройках драйвера указывается IP адрес KODI и порт для JSON-RPC API (по умолчанию 9090).
+
 ## Using
 ###ShowNotif: 
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
