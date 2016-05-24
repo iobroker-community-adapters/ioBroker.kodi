@@ -20,8 +20,10 @@
         "Kodi adapter settings":{"de": "Kodi adapter settings", "ru": "Настройки драйвера Kodi"},
 	"Login:":                   {"en": "Login:", "de": "Login:", "ru": "Логин:"},
 	"Password:":                {"en": "Password:", "de": "Password:", "ru": "Пароль:"},
-	"IP:":						{"en": "IP Adress:", "de": "IP Adress:", "ru": "IP Adress:"},
-	"Port:":                 	{"en": "port", "de": "port", "ru": "Порт:"},
+	"IP:":						{"en": "IP Adress:", "de": "IP Adress:", "ru": "IP Adress KODI:"},
+	"PortRPC:":                 	{"en": "Port jsonrpc", "de": "Port jsonrpc", "ru": "Порт jsonrpc:"},
+	"PortWeb:":                 	{"en": "Port Webserver KODI", "de": "Port Webserver KODI", "ru": "Port Webserver KODI:"},
+	"default:":                 	{"en": "default 9090", "de": "default 9090", "ru": "по умолчанию 9090"},
         "on save adapter restarts with new config immediately": {
             "de": "Beim Speichern von Einstellungen der Adapter wird sofort neu gestartet.",
             "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
@@ -68,12 +70,14 @@
     <table><tr>
         <td><img src="kodi.png"/></td>
     </tr></table>
-    <h4 class="translate">Kodi adapter settings</h4>
+    <h3 class="translate">Kodi adapter settings</h3>
     <table>
-        <tr><td class="translate">IP:</td><td> <input class="value" id="ip"/><br></tr>
-        <tr><td  class="translate">Port:</td><td> <input class="value" id="port"/><br></tr>
-		<tr><td class="translate">Login:</td><td> <input class="value" id="login"/><br></tr>
-        <tr><td  class="translate">Password:</td><td> <input class="value" id="password"/><br></tr>
+    <tr><td class="translate">IP:</td><td> <input class="value" id="ip"/></td></tr>
+        <tr><td  class="translate">PortRPC:</td><td> <input class="value" id="port"/><td  class="translate">default:</td> </tr>
+        <tr><td colspan='2'><h4 class="translate">Kodi webserver settings</h4></td></tr>
+        <tr><td  class="translate">PortWeb:</td><td> <input class="value" id="portweb"/></td> </tr>
+		<tr><td class="translate">Login:</td><td> <input class="value" id="login"/></td></tr>
+        <tr><td  class="translate">Password:</td><td> <input class="value" id="password"/></td></tr>
     </table>
     <p class="translate">on save adapter restarts with new config immediately</p>
 </div>
