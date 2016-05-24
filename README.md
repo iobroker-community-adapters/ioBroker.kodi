@@ -27,28 +27,28 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
 ## Using
 ###ShowNotif: 
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
-####Image:
+**Image:**
 Уровень сообщения
   * 'info' - 0 (default),
   * 'warning' - 1,
   * 'error' - 2.
 
-####displaytime:
+**displaytime:**
 Время отображения сообщения в милисекундах, минимум 1500 макс 30000 мс.
 
-Пример: 
+**Пример:**
  * 1;Внимание;Протечка воды;15000
  * Внимание;Протечка воды;2;10000
  * Внимание;Протечка воды
  * Протечка воды
 
-Так же сообщения можно отправлять из javascript:
+Так же сообщения можно отправлять из драйвера javascript:
 ```js
 sendTo("kodi.0", {
-    message:  'Возможно протечка воды ',
-    title:    'ВНИМАНИЕ!!!',
-    image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png',
-    delay: ''
+    message:  'Возможно протечка воды ', //Текст сообщения
+    title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
+    image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
+    delay: '7000' //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 ###SwitchPVR: 
@@ -56,34 +56,34 @@ sendTo("kodi.0", {
 Пример:
 	ТВ канал - Discovery Science найдет как по полному наименованию так и по discover,
 	
-###youtube: 
+###Youtube: 
 Для открытия видео с сайта youtube достаточно записать код видео в данный статус.
 Например: Для открытия этого [видео](https://www.youtube.com/watch?v=Bvmxr24D4TA), необходимо установить в статус - Bvmxr24D4TA
 
-###open: 
+###Open: 
 Сюда записывается ссылка на медиконтент в сети интернет либо путь до локального медиа файла.
 После записи значения начнется воспроизведение на проигрователе KODI.
 
-###position: 
+###Position: 
 Текущая позиция в плейлисте, так же в этот статус можно записать необходимую позицую и KODI тут же перейдет к воспроизведению этой позиции.
 
-###seek: 
+###Seek: 
 Текущее значение позиции воспроизведения в процентах от 0 до 100.
 
-###repeat: 
+###Repeat: 
 Повтор воспроизведения, принимает следующие значения:
 * off - повтор воспроизведения отключен
 * on - повтор воспроизведения текущего трека
 * all - повтор всего плейлиста
 
-###shuffle: 
+###Shuffle: 
 Перемешивание списка треков в плейлисте для случайного воспроизведения.
 Принимает значения true и false
 
-###play: 
+###Play: 
 Старт воспроизведения (true, false)
 
-###speed: 
+###Speed: 
 Скорость воспроизведения. Фиксированные значения -32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32, а также increment и decrement
 
 ###Directory: 
@@ -92,7 +92,7 @@ sendTo("kodi.0", {
 ###ActivateWindow: 
 Активизирует в проигрывателе окно. Поддерживает следующий список:
 ```
-"home","programs","pictures","filemanager","files","settings","music","video","videos","tv","pvr","pvrguideinfo","pvrrecordinginfo","pvrtimersetting","pvrgroupmanager","pvrchannelmanager",,"pvrchannelmanager","pvrguidesearch","pvrchannelscan","pvrupdateprogress","pvrosdchannels","pvrosdguide","pvrosddirector","pvrosdcutter","pvrosdteletext","systeminfo","testpattern","screencalibration","guicalibration","picturessettings","programssettings","weathersettings","musicsettings","systemsettings","videossettings","networksettings","servicesettings","appearancesettings","pvrsettings","tvsettings","scripts","videofiles","videolibrary","videoplaylist","loginscreen","profiles","skinsettings","addonbrowser","yesnodialog","progressdialog","virtualkeyboard","volumebar","submenu","favourites","contextmenu","infodialog","numericinput","gamepadinput","shutdownmenu","mutebug","playercontrols","seekbar","musicosd","addonsettings","visualisationsettings","visualisationpresetlist","osdvideosettings","osdaudiosettings","videobookmarks","filebrowser","networksetup","mediasource","profilesettings","locksettings","contentsettings","songinformation","smartplaylisteditor","smartplaylistrule","busydialog","pictureinfo","accesspoints","fullscreeninfo","karaokeselector","karaokelargeselector","sliderdialog","addoninformation","musicplaylist","musicfiles","musiclibrary","musicplaylisteditor","teletext","selectdialog","musicinformation","okdialog","movieinformation","textviewer","fullscreenvideo","fullscreenlivetv","visualisation","slideshow","filestackingdialog","karaoke","weather","screensaver","videoosd","videomenu","videotimeseek","musicoverlay","videooverlay","startwindow","startup","peripherals","peripheralsettings","extendedprogressdialog","mediafilter".
+"home","programs","pictures","filemanager","files","settings","music","video","videos","tv","pvr","pvrguideinfo","pvrrecordinginfo","pvrtimersetting","pvrgroupmanager","pvrchannelmanager","pvrchannelmanager","pvrguidesearch","pvrchannelscan","pvrupdateprogress","pvrosdchannels","pvrosdguide","pvrosddirector","pvrosdcutter","pvrosdteletext","systeminfo","testpattern","screencalibration","guicalibration","picturessettings","programssettings","weathersettings","musicsettings","systemsettings","videossettings","networksettings","servicesettings","appearancesettings","pvrsettings","tvsettings","scripts","videofiles","videolibrary","videoplaylist","loginscreen","profiles","skinsettings","addonbrowser","yesnodialog","progressdialog","virtualkeyboard","volumebar","submenu","favourites","contextmenu","infodialog","numericinput","gamepadinput","shutdownmenu","mutebug","playercontrols","seekbar","musicosd","addonsettings","visualisationsettings","visualisationpresetlist","osdvideosettings","osdaudiosettings","videobookmarks","filebrowser","networksetup","mediasource","profilesettings","locksettings","contentsettings","songinformation","smartplaylisteditor","smartplaylistrule","busydialog","pictureinfo","accesspoints","fullscreeninfo","karaokeselector","karaokelargeselector","sliderdialog","addoninformation","musicplaylist","musicfiles","musiclibrary","musicplaylisteditor","teletext","selectdialog","musicinformation","okdialog","movieinformation","textviewer","fullscreenvideo","fullscreenlivetv","visualisation","slideshow","filestackingdialog","karaoke","weather","screensaver","videoosd","videomenu","videotimeseek","musicoverlay","videooverlay","startwindow","startup","peripherals","peripheralsettings","extendedprogressdialog","mediafilter".
 ```
 
 ###ExecuteAction: 
