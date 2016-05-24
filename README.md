@@ -12,8 +12,9 @@ You can find kodi's official documentation of the JSON-RCP API [here](http://kod
 Remote control enable.
 
 JSON-RPC API использует по умолчанию порт 9090, для того чтобы его изменить необходимо внести изменения в файл [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
-Note: The advancedsettings.xml file does not exist by default. You have to create it first!
-```
+
+_Note: The advancedsettings.xml file does not exist by default. You have to create it first!_
+```xml
 <jsonrpc>
     <compactoutput>false</compactoutput>
     <tcpport>9999</tcpport>
@@ -42,7 +43,7 @@ Note: The advancedsettings.xml file does not exist by default. You have to creat
  * Протечка воды
 
 Так же сообщения можно отправлять из javascript:
-```
+```js
 sendTo("kodi.0", {
     message:  'Возможно протечка воды ',
     title:    'ВНИМАНИЕ!!!',
