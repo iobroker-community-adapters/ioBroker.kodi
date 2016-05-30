@@ -510,7 +510,7 @@ function GetChannels(){
     }
 }
 function GetPlayerProperties(){
-    if (connection){
+    if (connection && player_id){
         var batch = connection.batch();
         var Properties = batch.Player.GetProperties({
             "playerid":   player_id,
@@ -586,11 +586,14 @@ function GetPlayerId(){
     if (connection){
         connection.run('Player.GetActivePlayers').then(function (res){
             adapter.log.debug('Response GetPlayerId: ' + JSON.stringify(res));
-            if (res){
-				player_id = res[0].playerid;
-				player_type = res[0].type;
-				GetPlayerProperties();
-            }
+                if (res.length > 0){
+                    player_id = res[0].playerid;
+                    player_type = res[0].type;
+                    GetPlayerProperties();
+                } else {
+                    player_id = null;
+                    player_type = null;
+                }
             timer = setTimeout(function (){
                 GetPlayerId();
             }, 2000);
