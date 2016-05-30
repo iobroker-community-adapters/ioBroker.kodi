@@ -106,6 +106,10 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.1 (2016-05-30)
+* (instalator) change admin setting
+* (instalator) Fix error 'playerid' of undefined
+
 #### 0.1.0 (2016-05-22)
 * (instalator) beta
 
