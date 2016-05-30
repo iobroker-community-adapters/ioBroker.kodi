@@ -10,7 +10,7 @@ You can find kodi's official documentation of the JSON-RCP API [here](http://kod
 
 ## Конфигурация KODI
 Remote control enable.
-
+![Remote control enable.](admin/remote.jpg)
 JSON-RPC API использует **по умолчанию порт 9090**, для того чтобы его изменить необходимо внести изменения в файл [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
 
 _Note: The advancedsettings.xml file does not exist by default. You have to create it first!_
@@ -20,6 +20,7 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
     <tcpport>9999</tcpport>
 </jsonrpc>
 ```
+![http enable.](admin/web.jpg)
 
 ## Конфигурация драйвера
 В найстройках драйвера указывается IP адрес KODI и порт для JSON-RPC API (по умолчанию 9090).
