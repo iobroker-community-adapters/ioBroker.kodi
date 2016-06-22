@@ -288,6 +288,7 @@ function connection_emit(){
     });
     connection.notification('Player.OnStop', function(res) {
         adapter.setState('stop', {val: true, ack: true});
+        adapter.setState('play', {val: false, ack: true});
     });
     connection.notification('Input.OnInputRequested', function(res) {
         //adapter.log.error('OnInputRequested: ' + JSON.stringify(res));
