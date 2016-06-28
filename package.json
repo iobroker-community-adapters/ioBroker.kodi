@@ -25,7 +25,7 @@
     "url": "https://github.com/instalator/ioBroker.kodi"
   },
   "dependencies": {
-    "kodi-ws": "https://github.com/PaulAvery/kodi-ws/tarball/master/"
+    "kodi-ws": "https://github.com/instalator/kodi-ws/tarball/master/"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
