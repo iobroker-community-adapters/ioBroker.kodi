@@ -106,6 +106,11 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.2 (2016-07-05)
+* (instalator) change pvr switch - add stop
+* (instalator) change dependencies
+* (instalator) fix change play/stop state
+
 #### 0.1.1 (2016-05-30)
 * (instalator) change admin setting
 * (instalator) Fix error 'playerid' of undefined
