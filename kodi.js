@@ -96,10 +96,12 @@ function ConstructorCmd(method, ids, param){
             case "SwitchPVR":
                 method = null;
                 SwitchPVR(param, function (res){
-                    sendCommand('Player.Open', res);
-                    setTimeout(function (){
-                        sendCommand('GUI.SetFullscreen', {"fullscreen": true});
-                    }, 5000);
+					sendCommand('Player.Stop', {'playerid': player_id}, function (){
+						sendCommand('Player.Open', res);
+						setTimeout(function (){
+							sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+						}, 5000);
+					});
                 });
                 break;
             case "ShowNotif":
