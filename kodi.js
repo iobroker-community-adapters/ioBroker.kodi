@@ -192,6 +192,7 @@ function ConstructorCmd(method, ids, param){
                 param = param.toString();
                 break;
             case "open":
+            	method = null;
                 param = param.toString();
                 playlist_id = 0;
                 var type = {'playlistid': playlist_id, 'item': {'file': param}};
