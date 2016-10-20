@@ -106,6 +106,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.3
+* (bluefox) fix error milti instance
+
 #### 0.1.2 (2016-07-05)
 * (instalator) change pvr switch - add stop
 * (instalator) change dependencies
