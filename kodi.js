@@ -192,7 +192,6 @@ function ConstructorCmd(method, ids, param){
                 param = param.toString();
                 break;
             case "open":
-            	method = null;
                 param = param.toString();
                 playlist_id = 0;
                 var type = {'playlistid': playlist_id, 'item': {'file': param}};
@@ -465,7 +464,7 @@ function GetNameVersion(){
         batch.send();
         Promise.all([GetProperties, GetInfoBooleans, GetInfoLabels]).then(function (res){
             adapter.log.debug('GetNameVersion: ' + JSON.stringify(res[1]));
-            if (res[2]['System.KernelVersion'] === 'Ждите…'){
+            if (res[2]['System.KernelVersion'] === 'Ждите…' || res[2]['System.KernelVersion'] === 'Wait…' || res[2]['System.KernelVersion'] === 'Warten…'){
                 setTimeout(function (){
                     GetNameVersion();
                 }, 10000);
@@ -514,7 +513,7 @@ function GetChannels(){
     }
 }
 function GetPlayerProperties(){
-    if (connection && player_id){
+    if (connection && player_id !== undefined && player_id !== null){
         var batch = connection.batch();
         var Properties = batch.Player.GetProperties({
             "playerid":   player_id,
