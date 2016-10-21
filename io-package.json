@@ -1,7 +1,19 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.1.3",
+        "version":                  "0.1.4",
+		"news": {
+			"0.1.4": {
+				"en": "fix error for Open, fix method number",
+				"de": "fix error for Open, fix method number",
+				"ru": "fix error for Open, fix method number"
+			},
+			"0.1.3": {
+				"en": "fix error milti instance",
+				"de": "fix error milti instance",
+				"ru": "fix error milti instance"
+			}
+		},
         "title":                    "KODI adapter",
         "desc":                     {
 			 "en": "KODI Adapter",
