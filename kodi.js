@@ -77,7 +77,7 @@ adapter.on('stateChange', function (id, state){
         var param = state.val;
         var ids = id.split(".");
         var method = ids[ids.length - 2].toString();
-        if (method === '0'){ //
+        if (isNumeric(method)){
             method = null;
         }
         ids = ids[ids.length - 1].toString();
@@ -729,4 +729,7 @@ function ErrProcessing(error){
     adapter.log.error(error);
     connection = null;
     getConnection();
+}
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 }
