@@ -87,7 +87,7 @@ adapter.on('stateChange', function (id, state){
 });
 
 function ConstructorCmd(method, ids, param){
-    //adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + param);
+    adapter.log.debug('ConstructorCmd ' + method + ' - ' + ids + ' = ' + param);
     if (method === 'input'){
         method = 'Input.' + ids;
         param = [];
@@ -192,6 +192,7 @@ function ConstructorCmd(method, ids, param){
                 param = param.toString();
                 break;
             case "open":
+                method = null;
                 param = param.toString();
                 playlist_id = 0;
                 var type = {'playlistid': playlist_id, 'item': {'file': param}};
@@ -216,6 +217,7 @@ function ConstructorCmd(method, ids, param){
                 }
                 break;
             case "Directory":
+                method = null;
                 param = param.toString().replace("\\", "\\\\");
                 GetDirectory(param);
                 break;
