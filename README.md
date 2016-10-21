@@ -106,6 +106,10 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.4 (2016-07-05)
+* (instalator) fix error for Open
+* (instalator) fix method number
+
 #### 0.1.3
 * (bluefox) fix error milti instance
 
