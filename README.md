@@ -2,6 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
+[![Tests](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)](https://travis-ci.org/instalator/ioBroker.kodi)
 
 [![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)](https://nodei.co/npm/iobroker.kodi/)
 
