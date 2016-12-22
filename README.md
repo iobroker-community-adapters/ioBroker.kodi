@@ -9,6 +9,8 @@
 # Kodi's JSON-RPC API for IoBroker
 You can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).
 
+***Note: This adapter requires Node 0.12+ (so 0.10 not supported)***
+
 ## Конфигурация KODI
 Remote control enable.
 ![Remote control enable.](admin/remote.jpg)
@@ -27,7 +29,7 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
 В найстройках драйвера указывается IP адрес KODI и порт для JSON-RPC API (по умолчанию 9090).
 
 ## Using
-###ShowNotif: 
+###ShowNotif:
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 
 **Image:**
@@ -58,7 +60,7 @@ sendTo("kodi.0", {
 Переключение PVR IPTV каналов по названию канала в плейлисте.
 **Пример:**
   ТВ канал - Discovery Science найдет как по полному наименованию так и по discover,
-	
+
 ###Youtube:
 Для открытия видео с сайта youtube достаточно записать код видео в данный статус.
 Например: Для открытия этого [видео](https://www.youtube.com/watch?v=Bvmxr24D4TA), необходимо установить в статус - Bvmxr24D4TA
