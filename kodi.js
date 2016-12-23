@@ -200,7 +200,11 @@ function ConstructorCmd(method, ids, param){
 					}
 				}
                 sendCommand('Player.Open', param, function (){
-					sendCommand('Input.ExecuteAction', "select"); //TODO dont action
+					sendCommand('Input.ExecuteAction', { "action": "select" }, function (){
+						sendCommand('Player.Open', {'item': {'playlistid': playlist_id, 'position': 0}}, function (){
+								sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+						});
+					});	
                 });
                 break;
             case "ActivateWindow":
@@ -209,7 +213,7 @@ function ConstructorCmd(method, ids, param){
                 break;
             case "ExecuteAction":
                 method = 'Input.ExecuteAction';
-                param = param.toString();
+                param = { "action": param };
                 break;
             case "open":
                 method = null;
