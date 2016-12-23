@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.1.4",
+        "version":                  "0.1.5", 
 		"news": {
+	    		"0.1.5": {
+				"en": "added open youtube playlist and open youtube link. Added Tests",
+				"de": "added open youtube playlist and open youtube link. Added Tests",
+				"ru": "added open youtube playlist and open youtube link. Added Tests"
+			},
 			"0.1.4": {
 				"en": "fix error for Open, fix method number",
 				"de": "fix error for Open, fix method number",
