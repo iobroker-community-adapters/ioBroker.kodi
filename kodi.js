@@ -180,8 +180,28 @@ function ConstructorCmd(method, ids, param){
                 param = {'playerid': player_id};
                 break;
             case "youtube":
-                method = 'Player.Open';
-                param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + param.toString()}};
+				method = null;
+				if (param){
+					if (~param.indexOf('http')){
+						param = param.toString().split('=');
+						if (param.length > 2){
+							param = param[param.length - 1];
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_all&amp;playlist=' + param.toString()}};
+						} else if (param.length === 2){
+							param = param[1];
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + param.toString()}};
+						}
+					} else {
+						if (param.toString().length > 12){
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_all&amp;playlist=' + param.toString()}};
+						} else {
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + param.toString()}};
+						}
+					}
+				}
+                sendCommand('Player.Open', param, function (){
+					sendCommand('Input.ExecuteAction', "select"); //TODO dont action
+                });
                 break;
             case "ActivateWindow":
                 method = 'GUI.ActivateWindow';
