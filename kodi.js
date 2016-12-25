@@ -3,6 +3,7 @@
 var kodi = require('kodi-ws');
 var utils = require(__dirname + '/lib/utils');
 var adapter = utils.adapter('kodi');
+//var querystring = require('querystring');
 
 var object = {};
 var connection = null;
@@ -183,28 +184,31 @@ function ConstructorCmd(method, ids, param){
 				method = null;
 				if (param){
 					if (~param.indexOf('http')){
+                        /*param = param.replace('&', '?').replace('#', '?');
+                        param = querystring.parse(param, '?', '=');*/
 						param = param.toString().split('=');
 						if (param.length > 2){
 							param = param[param.length - 1];
-							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_all&amp;playlist=' + param.toString()}};
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?path=/root/video&action=play_all&playlist=' + param.toString()}};
 						} else if (param.length === 2){
 							param = param[1];
-							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + param.toString()}};
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?path=/root/video&action=play_video&videoid=' + param.toString()}};
 						}
 					} else {
 						if (param.toString().length > 12){
-							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_all&amp;playlist=' + param.toString()}};
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?path=/root/video&action=play_all&playlist=' + param.toString()}};
 						} else {
-							param = {'item': {'file': 'plugin://plugin.video.youtube/?action=play_video&amp;videoid=' + param.toString()}};
+							param = {'item': {'file': 'plugin://plugin.video.youtube/?path=/root/video&action=play_video&videoid=' + param.toString()}};
 						}
 					}
 				}
-                sendCommand('Input.ExecuteAction', { "action": "select" }, function (){
-						
+				sendCommand('Player.Open', param, function (){
+					sendCommand('Input.ExecuteAction', { "action": "select" }, function (){
 						sendCommand('Player.Open', {'item': {'playlistid': 1, 'position': 0}}, function (){
 								sendCommand('GUI.SetFullscreen', {"fullscreen": true});
 						});
 					});	
+                });
                 break;
             case "ActivateWindow":
                 method = 'GUI.ActivateWindow';
