@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.1.7", 
+        "version":                  "0.1.8", 
 		"news": {
-			"0.1.7": {
+			"0.1.8": {
 				"en": "change open youtube playlist",
 				"de": "change open youtube playlist",
 				"ru": "change open youtube playlist"
