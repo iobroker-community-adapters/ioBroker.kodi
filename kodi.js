@@ -199,13 +199,12 @@ function ConstructorCmd(method, ids, param){
 						}
 					}
 				}
-                sendCommand('Player.Open', param, function (){
-					sendCommand('Input.ExecuteAction', { "action": "select" }, function (){
-						sendCommand('Player.Open', {'item': {'playlistid': playlist_id, 'position': 0}}, function (){
+                sendCommand('Input.ExecuteAction', { "action": "select" }, function (){
+						
+						sendCommand('Player.Open', {'item': {'playlistid': 1, 'position': 0}}, function (){
 								sendCommand('GUI.SetFullscreen', {"fullscreen": true});
 						});
 					});	
-                });
                 break;
             case "ActivateWindow":
                 method = 'GUI.ActivateWindow';
