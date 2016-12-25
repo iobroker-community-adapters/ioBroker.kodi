@@ -109,6 +109,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.7 (2016-12-25)
+* (instalator) change open youtube playlist
+
 #### 0.1.6 (2016-12-23)
 * (instalator) added Tests
 * (instalator) added open youtube playlist and open youtube link
