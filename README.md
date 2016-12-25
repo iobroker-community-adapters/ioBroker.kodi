@@ -109,7 +109,7 @@ sendTo("kodi.0", {
 
 ## Changelog
 
-#### 0.1.7 (2016-12-25)
+#### 0.1.8 (2016-12-25)
 * (instalator) change open youtube playlist
 
 #### 0.1.6 (2016-12-23)
