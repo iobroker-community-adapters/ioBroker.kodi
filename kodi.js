@@ -294,7 +294,7 @@ adapter.on('ready', function (){
 
 function connect(){
     adapter.setState('info.connection', false, true);
-    adapter.log.info('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
+    adapter.log.debug('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
     getConnection(function (err, _connection){
         if (_connection){
             GetNameVersion();
