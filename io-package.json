@@ -436,10 +436,14 @@
 			"_id": "seek",
 			"type": "state",
 			"common": {
-				"name": "seek",
-				"def": false,
-				"role": "media",
-				"type": "number"
+			  "role": "media.seek",
+			  "name": "Controlling playback seek",
+			  "type": "number",
+			  "unit": "%",
+			  "min": 0,
+			  "max": 100,
+			  "read": true,
+			  "write": true
 			},
 			"native": {
 				
@@ -488,10 +492,12 @@
 			"_id": "next",
 			"type": "state",
 			"common": {
-				"name": "next",
-				"type": "string",
-				"def": false,
-				"role": "media"
+			  "role": "button.next",
+			  "name": "Controlling playback next",
+			  "type": "boolean",
+			  "read": false,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -501,10 +507,12 @@
 			"_id": "previous",
 			"type": "state",
 			"common": {
-				"name": "previous",
-				"type": "string",
-				"def": false,
-				"role": "media"
+			  "role": "button.prev",
+			  "name": "Controlling playback previous",
+			  "type": "boolean",
+			  "read": false,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -514,10 +522,12 @@
 			"_id": "stop",
 			"type": "state",
 			"common": {
-				"name": "stop",
-				"type": "string",
-				"def": false,
-				"role": "media"
+			  "role": "button.stop",
+			  "name": "Controlling playback stop",
+			  "type": "boolean",
+			  "read": false,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -527,10 +537,12 @@
 			"_id": "mute",
 			"type": "state",
 			"common": {
-				"name": "mute",
-				"def": false,
-				"role": "media",
-				"type": "boolean"
+			  "role": "media.mute",
+			  "name": "Player mute",
+			  "type": "boolean",
+			  "read": true,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -540,10 +552,13 @@
 			"_id": "volume",
 			"type": "state",
 			"common": {
-				"name": "volume",
-				"def": false,
-				"role": "media",
-				"type": "number"
+			  "name": "volume",
+			  "type": "number",
+			  "role": "level.volume",
+			  "read": true,
+			  "write": false,
+			  "min": 0,
+			  "max": 100
 			},
 			"native": {
 				
@@ -618,10 +633,12 @@
 			"_id": "repeat",
 			"type": "state",
 			"common": {
-				"name": "repeat",
-				"def": false,
-				"role": "media",
-				"type": "string"
+			  "name": "repeat",
+			  "type": "boolean",
+			  "role": "media.mode.repeat",
+			  "read": true,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -631,10 +648,12 @@
 			"_id": "shuffle",
 			"type": "state",
 			"common": {
-				"name": "shuffle",
-				"def": false,
-				"role": "media",
-				"type": "boolean"
+			  "name": "shuffle",
+			  "type": "boolean",
+			  "role": "media.mode.shuffle",
+			  "read": true,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -724,7 +743,7 @@
 			"common": {
 				"name": "bitrate",
 				"def": false,
-				"role": "media",
+				"role": "media.bitrate",
 				"type": "string"
 			},
 			"native": {
@@ -748,10 +767,12 @@
 			"_id": "info.album",
 			"type": "state",
 			"common": {
-				"name": "info.album",
-				"def": false,
-				"role": "media",
-				"type": "string"
+			  "name": "Album of current played song",
+			  "type": "string",
+			  "role": "media.album",
+				  "read": true,
+			  "write": false,
+				  "def": ""
 			},
 			"native": {
 				
@@ -761,10 +782,12 @@
 			"_id": "info.artist",
 			"type": "state",
 			"common": {
-				"name": "info.artist",
-				"def": false,
-				"role": "media",
-				"type": "string"
+			  "name": "Artist of current played song",
+			  "type": "string",
+			  "role": "media.artist",
+				  "read": true,
+			  "write": false,
+				  "def": ""
 			},
 			"native": {
 				
@@ -865,10 +888,12 @@
 			"_id": "info.title",
 			"type": "state",
 			"common": {
-				"name": "info.title",
-				"def": false,
-				"role": "media",
-				"type": "string"
+			  "name": "Title of current played song",
+			  "type": "string",
+			  "role": "media.title",
+				  "read": true,
+			  "write": false,
+				  "def": ""
 			},
 			"native": {
 				
@@ -1047,10 +1072,12 @@
 			"_id": "play",
 			"type": "state",
 			"common": {
-				"name": "play",
-				"type": "string",
-				"def": false,
-				"role": "media"
+			  "role": "button.play",
+			  "name": "Controlling playback play",
+			  "type": "boolean",
+			  "read": false,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
@@ -1060,10 +1087,12 @@
 			"_id": "pause",
 			"type": "state",
 			"common": {
-				"name": "pause",
-				"type": "string",
-				"def": false,
-				"role": "media"
+			  "role": "button.pause",
+			  "name": "Controlling playback pause",
+			  "type": "boolean",
+			  "read": false,
+			  "write": true,
+			  "def": false
 			},
 			"native": {
 				
