@@ -6,6 +6,7 @@ var adapter = utils.adapter('kodi');
 //var querystring = require('querystring');
 
 var object = {};
+
 var connection = null;
 var player_id = null;
 var player_type = null;
@@ -16,7 +17,6 @@ var mem = null;
 var mem_pos = null;
 var mem_time = null;
 var timer;
-var pre;
 
 adapter.on('unload', function (callback){
     try {
@@ -191,10 +191,11 @@ function ConstructorCmd(method, ids, param){
                 adapter.setState('playlist', {val: '[]', ack: true});
                 break;
             case "add":
+                var type;
                 method = null;
                 param = param.toString();
                 playlist_id = 0;
-                var type = {'playlistid': playlist_id, 'item': {'file': param}};
+                    type = {'playlistid': playlist_id, 'item': {'file': param}};
                 if (param.slice(-1) === '\\' || param.slice(-1) === '/'){
                     type = {'playlistid': playlist_id, 'item': {'directory': param}};
                 }
@@ -243,15 +244,16 @@ function ConstructorCmd(method, ids, param){
                 param = { "action": param };
                 break;
             case "open":
+                var type2;
                 method = null;
                 param = param.toString();
                 playlist_id = 0;
-                var type = {'playlistid': playlist_id, 'item': {'file': param}};
+                    type2 = {'playlistid': playlist_id, 'item': {'file': param}};
                 if (param.slice(-1) === '\\'){
-                    type = {'playlistid': playlist_id, 'item': {'directory': param}};
+                    type2 = {'playlistid': playlist_id, 'item': {'directory': param}};
                 }
                 sendCommand('Playlist.Clear', {'playlistid': playlist_id}, function (){
-                    sendCommand('Playlist.Add', type, function (){
+                    sendCommand('Playlist.Add', type2, function (){
                         sendCommand('Player.Open', {'item': {'playlistid': playlist_id, 'position': 0}}, function (){
                             sendCommand('GUI.SetFullscreen', {"fullscreen": true});
                         });
@@ -739,7 +741,7 @@ function time(hour, min, sec){
     if (parseInt(hour) === 0){
         time = min + ':' + sec;
     } else {
-        time = hour + ':' + min + '-' + sec;
+        time = hour + ':' + min + ':' + sec;
     }
     return time;
 }
