@@ -109,6 +109,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.1.9 (2017-01-05)
+* (instalator) change for vis-players
+
 #### 0.1.8 (2016-12-25)
 * (instalator) change open youtube playlist
 

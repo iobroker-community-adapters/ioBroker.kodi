@@ -16,6 +16,7 @@ var mem = null;
 var mem_pos = null;
 var mem_time = null;
 var timer;
+var pre;
 
 adapter.on('unload', function (callback){
     try {
@@ -114,20 +115,12 @@ function ConstructorCmd(method, ids, param){
             case "zoom":
                 if (param >= 0 && param <= 10){
                     method = 'Player.Zoom'; //
-                    param = {"playerid": player_id, "zoom": parseInt(param)}
+                    param = {"playerid": player_id, "zoom": parseInt(param)};
                 }
                 break;
             case "setsubtitle":
                 method = 'Player.SetSubtitle'; //"previous", "next", "off", "on
-                param = {"playerid": player_id, "subtitle": param}
-                break;
-            case "GoTo":
-                method = 'Player.GoTo'; //
-                param = {"playerid": player_id, "to": param}
-                break;
-            case "position": //
-                method = 'Player.GoTo'; //
-                param = {"playerid": player_id, "to": param}
+                param = {"playerid": player_id, "subtitle": param};
                 break;
             case "seek":
                 if (param >= 0 && param <= 100 && canseek){
@@ -164,6 +157,18 @@ function ConstructorCmd(method, ids, param){
                 }
 
                 break;
+            case "playid":
+                method = null;
+                if (player_id !== 'undefined'){
+                    method = 'Player.GoTo';
+                } else {
+                    sendCommand('Input.ExecuteAction', 'play', function (){ //TODO
+                        sendCommand('Player.GoTo', {"playerid": player_id, "to": param}, function (){
+                        });
+                    });
+                }
+                param = {"playerid": player_id, "to": param};
+                break;
             case "next":
                 method = 'Input.ExecuteAction';
                 param = 'skipnext';
@@ -179,6 +184,25 @@ function ConstructorCmd(method, ids, param){
             case "stop":
                 method = 'Player.Stop';
                 param = {'playerid': player_id};
+                break;
+            case "clear":
+                method = 'Playlist.Clear';
+                param = {'playlistid': playlist_id};
+                adapter.setState('playlist', {val: '[]', ack: true});
+                break;
+            case "add":
+                method = null;
+                param = param.toString();
+                playlist_id = 0;
+                var type = {'playlistid': playlist_id, 'item': {'file': param}};
+                if (param.slice(-1) === '\\' || param.slice(-1) === '/'){
+                    type = {'playlistid': playlist_id, 'item': {'directory': param}};
+                }
+                sendCommand('Playlist.Add', type, function (){
+                    sendCommand('Player.Open', {'item': {'playlistid': playlist_id, 'position': 0}}, function (){
+                        sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                    });
+                });
                 break;
             case "youtube":
 				method = null;
@@ -326,6 +350,9 @@ function connection_emit(){
         //{"data":{"title":"Строка поиска","type":"keyboard","value":""},"sender":"xbmc"}
         //adapter.setState('OnInputRequested', {val: true, ack: true});
     });
+    connection.notification('Playlist.OnClear', function(res) {
+        adapter.setState('playlist', {val: '[]', ack: true});
+    });
 
 }
 function GetVolume(){
@@ -355,7 +382,7 @@ function main(){
     connect();
 }
 
-function GetSources(){
+function GetSources(root){
     var obj = {
         'video':[],
         'music':[],
@@ -367,16 +394,18 @@ function GetSources(){
     if (connection){
         Object.keys(obj).forEach(function(key) {
             connection.run('Files.GetSources', {"media": key}).then(function (res){
-                adapter.log.debug('GetSources: ' + JSON.stringify(res));
+                //adapter.log.debug('GetSources: ' + JSON.stringify(res));
                 if (res.limits.total > 0){
                     for (var i = 0; i < res.limits.total; i++) {
                         obj[key][i] = res.sources[i];
-                        adapter.log.debug('GetSources: ' + JSON.stringify(obj));
+                        //adapter.log.debug('GetSources: ' + JSON.stringify(obj));
                     }
                 }
                 count++;
                 if (count === 5){
+                    adapter.log.debug('GetSources: ' + JSON.stringify(obj));
                     adapter.setState('Sources', {val: JSON.stringify(obj), ack: true});
+                    filemanager(root, obj);
                 }
             }, function (e){
                 ErrProcessing(e);
@@ -386,21 +415,45 @@ function GetSources(){
         });
     }
 }
+
+function filemanager(root, obj){
+    var browser = {};
+    var files = [];
+    for (var key in obj){
+        if (obj.hasOwnProperty(key)){
+            if (obj[key].length > 0){
+                for (var i = 0; i < obj[key].length; i++) {
+                    var o = {};
+                    o.file = obj[key][i].file;
+                    o.filetype = 'directory';
+                    files.push(o);
+                }
+            }
+        }
+    }
+    browser.files = files;
+    adapter.setState('Directory', {val: JSON.stringify(browser), ack: true});
+}
 function GetDirectory(path){
-    if (connection){
-        connection.run('Files.GetDirectory', {
-            "directory":  path,
-            "media":      "files",
-            "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "album", "showtitle", "playcount", "file", "mimetype", "size", "lastmodified", "resume"],
-            "sort":       {"method": "none", "order": "ascending"}
-        }).then(function (res){
-            adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
-            adapter.setState('Directory', {val: JSON.stringify(res), ack: true});
-        }, function (e){
-            ErrProcessing(e);
-        }).catch(function (e){
-            ErrProcessing(e);
-        })
+    adapter.log.debug('GetDirectory path: ' + JSON.stringify(path));
+    if (path !== '/'){
+        if (connection){
+            connection.run('Files.GetDirectory', {
+                "directory":  path,
+                "media":      "files",
+                "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "album", "showtitle", "playcount", "file", "mimetype", "size", "lastmodified", "resume"],
+                "sort":       {"method": "none", "order": "ascending"}
+            }).then(function (res){
+                adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
+                adapter.setState('Directory', {val: JSON.stringify(res), ack: true});
+            }, function (e){
+                ErrProcessing(e);
+            }).catch(function (e){
+                ErrProcessing(e);
+            })
+        }
+    } else {
+        GetSources(true);
     }
 }
 function GetVideoLibrary(){
@@ -553,58 +606,60 @@ function GetPlayerProperties(){
         var CurrentPlay = batch.Player.GetItem({"playerid": player_id});
         batch.send();
         Promise.all([Properties, InfoLabels, CurrentPlay]).then(function (res){
-            adapter.log.debug('Response GetPlayerProperties ' + JSON.stringify(res));
-            var total = (res[0].totaltime.hours * 3600) + (res[0].totaltime.minutes * 60) + res[0].totaltime.seconds;
-            var cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
-            playlist_id = res[0].playlistid;
-            adapter.setState('playing_time', {
-                val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds),
-                ack: true
-            });
-            adapter.setState('playing_time_total', {
-                val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds),
-                ack: true
-            });
-            canseek = res[0].canseek;
-            adapter.setState('seek', {val: parseInt(cur * 100 / total), ack: true});
-            adapter.setState('canseek', {val: res[0].canseek, ack: true});
-            adapter.setState('repeat', {val: res[0].repeat, ack: true});
-            adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
-            adapter.setState('speed', {val: res[0].speed, ack: true});
-            adapter.setState('position', {val: res[0].position, ack: true});
-            adapter.setState('playlistid', {val: res[0].playlistid, ack: true});
-            adapter.setState('partymode', {val: res[0].partymode, ack: true});
-            if (res[0].audiostreams.length > 0){
-                adapter.setState('codec', {val: res[0].audiostreams[0].codec, ack: true});
-                adapter.setState('bitrate', {val: res[0].audiostreams[0].bitrate, ack: true});
-                adapter.setState('channels', {val: res[0].audiostreams[0].channels, ack: true});
-                adapter.setState('language', {val: res[0].audiostreams[0].language, ack: true});
-                adapter.setState('audiostream', {val: res[0].audiostreams[0].name, ack: true});
-            } else {
-                adapter.setState('channels', {val: 2, ack: true});
-                adapter.setState('audiostream', {val: '', ack: true});
-                adapter.setState('language', {val: '', ack: true});
-                adapter.setState('codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
-                adapter.setState('samplerate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
-                adapter.setState('bitrate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
-            }
-            if (res[2].item.type == 'channel'){
-                adapter.setState('type', {val: res[2].item.type, ack: true});
-                channel = true;
-            } else {
-                adapter.setState('type', {val: res[0].type, ack: true});
-                channel = false;
-            }
-            if (res[2].item.label.toString().length < 2){
-                setTimeout(function (){
-                    adapter.getState(adapter.namespace + '.info.file', function (err, state){
-                        state = state.val.substring(state.val.lastIndexOf('/')+1, state.val.length-4);
-                        adapter.setState('currentplay', {val: state, ack: true});
-                    });
-                }, 1000);
-            } else {
-                adapter.setState('currentplay', {val: res[2].item.label, ack: true});
-            }
+                //TODO сохранять только изменения
+                //pre = res[0];
+                adapter.log.debug('Response GetPlayerProperties ' + JSON.stringify(res));
+                var total = (res[0].totaltime.hours * 3600) + (res[0].totaltime.minutes * 60) + res[0].totaltime.seconds;
+                var cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
+                playlist_id = res[0].playlistid;
+                adapter.setState('playing_time', {
+                    val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds),
+                    ack: true
+                });
+                adapter.setState('playing_time_total', {
+                    val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds),
+                    ack: true
+                });
+                canseek = res[0].canseek;
+                adapter.setState('seek', {val: parseInt(cur * 100 / total), ack: true});
+                adapter.setState('canseek', {val: res[0].canseek, ack: true});
+                adapter.setState('repeat', {val: res[0].repeat, ack: true});
+                adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
+                adapter.setState('speed', {val: res[0].speed, ack: true});
+                adapter.setState('position', {val: res[0].position, ack: true});
+                adapter.setState('playlistid', {val: res[0].playlistid, ack: true});
+                adapter.setState('partymode', {val: res[0].partymode, ack: true});
+                if (res[0].audiostreams.length > 0){
+                    adapter.setState('codec', {val: res[0].audiostreams[0].codec, ack: true});
+                    adapter.setState('bitrate', {val: res[0].audiostreams[0].bitrate, ack: true});
+                    adapter.setState('channels', {val: res[0].audiostreams[0].channels, ack: true});
+                    adapter.setState('language', {val: res[0].audiostreams[0].language, ack: true});
+                    adapter.setState('audiostream', {val: res[0].audiostreams[0].name, ack: true});
+                } else {
+                    adapter.setState('channels', {val: 2, ack: true});
+                    adapter.setState('audiostream', {val: '', ack: true});
+                    adapter.setState('language', {val: '', ack: true});
+                    adapter.setState('codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
+                    adapter.setState('samplerate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
+                    adapter.setState('bitrate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
+                }
+                if (res[2].item.type == 'channel'){
+                    adapter.setState('type', {val: res[2].item.type, ack: true});
+                    channel = true;
+                } else {
+                    adapter.setState('type', {val: res[0].type, ack: true});
+                    channel = false;
+                }
+                if (res[2].item.label.toString().length < 2){
+                    setTimeout(function (){
+                        adapter.getState(adapter.namespace + '.info.file', function (err, state){
+                            state = state.val.substring(state.val.lastIndexOf('/') + 1, state.val.length - 4);
+                            adapter.setState('currentplay', {val: state, ack: true});
+                        });
+                    }, 1000);
+                } else {
+                    adapter.setState('currentplay', {val: res[2].item.label, ack: true});
+                }
 
         }, function (e){
             ErrProcessing(e);
@@ -682,9 +737,9 @@ function time(hour, min, sec){
     min = (parseInt(min) < 10 ? '0' : '') + min;
     sec = (parseInt(sec) < 10 ? '0' : '') + sec;
     if (parseInt(hour) === 0){
-        time = min + '-' + sec;
+        time = min + ':' + sec;
     } else {
-        time = hour + '-' + min + '-' + sec;
+        time = hour + ':' + min + '-' + sec;
     }
     return time;
 }
