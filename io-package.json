@@ -177,9 +177,10 @@
 			"type": "state",
 			"common": {
 				"name": "playlist",
-				"type": "object",
-				"def": false,
-				"role": "media"
+				"type": "string",
+				"role": "media.playlist",
+				"read": true,
+				"write": true
 			},
 			"native": {
 				

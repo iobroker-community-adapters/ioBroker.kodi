@@ -425,8 +425,9 @@ function GetPlayList(){
             "playlistid": playlist_id,
             "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "album", "showtitle", "playcount", "file"]/*,"limits":{"start":0,"end":750}*/
         }).then(function (res){
-            adapter.log.debug('GetPlayList: ' + JSON.stringify(res));
-            adapter.setState('playlist', {val: JSON.stringify(res), ack: true});
+            var plst = res.items;
+            adapter.log.debug('GetPlayList: ' + JSON.stringify(plst));
+            adapter.setState('playlist', {val: JSON.stringify(plst), ack: true});
         }, function (e){
             ErrProcessing(e);
         }).catch(function (e){
