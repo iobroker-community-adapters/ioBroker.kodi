@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.1.8", 
+        "version":                  "0.1.9",
 		"news": {
+			"0.1.9": {
+				"en": "change for vis-players",
+				"de": "change for vis-players",
+				"ru": "change for vis-players"
+			},
 			"0.1.8": {
 				"en": "change open youtube playlist",
 				"de": "change open youtube playlist",
@@ -150,10 +155,12 @@
 			"_id": "Directory",
 			"type": "state",
 			"common": {
-				"name": "Directory",
+				"role": "media.browser",
+				"name": "The database browser",
 				"type": "string",
-				"def": false,
-				"role": "media"
+				"read": true,
+				"write": true,
+				"def": ""
 			},
 			"native": {
 				
@@ -177,9 +184,10 @@
 			"type": "state",
 			"common": {
 				"name": "playlist",
-				"type": "object",
-				"def": false,
-				"role": "media"
+				"type": "string",
+				"role": "media.playlist",
+				"read": true,
+				"write": true
 			},
 			"native": {
 				
@@ -394,16 +402,17 @@
 			}
 		},
 		{
-			"_id": "GoTo",
+			"_id": "add",
 			"type": "state",
 			"common": {
-				"name": "GoTo",
+				"role": "media.add",
+				"name": "The current playlist add",
 				"type": "string",
-				"def": false,
-				"role": "media"
+				"read": true,
+				"write": true
 			},
 			"native": {
-				
+
 			}
 		},
 		{
@@ -537,15 +546,30 @@
 			"_id": "mute",
 			"type": "state",
 			"common": {
-			  "role": "media.mute",
-			  "name": "Player mute",
-			  "type": "boolean",
-			  "read": true,
-			  "write": true,
-			  "def": false
+				"role": "media.mute",
+				"name": "Player mute",
+				"type": "boolean",
+				"read": true,
+				"write": true,
+				"def": false
 			},
 			"native": {
 				
+			}
+		},
+		{
+			"_id": "playid",
+			"type": "state",
+			"common": {
+				"role": "media.playid",
+				"name": "Controlling playback playid",
+				"type": "integer",
+				"read": true,
+				"write": true,
+				"def": false
+			},
+			"native": {
+
 			}
 		},
 		{
@@ -594,10 +618,12 @@
 			"_id": "playing_time",
 			"type": "state",
 			"common": {
-				"name": "playing_time",
-				"def": false,
-				"role": "media",
-				"type": "string"
+				"role": "media.elapsed.text",
+				"name": "playback duration",
+				"type": "string",
+				"read": true,
+				"write": true,
+				"def": ""
 			},
 			"native": {
 				
@@ -607,10 +633,12 @@
 			"_id": "playing_time_total",
 			"type": "state",
 			"common": {
-				"name": "playing_time_total",
-				"def": false,
-				"role": "media",
-				"type": "string"
+				"role": "media.duration.text",
+				"name": "playback duration",
+				"type": "string",
+				"read": true,
+				"write": true,
+				"def": ""
 			},
 			"native": {
 				
@@ -676,10 +704,11 @@
 			"_id": "position",
 			"type": "state",
 			"common": {
-				"name": "position",
-				"def": false,
-				"role": "media",
-				"type": "number"
+				"name": "Current playing track",
+				"type": "number",
+				"role": "media.pos",
+				"read": true,
+				"write": true
 			},
 			"native": {
 				
@@ -742,9 +771,11 @@
 			"type": "state",
 			"common": {
 				"name": "bitrate",
-				"def": false,
+				"type": "number",
 				"role": "media.bitrate",
-				"type": "string"
+				"read": true,
+				"write": true,
+				"def": 0
 			},
 			"native": {
 				
@@ -823,10 +854,11 @@
 			"_id": "info.genre",
 			"type": "state",
 			"common": {
-				"name": "info.genre",
-				"def": false,
-				"role": "media",
-				"type": "string"
+				"name": "Genre",
+				"type": "string",
+				"role": "media.genre",
+				"read": true,
+				"write": true
 			},
 			"native": {
 				
@@ -888,15 +920,29 @@
 			"_id": "info.title",
 			"type": "state",
 			"common": {
-			  "name": "Title of current played song",
-			  "type": "string",
-			  "role": "media.title",
-				  "read": true,
-			  "write": false,
-				  "def": ""
+			  	"name": "Title of current played song",
+			  	"type": "string",
+			  	"role": "media.title",
+				"read": true,
+			  	"write": false,
+				"def": ""
 			},
 			"native": {
 				
+			}
+		},
+		{
+			"_id": "clear",
+			"type": "state",
+			"common": {
+				"role": "media.clear",
+				"name": "The current playlist clear",
+				"type": "string",
+				"read": false,
+				"write": true
+			},
+			"native": {
+
 			}
 		},
 		{
