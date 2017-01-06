@@ -18,6 +18,7 @@ var mem_pos = null;
 var mem_time = null;
 var timer;
 
+//TODO Изменить виджеты Коди под новый формат
 adapter.on('unload', function (callback){
     try {
         adapter.log.info('cleaned everything up...');
