@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.1.9",
+        "version":                  "0.2.0",
 		"news": {
+			"0.2.0": {
+				"en": "added object - state\nchange repeat to bool",
+				"de": "added object - state\nchange repeat to bool",
+				"ru": "added object - state\nchange repeat to bool"
+			},
 			"0.1.9": {
 				"en": "change for vis-players",
 				"de": "change for vis-players",

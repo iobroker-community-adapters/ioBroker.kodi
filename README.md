@@ -109,6 +109,11 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.2.0 (2017-01-07)
+* (instalator) added object - state
+* (instalator) change repeat to bool
+
+
 #### 0.1.9 (2017-01-05)
 * (instalator) change for vis-players
 
