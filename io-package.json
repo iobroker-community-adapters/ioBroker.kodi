@@ -74,6 +74,22 @@
 			}
 		},
 		{
+			"_id": "state",
+			"type": "state",
+			"common": {
+				"name": "Play, stop, or pause",
+				"type": "string",
+				"role": "media.state",
+				"values": "stop,play,pause",
+				"read": true,
+				"write": false,
+				"def": "stop"
+			},
+			"native": {
+
+			}
+		},
+		{
 			"_id": "OnInputRequested",
 			"type": "state",
 			"common": {
@@ -706,7 +722,7 @@
 			"common": {
 				"name": "Current playing track",
 				"type": "number",
-				"role": "media.pos",
+				"role": "media.track",
 				"read": true,
 				"write": true
 			},
