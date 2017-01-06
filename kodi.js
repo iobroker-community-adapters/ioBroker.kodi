@@ -140,6 +140,12 @@ function ConstructorCmd(method, ids, param){
                 break;
             case "repeat":
                 method = 'Player.SetRepeat'; //off, on, all
+                param = bool(param);
+                if (param){
+                    param = 'all';
+                } else {
+                    param = 'off';
+                }
                 param = {'playerid': player_id, "repeat": param};
                 break;
             case "shuffle":
@@ -337,15 +343,13 @@ function connect(){
 }
 function connection_emit(){
     connection.notification('Player.OnPlay', function(res) {
-        adapter.setState('play', {val: true, ack: true});
-        adapter.setState('stop', {val: false, ack: true});
+        adapter.setState('state', {val: 'play', ack: true});
     });
     connection.notification('Player.OnPause', function(res) {
-        adapter.setState('play', {val: false, ack: true});
+        adapter.setState('state', {val: 'pause', ack: true});
     });
     connection.notification('Player.OnStop', function(res) {
-        adapter.setState('stop', {val: true, ack: true});
-        adapter.setState('play', {val: false, ack: true});
+        adapter.setState('state', {val: 'stop', ack: true});
     });
     connection.notification('Input.OnInputRequested', function(res) {
         //adapter.log.error('OnInputRequested: ' + JSON.stringify(res));
