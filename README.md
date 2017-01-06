@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)](https://travis-ci.org/instalator/ioBroker.kodi)
+[![Tests](http://img.shields.io/travis/instalator/iobroker.kodi/master.svg)](https://travis-ci.org/instalator/iobroker.kodi)
 
 [![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)](https://nodei.co/npm/iobroker.kodi/)
 
@@ -108,6 +108,11 @@ sendTo("kodi.0", {
 ```
 
 ## Changelog
+
+#### 0.2.0 (2017-01-07)
+* (instalator) added object - state
+* (instalator) change repeat to bool
+
 
 #### 0.1.9 (2017-01-05)
 * (instalator) change for vis-players
