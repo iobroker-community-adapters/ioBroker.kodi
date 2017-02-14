@@ -593,8 +593,10 @@ function GetChannels(){
         });
         batch.send();
         Promise.all([alltv, allradio]).then(function (res){
-            adapter.setState('pvr.playlist_tv', {val: JSON.stringify(res[0]), ack: true});
-            adapter.setState('pvr.playlist_radio', {val: JSON.stringify(res[1]), ack: true});
+			if(res){
+		   		adapter.setState('pvr.playlist_tv', {val: JSON.stringify(res[0]), ack: true});
+            	adapter.setState('pvr.playlist_radio', {val: JSON.stringify(res[1]), ack: true});
+			}
         }, function (e){
             ErrProcessing(e);
         }).catch(function (e){
