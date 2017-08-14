@@ -109,7 +109,7 @@ sendTo("kodi.0", {
 
 ## Changelog
 
-#### 0.2.1 (2017-08-14)
+#### 0.2.2 (2017-08-14)
 * (instalator) added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)
 * (instalator) fix playlist widget
 

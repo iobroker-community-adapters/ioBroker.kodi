@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.2.1",
+        "version":                  "0.2.2",
 		"news": {
-			"0.2.1": {
+			"0.2.2": {
 				"en": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
 				"de": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
 				"ru": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget"

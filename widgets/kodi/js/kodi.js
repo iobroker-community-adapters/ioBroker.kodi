@@ -48,7 +48,7 @@ $.extend(true, systemDictionary, {
 
 // this code can be placed directly in kodi.html
 vis.binds.kodi = {
-    version: "0.0.4",
+    version: "0.2.2",
     showVersion: function () {
         if (vis.binds.kodi.version) {
             console.log('Version kodi: ' + vis.binds.kodi.version);
