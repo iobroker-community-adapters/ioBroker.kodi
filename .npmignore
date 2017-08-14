@@ -6,4 +6,5 @@ node_modules
 /node_modules
 test
 .travis.yml
-appveyor.yml
+temp.txt
+ appveyor.yml

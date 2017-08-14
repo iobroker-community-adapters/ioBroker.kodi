@@ -109,6 +109,10 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.2.1 (2017-08-14)
+* (instalator) added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)
+* (instalator) fix playlist widget
+
 #### 0.2.0 (2017-01-07)
 * (instalator) added object - state
 * (instalator) change repeat to bool

@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.2.0",
+        "version":                  "0.2.1",
 		"news": {
+			"0.2.1": {
+				"en": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
+				"de": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
+				"ru": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget"
+			},
 			"0.2.0": {
 				"en": "added object - state\nchange repeat to bool",
 				"de": "added object - state\nchange repeat to bool",
@@ -76,6 +81,81 @@
 			},
 			"native": {
 				
+			}
+		},
+		{
+			"_id": "system.EjectOpticalDrive",
+			"type": "state",
+			"common": {
+				"role": "button",
+				"name": "Ejects or closes the optical disc drive (if available)",
+				"type": "boolean",
+				"read": false,
+				"write": true,
+				"def": false
+			},
+			"native": {
+
+			}
+		},
+		{
+			"_id": "system.Hibernate",
+			"type": "state",
+			"common": {
+				"role": "button",
+				"name": "Puts the system running Kodi into hibernate mode",
+				"type": "boolean",
+				"read": false,
+				"write": true,
+				"def": false
+			},
+			"native": {
+
+			}
+		},
+		{
+			"_id": "system.Reboot",
+			"type": "state",
+			"common": {
+				"role": "button",
+				"name": "Reboots the system running Kodi",
+				"type": "boolean",
+				"read": false,
+				"write": true,
+				"def": false
+			},
+			"native": {
+
+			}
+		},
+		{
+			"_id": "system.Shutdown",
+			"type": "state",
+			"common": {
+				"role": "button",
+				"name": "Shuts the system running Kodi down",
+				"type": "boolean",
+				"read": false,
+				"write": true,
+				"def": false
+			},
+			"native": {
+
+			}
+		},
+		{
+			"_id": "system.Suspend",
+			"type": "state",
+			"common": {
+				"role": "button",
+				"name": "Suspends the system running Kodi",
+				"type": "boolean",
+				"read": false,
+				"write": true,
+				"def": false
+			},
+			"native": {
+
 			}
 		},
 		{

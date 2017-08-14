@@ -94,7 +94,10 @@ function ConstructorCmd(method, ids, param){
     if (method === 'input'){
         method = 'Input.' + ids;
         param = [];
-    } else {
+    } else if (method === 'system'){
+        method = 'System.' + ids;
+        param = [];
+    }  else {
         switch (ids) {
             case "SwitchPVR":
                 method = null;

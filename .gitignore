@@ -3,6 +3,7 @@ tasks/
 .idea
 .git
 node_modules/
+temp.txt
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

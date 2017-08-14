@@ -238,8 +238,8 @@ Playlist: function (widgetID, view, data, style) {
 		function SetPlaylist(val){
 			playlist = JSON.parse(val);
 			var _playlist = {};
-			if (playlist.items){
-				_playlist = playlist.items;
+			if (playlist){
+				_playlist = playlist;
 				$div.find("#playListContainer").empty();
 				_playlist.forEach(function(item, i, arr) {
 					$div.find("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+_playlist[i].label+"</li>");
