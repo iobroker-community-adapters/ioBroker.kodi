@@ -1,14 +1,9 @@
 /*
     kodi Widget-Set
-
-    version: "0.0.3"
-
     Copyright 10.2015-2016 instalator<vvvalt@mail.ru>
-
 */
 "use strict";
 
-// add translations for edit mode
 if (vis.editMode) {
     $.extend(true, systemDictionary, {
         "myColor":          {"en": "myColor",       "de": "mainColor",  "ru": "Мой цвет"},
@@ -41,12 +36,10 @@ if (vis.editMode) {
     });
 }
 
-// add translations for non-edit mode
 $.extend(true, systemDictionary, {
     "Instance":  {"en": "Instance", "de": "Instanz", "ru": "Инстанция"}
 });
 
-// this code can be placed directly in kodi.html
 vis.binds.kodi = {
     version: "0.2.2",
     showVersion: function () {
@@ -69,7 +62,6 @@ Thumbnail: function (widgetID, view, data, style) {
 				vis.binds.kodi.Thumbnail(widgetID, view, data, style);
 			}, 100);
 		}
-
 		function Thumb(cover){
 			var url_thumb;
 			if (vis.editMode) {

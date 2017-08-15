@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.2.2",
+        "version":                  "0.2.3",
 		"news": {
+			"0.2.3": {
+				"en": "fix error switchPVR\nAdded description 'System' to readme",
+				"de": "fix error switchPVR\nAdded description 'System' to readme",
+				"ru": "fix error switchPVR\nAdded description 'System' to readme"
+			},
 			"0.2.2": {
 				"en": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
 				"de": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
