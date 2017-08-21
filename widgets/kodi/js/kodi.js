@@ -1,14 +1,9 @@
 /*
     kodi Widget-Set
-
-    version: "0.0.3"
-
     Copyright 10.2015-2016 instalator<vvvalt@mail.ru>
-
 */
 "use strict";
 
-// add translations for edit mode
 if (vis.editMode) {
     $.extend(true, systemDictionary, {
         "myColor":          {"en": "myColor",       "de": "mainColor",  "ru": "Мой цвет"},
@@ -41,14 +36,12 @@ if (vis.editMode) {
     });
 }
 
-// add translations for non-edit mode
 $.extend(true, systemDictionary, {
     "Instance":  {"en": "Instance", "de": "Instanz", "ru": "Инстанция"}
 });
 
-// this code can be placed directly in kodi.html
 vis.binds.kodi = {
-    version: "0.0.4",
+    version: "0.2.2",
     showVersion: function () {
         if (vis.binds.kodi.version) {
             console.log('Version kodi: ' + vis.binds.kodi.version);
@@ -69,7 +62,6 @@ Thumbnail: function (widgetID, view, data, style) {
 				vis.binds.kodi.Thumbnail(widgetID, view, data, style);
 			}, 100);
 		}
-
 		function Thumb(cover){
 			var url_thumb;
 			if (vis.editMode) {
@@ -238,8 +230,8 @@ Playlist: function (widgetID, view, data, style) {
 		function SetPlaylist(val){
 			playlist = JSON.parse(val);
 			var _playlist = {};
-			if (playlist.items){
-				_playlist = playlist.items;
+			if (playlist){
+				_playlist = playlist;
 				$div.find("#playListContainer").empty();
 				_playlist.forEach(function(item, i, arr) {
 					$div.find("#playListContainer").append("<li class='item"+(i+1)+"'>"+(i+1)+' - '+_playlist[i].label+"</li>");

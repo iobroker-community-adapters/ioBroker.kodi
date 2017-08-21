@@ -94,17 +94,27 @@ function ConstructorCmd(method, ids, param){
     if (method === 'input'){
         method = 'Input.' + ids;
         param = [];
-    } else {
+    } else if (method === 'system'){
+        method = 'System.' + ids;
+        param = [];
+    }  else {
         switch (ids) {
             case "SwitchPVR":
                 method = null;
                 SwitchPVR(param, function (res){
-					sendCommand('Player.Stop', {'playerid': player_id}, function (){
-						sendCommand('Player.Open', res);
-						setTimeout(function (){
-							sendCommand('GUI.SetFullscreen', {"fullscreen": true});
-						}, 5000);
-					});
+                    if(player_id){
+                        sendCommand('Player.Stop', {'playerid': player_id}, function (){
+                            sendCommand('Player.Open', res);
+                            setTimeout(function (){
+                                sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                            }, 5000);
+                        });
+                    } else {
+                        sendCommand('Player.Open', res);
+                        setTimeout(function (){
+                            sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                        }, 5000);
+                    }
                 });
                 break;
             case "ShowNotif":
@@ -317,7 +327,7 @@ function sendCommand(method, param, callback){
             }
         });
     } else {
-        adapter.log.warn('It does not specify commands or invalid value!');
+        adapter.log.debug('It does not specify commands or invalid value!');
     }
 }
 
@@ -332,7 +342,7 @@ function connect(){
         if (_connection){
             GetNameVersion();
             GetPlayerId();
-        		GetVolume();
+        	GetVolume();
             GetChannels();
             GetVideoLibrary();
             setTimeout(function (){
