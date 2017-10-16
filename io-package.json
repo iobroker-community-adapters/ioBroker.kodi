@@ -1,8 +1,13 @@
 {
     "common": {
         "name":                     "kodi",
-        "version":                  "0.2.3",
+        "version":                  "0.2.4",
 		"news": {
+			"0.2.4": {
+				"en": "fix error",
+				"de": "fix error",
+				"ru": "fix error"
+			},
 			"0.2.3": {
 				"en": "fix error switchPVR\nAdded description 'System' to readme",
 				"de": "fix error switchPVR\nAdded description 'System' to readme",
