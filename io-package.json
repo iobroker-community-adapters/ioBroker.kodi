@@ -77,1446 +77,1238 @@
         "login":                	"",
         "password":                	""
     },
-    "objects": [
-
-    ],
-	"instanceObjects": [
-		{
-			"_id": "info.connection",
-			"type": "state",
-			"common": {
-				"role": "indicator.connected",
-				"name": "If connected to KODI",
-				"type": "boolean",
-				"read": true,
-				"write": false,
-				"def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "system.EjectOpticalDrive",
-			"type": "state",
-			"common": {
-				"role": "button",
-				"name": "Ejects or closes the optical disc drive (if available)",
-				"type": "boolean",
-				"read": false,
-				"write": true,
-				"def": false
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "system.Hibernate",
-			"type": "state",
-			"common": {
-				"role": "button",
-				"name": "Puts the system running Kodi into hibernate mode",
-				"type": "boolean",
-				"read": false,
-				"write": true,
-				"def": false
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "system.Reboot",
-			"type": "state",
-			"common": {
-				"role": "button",
-				"name": "Reboots the system running Kodi",
-				"type": "boolean",
-				"read": false,
-				"write": true,
-				"def": false
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "system.Shutdown",
-			"type": "state",
-			"common": {
-				"role": "button",
-				"name": "Shuts the system running Kodi down",
-				"type": "boolean",
-				"read": false,
-				"write": true,
-				"def": false
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "system.Suspend",
-			"type": "state",
-			"common": {
-				"role": "button",
-				"name": "Suspends the system running Kodi",
-				"type": "boolean",
-				"read": false,
-				"write": true,
-				"def": false
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "state",
-			"type": "state",
-			"common": {
-				"name": "Play, stop, or pause",
-				"type": "string",
-				"role": "media.state",
-				"values": "stop,play,pause",
-				"read": true,
-				"write": false,
-				"def": "stop"
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "OnInputRequested",
-			"type": "state",
-			"common": {
-				"name": "OnInputRequested",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "Sources",
-			"type": "state",
-			"common": {
-				"name": "Sources",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "CleanAudioLibrary",
-			"type": "state",
-			"common": {
-				"name": "CleanAudioLibrary",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "CleanVideoLibrary",
-			"type": "state",
-			"common": {
-				"name": "CleanVideoLibrary",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "ScanAudioLibrary",
-			"type": "state",
-			"common": {
-				"name": "ScanAudioLibrary",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "ScanVideoLibrary",
-			"type": "state",
-			"common": {
-				"name": "ScanVideoLibrary",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "Directory",
-			"type": "state",
-			"common": {
-				"role": "media.browser",
-				"name": "The database browser",
-				"type": "string",
-				"read": true,
-				"write": true,
-				"def": ""
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "VideoLibrary",
-			"type": "state",
-			"common": {
-				"name": "VideoLibrary",
-				"type": "object",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playlist",
-			"type": "state",
-			"common": {
-				"name": "playlist",
-				"type": "string",
-				"role": "media.playlist",
-				"read": true,
-				"write": true
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "currentplay",
-			"type": "state",
-			"common": {
-				"name": "currentplay",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Back",
-			"type": "state",
-			"common": {
-				"name": "Back",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.ContextMenu",
-			"type": "state",
-			"common": {
-				"name": "ContextMenu",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Down",
-			"type": "state",
-			"common": {
-				"name": "Down",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Home",
-			"type": "state",
-			"common": {
-				"name": "Home",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Info",
-			"type": "state",
-			"common": {
-				"name": "Info",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Left",
-			"type": "state",
-			"common": {
-				"name": "Left",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Right",
-			"type": "state",
-			"common": {
-				"name": "Right",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Select",
-			"type": "state",
-			"common": {
-				"name": "Select",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.SendText",
-			"type": "state",
-			"common": {
-				"name": "SendText",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.ShowCodec",
-			"type": "state",
-			"common": {
-				"name": "ShowCodec",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.ShowOSD",
-			"type": "state",
-			"common": {
-				"name": "ShowOSD",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "input.Up",
-			"type": "state",
-			"common": {
-				"name": "Up",
-				"type": "string",
-				"def": false,
-				"role": "button"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "setsubtitle",
-			"type": "state",
-			"common": {
-				"name": "setsubtitle",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "zoom",
-			"type": "state",
-			"common": {
-				"name": "zoom",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "ExecuteAction",
-			"type": "state",
-			"common": {
-				"name": "ExecuteAction",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "add",
-			"type": "state",
-			"common": {
-				"role": "media.add",
-				"name": "The current playlist add",
-				"type": "string",
-				"read": true,
-				"write": true
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "ActivateWindow",
-			"type": "state",
-			"common": {
-				"name": "ActivateWindow",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "ShowNotif",
-			"type": "state",
-			"common": {
-				"name": "ShowNotif",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "seek",
-			"type": "state",
-			"common": {
-			  "role": "media.seek",
-			  "name": "Controlling playback seek",
-			  "type": "number",
-			  "unit": "%",
-			  "min": 0,
-			  "max": 100,
-			  "read": true,
-			  "write": true
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "open",
-			"type": "state",
-			"common": {
-				"name": "open",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "youtube",
-			"type": "state",
-			"common": {
-				"name": "youtube",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "SwitchPVR",
-			"type": "state",
-			"common": {
-				"name": "SwitchPVR",
-				"type": "string",
-				"def": false,
-				"role": "media"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "next",
-			"type": "state",
-			"common": {
-			  "role": "button.next",
-			  "name": "Controlling playback next",
-			  "type": "boolean",
-			  "read": false,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "previous",
-			"type": "state",
-			"common": {
-			  "role": "button.prev",
-			  "name": "Controlling playback previous",
-			  "type": "boolean",
-			  "read": false,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "stop",
-			"type": "state",
-			"common": {
-			  "role": "button.stop",
-			  "name": "Controlling playback stop",
-			  "type": "boolean",
-			  "read": false,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "mute",
-			"type": "state",
-			"common": {
-				"role": "media.mute",
-				"name": "Player mute",
-				"type": "boolean",
-				"read": true,
-				"write": true,
-				"def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playid",
-			"type": "state",
-			"common": {
-				"role": "media.playid",
-				"name": "Controlling playback playid",
-				"type": "integer",
-				"read": true,
-				"write": true,
-				"def": false
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "volume",
-			"type": "state",
-			"common": {
-			  "name": "volume",
-			  "type": "number",
-			  "role": "level.volume",
-			  "read": true,
-			  "write": false,
-			  "min": 0,
-			  "max": 100
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "pvr.playlist_tv",
-			"type": "state",
-			"common": {
-				"name": "pvr.playlist_tv",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "pvr.playlist_radio",
-			"type": "state",
-			"common": {
-				"name": "pvr.playlist_radio",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playing_time",
-			"type": "state",
-			"common": {
-				"role": "media.elapsed.text",
-				"name": "playback duration",
-				"type": "string",
-				"read": true,
-				"write": true,
-				"def": ""
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playing_time_total",
-			"type": "state",
-			"common": {
-				"role": "media.duration.text",
-				"name": "playback duration",
-				"type": "string",
-				"read": true,
-				"write": true,
-				"def": ""
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "canseek",
-			"type": "state",
-			"common": {
-				"name": "canseek",
-				"def": false,
-				"role": "media",
-				"type": "boolean"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "repeat",
-			"type": "state",
-			"common": {
-			  "name": "repeat",
-			  "type": "boolean",
-			  "role": "media.mode.repeat",
-			  "read": true,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "shuffle",
-			"type": "state",
-			"common": {
-			  "name": "shuffle",
-			  "type": "boolean",
-			  "role": "media.mode.shuffle",
-			  "read": true,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "speed",
-			"type": "state",
-			"common": {
-				"name": "speed",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "position",
-			"type": "state",
-			"common": {
-				"name": "Current playing track",
-				"type": "number",
-				"role": "media.track",
-				"read": true,
-				"write": true
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playlistid",
-			"type": "state",
-			"common": {
-				"name": "playlistid",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "partymode",
-			"type": "state",
-			"common": {
-				"name": "partymode",
-				"def": false,
-				"role": "media",
-				"type": "boolean"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "codec",
-			"type": "state",
-			"common": {
-				"name": "codec",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "samplerate",
-			"type": "state",
-			"common": {
-				"name": "samplerate",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "bitrate",
-			"type": "state",
-			"common": {
-				"name": "bitrate",
-				"type": "number",
-				"role": "media.bitrate",
-				"read": true,
-				"write": true,
-				"def": 0
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "type",
-			"type": "state",
-			"common": {
-				"name": "type",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.album",
-			"type": "state",
-			"common": {
-			  "name": "Album of current played song",
-			  "type": "string",
-			  "role": "media.album",
-				  "read": true,
-			  "write": false,
-				  "def": ""
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.artist",
-			"type": "state",
-			"common": {
-			  "name": "Artist of current played song",
-			  "type": "string",
-			  "role": "media.artist",
-				  "read": true,
-			  "write": false,
-				  "def": ""
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.fanart",
-			"type": "state",
-			"common": {
-				"name": "info.fanart",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.file",
-			"type": "state",
-			"common": {
-				"name": "info.file",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.genre",
-			"type": "state",
-			"common": {
-				"name": "Genre",
-				"type": "string",
-				"role": "media.genre",
-				"read": true,
-				"write": true
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.label",
-			"type": "state",
-			"common": {
-				"name": "info.label",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.playcount",
-			"type": "state",
-			"common": {
-				"name": "info.playcount",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.rating",
-			"type": "state",
-			"common": {
-				"name": "info.rating",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.thumbnail",
-			"type": "state",
-			"common": {
-				"name": "info.thumbnail",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.title",
-			"type": "state",
-			"common": {
-			  	"name": "Title of current played song",
-			  	"type": "string",
-			  	"role": "media.title",
-				"read": true,
-			  	"write": false,
-				"def": ""
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "clear",
-			"type": "state",
-			"common": {
-				"role": "media.clear",
-				"name": "The current playlist clear",
-				"type": "string",
-				"read": false,
-				"write": true
-			},
-			"native": {
-
-			}
-		},
-		{
-			"_id": "info.track",
-			"type": "state",
-			"common": {
-				"name": "info.track",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.type",
-			"type": "state",
-			"common": {
-				"name": "info.type",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.year",
-			"type": "state",
-			"common": {
-				"name": "info.year",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "playlist",
-			"type": "state",
-			"common": {
-				"name": "playlist",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "systeminfo.name",
-			"type": "state",
-			"common": {
-				"name": "systeminfo.name",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "systeminfo.version",
-			"type": "state",
-			"common": {
-				"name": "systeminfo.version",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "systeminfo.system",
-			"type": "state",
-			"common": {
-				"name": "systeminfo.system",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "systeminfo.kernel",
-			"type": "state",
-			"common": {
-				"name": "systeminfo.kernel",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "channels",
-			"type": "state",
-			"common": {
-				"name": "channels",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "language",
-			"type": "state",
-			"common": {
-				"name": "language",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "audiostream",
-			"type": "state",
-			"common": {
-				"name": "audiostream",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.id",
-			"type": "state",
-			"common": {
-				"name": "info.id",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.albumartist",
-			"type": "state",
-			"common": {
-				"name": "info.albumartist",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "play",
-			"type": "state",
-			"common": {
-			  "role": "button.play",
-			  "name": "Controlling playback play",
-			  "type": "boolean",
-			  "read": false,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "pause",
-			"type": "state",
-			"common": {
-			  "role": "button.pause",
-			  "name": "Controlling playback pause",
-			  "type": "boolean",
-			  "read": false,
-			  "write": true,
-			  "def": false
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.episode",
-			"type": "state",
-			"common": {
-				"name": "info.episode",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.imdbnumber",
-			"type": "state",
-			"common": {
-				"name": "info.imdbnumber",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.originaltitle",
-			"type": "state",
-			"common": {
-				"name": "info.originaltitle",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.plot",
-			"type": "state",
-			"common": {
-				"name": "info.plot",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.season",
-			"type": "state",
-			"common": {
-				"name": "info.season",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.showtitle",
-			"type": "state",
-			"common": {
-				"name": "info.showtitle",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.audio",
-			"type": "state",
-			"common": {
-				"name": "info.audio",
-				"def": false,
-				"role": "media",
-				"type": "object"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.subtitle",
-			"type": "state",
-			"common": {
-				"name": "info.subtitle",
-				"def": false,
-				"role": "media",
-				"type": "object"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video",
-			"type": "state",
-			"common": {
-				"name": "info.video",
-				"def": false,
-				"role": "media",
-				"type": "object"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.tagline",
-			"type": "state",
-			"common": {
-				"name": "info.tagline",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.audio_channels",
-			"type": "state",
-			"common": {
-				"name": "info.audio_channels",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.audio_codec",
-			"type": "state",
-			"common": {
-				"name": "info.audio_codec",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.audio_language",
-			"type": "state",
-			"common": {
-				"name": "info.audio_language",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video_aspect",
-			"type": "state",
-			"common": {
-				"name": "info.video_aspect",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video_codec",
-			"type": "state",
-			"common": {
-				"name": "info.video_codec",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video_duration",
-			"type": "state",
-			"common": {
-				"name": "info.video_duration",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video_height",
-			"type": "state",
-			"common": {
-				"name": "info.video_height",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video_stereomode",
-			"type": "state",
-			"common": {
-				"name": "info.video_stereomode",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.video_width",
-			"type": "state",
-			"common": {
-				"name": "info.video_width",
-				"def": false,
-				"role": "media",
-				"type": "number"
-			},
-			"native": {
-				
-			}
-		},
-		{
-			"_id": "info.subtitle_language",
-			"type": "state",
-			"common": {
-				"name": "info.subtitle_language",
-				"def": false,
-				"role": "media",
-				"type": "string"
-			},
-			"native": {
-				
-			}
-		}		
-	]
+    "native": {
+        "ip": "127.0.0.1",
+        "port": 9090,
+        "login": "",
+        "password": ""
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If connected to KODI",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "system.EjectOpticalDrive",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Ejects or closes the optical disc drive (if available)",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "system.Hibernate",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Puts the system running Kodi into hibernate mode",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "system.Reboot",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Reboots the system running Kodi",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "system.Shutdown",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Shuts the system running Kodi down",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "system.Suspend",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Suspends the system running Kodi",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "state",
+            "type": "state",
+            "common": {
+                "name": "Play, stop, or pause",
+                "type": "string",
+                "role": "media.state",
+                "values": "stop,play,pause",
+                "read": true,
+                "write": false,
+                "def": "stop"
+            },
+            "native": {}
+        },
+        {
+            "_id": "OnInputRequested",
+            "type": "state",
+            "common": {
+                "name": "OnInputRequested",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "Sources",
+            "type": "state",
+            "common": {
+                "name": "Sources",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "CleanAudioLibrary",
+            "type": "state",
+            "common": {
+                "name": "CleanAudioLibrary",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "CleanVideoLibrary",
+            "type": "state",
+            "common": {
+                "name": "CleanVideoLibrary",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "ScanAudioLibrary",
+            "type": "state",
+            "common": {
+                "name": "ScanAudioLibrary",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "ScanVideoLibrary",
+            "type": "state",
+            "common": {
+                "name": "ScanVideoLibrary",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "Directory",
+            "type": "state",
+            "common": {
+                "role": "media.browser",
+                "name": "The database browser",
+                "type": "string",
+                "read": true,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "VideoLibrary",
+            "type": "state",
+            "common": {
+                "name": "VideoLibrary",
+                "type": "object",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "playlist",
+            "type": "state",
+            "common": {
+                "name": "playlist",
+                "type": "string",
+                "role": "media.playlist",
+                "read": true,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "currentplay",
+            "type": "state",
+            "common": {
+                "name": "currentplay",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Back",
+            "type": "state",
+            "common": {
+                "name": "Back",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.ContextMenu",
+            "type": "state",
+            "common": {
+                "name": "ContextMenu",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Down",
+            "type": "state",
+            "common": {
+                "name": "Down",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Home",
+            "type": "state",
+            "common": {
+                "name": "Home",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Info",
+            "type": "state",
+            "common": {
+                "name": "Info",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Left",
+            "type": "state",
+            "common": {
+                "name": "Left",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Right",
+            "type": "state",
+            "common": {
+                "name": "Right",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Select",
+            "type": "state",
+            "common": {
+                "name": "Select",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.SendText",
+            "type": "state",
+            "common": {
+                "name": "SendText",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.ShowCodec",
+            "type": "state",
+            "common": {
+                "name": "ShowCodec",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.ShowOSD",
+            "type": "state",
+            "common": {
+                "name": "ShowOSD",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "input.Up",
+            "type": "state",
+            "common": {
+                "name": "Up",
+                "type": "string",
+                "def": false,
+                "role": "button"
+            },
+            "native": {}
+        },
+        {
+            "_id": "setsubtitle",
+            "type": "state",
+            "common": {
+                "name": "setsubtitle",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "zoom",
+            "type": "state",
+            "common": {
+                "name": "zoom",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "ExecuteAction",
+            "type": "state",
+            "common": {
+                "name": "ExecuteAction",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "add",
+            "type": "state",
+            "common": {
+                "role": "media.add",
+                "name": "The current playlist add",
+                "type": "string",
+                "read": true,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "ActivateWindow",
+            "type": "state",
+            "common": {
+                "name": "ActivateWindow",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "ShowNotif",
+            "type": "state",
+            "common": {
+                "name": "ShowNotif",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "seek",
+            "type": "state",
+            "common": {
+                "role": "media.seek",
+                "name": "Controlling playback seek",
+                "type": "number",
+                "unit": "%",
+                "min": 0,
+                "max": 100,
+                "read": true,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "open",
+            "type": "state",
+            "common": {
+                "name": "open",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "youtube",
+            "type": "state",
+            "common": {
+                "name": "youtube",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "SwitchPVR",
+            "type": "state",
+            "common": {
+                "name": "SwitchPVR",
+                "type": "string",
+                "def": false,
+                "role": "media"
+            },
+            "native": {}
+        },
+        {
+            "_id": "next",
+            "type": "state",
+            "common": {
+                "role": "button.next",
+                "name": "Controlling playback next",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "previous",
+            "type": "state",
+            "common": {
+                "role": "button.prev",
+                "name": "Controlling playback previous",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "stop",
+            "type": "state",
+            "common": {
+                "role": "button.stop",
+                "name": "Controlling playback stop",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "mute",
+            "type": "state",
+            "common": {
+                "role": "media.mute",
+                "name": "Player mute",
+                "type": "boolean",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "playid",
+            "type": "state",
+            "common": {
+                "role": "media.playid",
+                "name": "Controlling playback playid",
+                "type": "integer",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "volume",
+            "type": "state",
+            "common": {
+                "name": "volume",
+                "type": "number",
+                "role": "level.volume",
+                "read": true,
+                "write": false,
+                "min": 0,
+                "max": 100
+            },
+            "native": {}
+        },
+        {
+            "_id": "pvr.playlist_tv",
+            "type": "state",
+            "common": {
+                "name": "pvr.playlist_tv",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "pvr.playlist_radio",
+            "type": "state",
+            "common": {
+                "name": "pvr.playlist_radio",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "playing_time",
+            "type": "state",
+            "common": {
+                "role": "media.elapsed.text",
+                "name": "playback duration",
+                "type": "string",
+                "read": true,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "playing_time_total",
+            "type": "state",
+            "common": {
+                "role": "media.duration.text",
+                "name": "playback duration",
+                "type": "string",
+                "read": true,
+                "write": true,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "canseek",
+            "type": "state",
+            "common": {
+                "name": "canseek",
+                "def": false,
+                "role": "media",
+                "type": "boolean"
+            },
+            "native": {}
+        },
+        {
+            "_id": "repeat",
+            "type": "state",
+            "common": {
+                "name": "repeat",
+                "type": "boolean",
+                "role": "media.mode.repeat",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "shuffle",
+            "type": "state",
+            "common": {
+                "name": "shuffle",
+                "type": "boolean",
+                "role": "media.mode.shuffle",
+                "read": true,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "speed",
+            "type": "state",
+            "common": {
+                "name": "speed",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "position",
+            "type": "state",
+            "common": {
+                "name": "Current playing track",
+                "type": "number",
+                "role": "media.track",
+                "read": true,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "playlistid",
+            "type": "state",
+            "common": {
+                "name": "playlistid",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "partymode",
+            "type": "state",
+            "common": {
+                "name": "partymode",
+                "def": false,
+                "role": "media",
+                "type": "boolean"
+            },
+            "native": {}
+        },
+        {
+            "_id": "codec",
+            "type": "state",
+            "common": {
+                "name": "codec",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "samplerate",
+            "type": "state",
+            "common": {
+                "name": "samplerate",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "bitrate",
+            "type": "state",
+            "common": {
+                "name": "bitrate",
+                "type": "number",
+                "role": "media.bitrate",
+                "read": true,
+                "write": true,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "type",
+            "type": "state",
+            "common": {
+                "name": "type",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.album",
+            "type": "state",
+            "common": {
+                "name": "Album of current played song",
+                "type": "string",
+                "role": "media.album",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.artist",
+            "type": "state",
+            "common": {
+                "name": "Artist of current played song",
+                "type": "string",
+                "role": "media.artist",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.fanart",
+            "type": "state",
+            "common": {
+                "name": "info.fanart",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.file",
+            "type": "state",
+            "common": {
+                "name": "info.file",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.genre",
+            "type": "state",
+            "common": {
+                "name": "Genre",
+                "type": "string",
+                "role": "media.genre",
+                "read": true,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.label",
+            "type": "state",
+            "common": {
+                "name": "info.label",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.playcount",
+            "type": "state",
+            "common": {
+                "name": "info.playcount",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.rating",
+            "type": "state",
+            "common": {
+                "name": "info.rating",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.thumbnail",
+            "type": "state",
+            "common": {
+                "name": "info.thumbnail",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.title",
+            "type": "state",
+            "common": {
+                "name": "Title of current played song",
+                "type": "string",
+                "role": "media.title",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "clear",
+            "type": "state",
+            "common": {
+                "role": "media.clear",
+                "name": "The current playlist clear",
+                "type": "string",
+                "read": false,
+                "write": true
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.track",
+            "type": "state",
+            "common": {
+                "name": "info.track",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.type",
+            "type": "state",
+            "common": {
+                "name": "info.type",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.year",
+            "type": "state",
+            "common": {
+                "name": "info.year",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "playlist",
+            "type": "state",
+            "common": {
+                "name": "playlist",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "systeminfo.name",
+            "type": "state",
+            "common": {
+                "name": "systeminfo.name",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "systeminfo.version",
+            "type": "state",
+            "common": {
+                "name": "systeminfo.version",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "systeminfo.system",
+            "type": "state",
+            "common": {
+                "name": "systeminfo.system",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "systeminfo.kernel",
+            "type": "state",
+            "common": {
+                "name": "systeminfo.kernel",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "channels",
+            "type": "state",
+            "common": {
+                "name": "channels",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "language",
+            "type": "state",
+            "common": {
+                "name": "language",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "audiostream",
+            "type": "state",
+            "common": {
+                "name": "audiostream",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.id",
+            "type": "state",
+            "common": {
+                "name": "info.id",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.albumartist",
+            "type": "state",
+            "common": {
+                "name": "info.albumartist",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "play",
+            "type": "state",
+            "common": {
+                "role": "button.play",
+                "name": "Controlling playback play",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "pause",
+            "type": "state",
+            "common": {
+                "role": "button.pause",
+                "name": "Controlling playback pause",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.episode",
+            "type": "state",
+            "common": {
+                "name": "info.episode",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.imdbnumber",
+            "type": "state",
+            "common": {
+                "name": "info.imdbnumber",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.originaltitle",
+            "type": "state",
+            "common": {
+                "name": "info.originaltitle",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.plot",
+            "type": "state",
+            "common": {
+                "name": "info.plot",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.season",
+            "type": "state",
+            "common": {
+                "name": "info.season",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.showtitle",
+            "type": "state",
+            "common": {
+                "name": "info.showtitle",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.audio",
+            "type": "state",
+            "common": {
+                "name": "info.audio",
+                "def": false,
+                "role": "media",
+                "type": "object"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.subtitle",
+            "type": "state",
+            "common": {
+                "name": "info.subtitle",
+                "def": false,
+                "role": "media",
+                "type": "object"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video",
+            "type": "state",
+            "common": {
+                "name": "info.video",
+                "def": false,
+                "role": "media",
+                "type": "object"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.tagline",
+            "type": "state",
+            "common": {
+                "name": "info.tagline",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.audio_channels",
+            "type": "state",
+            "common": {
+                "name": "info.audio_channels",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.audio_codec",
+            "type": "state",
+            "common": {
+                "name": "info.audio_codec",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.audio_language",
+            "type": "state",
+            "common": {
+                "name": "info.audio_language",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video_aspect",
+            "type": "state",
+            "common": {
+                "name": "info.video_aspect",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video_codec",
+            "type": "state",
+            "common": {
+                "name": "info.video_codec",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video_duration",
+            "type": "state",
+            "common": {
+                "name": "info.video_duration",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video_height",
+            "type": "state",
+            "common": {
+                "name": "info.video_height",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video_stereomode",
+            "type": "state",
+            "common": {
+                "name": "info.video_stereomode",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.video_width",
+            "type": "state",
+            "common": {
+                "name": "info.video_width",
+                "def": false,
+                "role": "media",
+                "type": "number"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.subtitle_language",
+            "type": "state",
+            "common": {
+                "name": "info.subtitle_language",
+                "def": false,
+                "role": "media",
+                "type": "string"
+            },
+            "native": {}
+        }
+    ]
 }
