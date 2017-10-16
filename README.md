@@ -115,6 +115,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 0.2.4 (2017-10-16)
+* (instalator) fix error
+
 #### 0.2.3 (2017-08-15)
 * (instalator) fix error switchPVR
 * (instalator) Added description "System" to readme
