@@ -51,6 +51,9 @@
 			 "ru": "KODI драйвер"
 		},
 		"license":                  "MIT",
+	"authors": [
+             "instalator"
+        ],
         "platform":                 "Javascript/Node.js",
         "mode":                     "daemon",
         "icon":                     "kodi.png",
