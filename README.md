@@ -20,8 +20,7 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
 ```xml
 <jsonrpc>
     <compactoutput>true</compactoutput>
-    <tcpport>9999</tcpport>
-</jsonrpc>
+    <tcpport>9999</tcpport></jsonrpc>
 ```
 ![http enable.](admin/web.jpg)
 
@@ -53,7 +52,7 @@ sendTo("kodi.0", {
     message:  'Возможно протечка воды ', //Текст сообщения
     title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
     image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
-    delay: '7000' //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
+    delay: 7000 //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 ### SwitchPVR:
