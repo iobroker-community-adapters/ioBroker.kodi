@@ -1,3 +1,4 @@
+
 ![Logo](admin/kodi.png)
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
@@ -20,7 +21,8 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
 ```xml
 <jsonrpc>
     <compactoutput>true</compactoutput>
-    <tcpport>9999</tcpport></jsonrpc>
+    <tcpport>9999</tcpport>
+</jsonrpc>
 ```
 ![http enable.](admin/web.jpg)
 
