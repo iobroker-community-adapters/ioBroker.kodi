@@ -1,4 +1,3 @@
-
 ![Logo](admin/kodi.png)
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
