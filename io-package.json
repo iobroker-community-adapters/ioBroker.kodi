@@ -68,7 +68,7 @@
 		"keywords":                 ["iobroker.kodi", "vis", "GUI", "graphical"],
         "readme":                   "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
 		"loglevel":                 "info",
-        "type":                     "media",
+        "type":                     "multimedia",
         "restartAdapters":          ["vis"]
 	},
 	"native": {
