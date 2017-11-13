@@ -115,6 +115,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 1.0.0 (2017-11-13)
+* (instalator) up to stable
+
 #### 0.2.4 (2017-10-16)
 * (instalator) fix error
 
