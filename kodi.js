@@ -2,7 +2,7 @@
 
 var kodi = require('kodi-ws');
 var utils = require(__dirname + '/lib/utils');
-var adapter = utils.adapter('kodi');
+var adapter = utils.Adapter('kodi');
 //var querystring = require('querystring');
 
 var object = {};
