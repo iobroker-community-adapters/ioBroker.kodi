@@ -1,7 +1,7 @@
 "use strict";
 
 var kodi = require('kodi-ws');
-var utils = require(__dirname + '/lib/utils');
+var utils = require('@iobroker/adapter-core');
 var adapter = utils.Adapter('kodi');
 //var querystring = require('querystring');
 
