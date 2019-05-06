@@ -359,6 +359,11 @@ function connection_emit(){
     connection.notification('Player.OnPause', function(res) {
         adapter.setState('state', {val: 'pause', ack: true});
     });
+	
+    connection.notification('Player.OnResume', function(res) {
+        adapter.setState('state', {val: 'play', ack: true});
+    });
+	
     connection.notification('Player.OnStop', function(res) {
         adapter.setState('state', {val: 'stop', ack: true});
     });
