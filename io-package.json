@@ -600,7 +600,7 @@
         "type": "number",
         "role": "level.volume",
         "read": true,
-        "write": false,
+        "write": true,
         "min": 0,
         "max": 100
       },

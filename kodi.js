@@ -30,19 +30,19 @@ function startAdapter(options){
                 if (id === 'playing_time_total' && state.val !== mem_time){
                     if (channel){
                         mem_time = state.val;
-                        GetCurrentItem();
+                        //GetCurrentItem();
                     }
                 }
                 if (id === 'currentplay' && state.val !== mem){
                     mem = state.val;
-                    GetCurrentItem();
+                    //GetCurrentItem();
                     getPlayListTimer = setTimeout(() => {
                         GetPlayList();
                     }, 1000);
                 }
                 if (id === 'position' && state.val !== mem_pos){
                     mem_pos = state.val;
-                    GetCurrentItem();
+                    //GetCurrentItem();
                     getPlayListTimer = setTimeout(() => {
                         GetPlayList();
                     }, 1000);
@@ -56,7 +56,6 @@ function startAdapter(options){
                         method = null;
                     }
                     ids = ids[ids.length - 1].toString();
-
                     ConstructorCmd(method, ids, param);
                 }
             }
@@ -364,6 +363,16 @@ function connection_emit(){
     connection.notification('Player.OnStop', (res) => {
         adapter.log.debug('notification: Player.OnStop ' + JSON.stringify(res));
         setState('state', 'stop');
+        setState('audiostream', '');
+        setState('bitrate', '');
+        setState('codec', '');
+        setState('language', '');
+        setState('playing_time', '');
+        setState('playing_time_total', '');
+        setState('samplerate', '');
+        setState('currentplay', '');
+        setState('type', '');
+        GetCurrentItem();
     });
     connection.notification('Input.OnInputRequested', (res) => {
         adapter.log.debug('notification: Input.OnInputRequested ' + JSON.stringify(res));
@@ -490,56 +499,41 @@ function GetPlayList(){
 
 function GetCurrentItem(){
     if (connection){
-        adapter.getStates('info.*', (err, obj) => {
-            for (let state in obj) {
-                if (!Object.hasOwnProperty.call(obj, state)) continue;
-                if (state !== adapter.namespace + '.info.connection'){
-                    setState(state, '');
-                }
-            }
-            connection.run('Player.GetItem', {
-                "playerid":   player_id,
-                "properties": ["album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
-            }).then((res) => {
-                adapter.log.debug('GetCurrentItem: ' + JSON.stringify(res));
-                res = res.item;
-                for (let key in res) {
-                    if (!Object.hasOwnProperty.call(res, key)) continue;
-                    if (typeof res[key] == 'object'){
-                        let obj = res[key];
-                        if (key === 'streamdetails'){
-                            for (let _key in obj) {
-                                if (!Object.hasOwnProperty.call(obj, _key)) continue;
-                                if (obj[_key].length > 0){
-                                    let _obj = obj[_key][0];
-                                    for (let __key in _obj) {
-                                        if (!Object.hasOwnProperty.call(_obj, __key)) continue;
-                                        setState('info.' + _key + '_' + __key, _obj[__key]);
-                                        //adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
-                                    }
-                                } else {
-                                    setState('info.' + _key, obj[_key]);
-                                    //adapter.log.debug('GetPlayList: ' +_key+' = '+ JSON.stringify(obj[_key]) +' - '+typeof obj[_key] +' length = '+obj[_key].length);
+        connection.run('Player.GetItem', {
+            "playerid":   player_id,
+            "properties": ["album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
+        }).then((res) => {
+            adapter.log.debug('GetCurrentItem: ' + JSON.stringify(res));
+            res = res.item;
+            for (let key in res) {
+                if (typeof res[key] == 'object'){
+                    let obj = res[key];
+                    if (key === 'streamdetails'){
+                        for (let _key in obj) {
+                            if (obj[_key].length > 0){
+                                let _obj = obj[_key][0];
+                                for (let __key in _obj) {
+                                    setState('info.' + _key + '_' + __key, _obj[__key]);
                                 }
-                            }
-                        } else {
-                            for (let id in obj) { //TODO
-                                if (!Object.hasOwnProperty.call(obj, id)) continue;
-                                setState('info.' + key, obj[id]);
-                                //adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
+                            } else {
+                                setState('info.' + _key, obj[_key]);
                             }
                         }
-                    } else {
-                        setState('info.' + key, res[key]);
-                        //adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
+                    } else if (key !== 'streamdetails' && key !== 'cast' && obj.length > 0){
+                        setState('info.' + key, obj.join(','));
+                    } else  if (key !== 'cast'){
+                        for (let id in obj) {
+                            setState('info.' + key, obj[id]);
+                        }
                     }
-                    //adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
+                } else {
+                    setState('info.' + key, res[key]);
                 }
-            }, (e) => {
-                ErrProcessing(e);
-            }).catch((e) => {
-                ErrProcessing(e);
-            });
+            }
+        }, (e) => {
+            ErrProcessing(e);
+        }).catch((e) => {
+            ErrProcessing(e);
         });
     }
 }
@@ -604,16 +598,34 @@ function GetChannels(){
 }
 
 function setState(name, val, cb){
-    adapter.getState(name, (err, state) => {
-        if (!state){
-            adapter.setState(name, val, true);
-        } else if (state.val === val){
-            adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
-        } else if (state.val !== val){
-            adapter.setState(name, val, true);
-            adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
+    adapter.getObject(name, function (err, obj){
+        if (err || !obj){
+            const role = 'media';
+            let type = 'string';
+            adapter.setObject(name, {
+                type:   'state',
+                common: {
+                    name: name,
+                    desc: name,
+                    type: type,
+                    role: role
+                },
+                native: {}
+            });
+            adapter.setState(name, {val: val, ack: true});
+        } else {
+            adapter.getState(name, (err, state) => {
+                if (!state){
+                    adapter.setState(name, val, true);
+                } else if (state.val === val){
+                    adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
+                } else if (state.val !== val){
+                    adapter.setState(name, val, true);
+                    adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
+                }
+                cb && cb();
+            });
         }
-        cb && cb();
     });
 }
 
@@ -665,17 +677,17 @@ function GetPlayerProperties(){
                 setState('type', res[0].type);
                 channel = false;
             }
-            if (res[2].item.label.toString().length < 2){
+            /*if (res[2].item.label.toString().length < 2){
                 infoFileTimer = setTimeout(() => {
                     adapter.getState(adapter.namespace + '.info.file', (err, state) => {
                         state = state.val.substring(state.val.lastIndexOf('/') + 1, state.val.length - 4);
                         setState('currentplay', state);
                     });
                 }, 1000);
-            } else {
-                setState('currentplay', res[2].item.label);
-            }
-
+            } else {*/
+            setState('currentplay', res[2].item.label);
+            //}
+            GetCurrentItem();
         }, (e) => {
             ErrProcessing(e);
         }).catch((e) => {
@@ -771,7 +783,7 @@ function SwitchPVRbyID(val, cb){
             let Break = {};
             let obj = JSON.parse(state.val);
             try {
-                if (obj.channels[val-1]) cb({"item": {"channelid": obj.channels[val-1].channelid}});
+                if (obj.channels[val - 1]) cb({"item": {"channelid": obj.channels[val - 1].channelid}});
             } catch (e) {
                 if (e !== Break) throw e;
             }
@@ -869,7 +881,19 @@ function time(hour, min, sec){
 function ErrProcessing(error){
     adapter.log.error(error);
     connection = null;
-    getConnection();
+    getConnection((err, _connection) => {
+        if (_connection){
+            GetNameVersion();
+            GetPlayerId();
+            GetVolume();
+            GetChannels();
+            GetVideoLibrary();
+            GetSourcesTimer = setTimeout(() => {
+                GetSources();
+            }, 10000);
+            connection_emit();
+        }
+    });
 }
 
 function isNumeric(n){
