@@ -116,19 +116,21 @@ function ConstructorCmd(method, ids, param){
                 break;
             case "SwitchPVRbyID":
                 method = null;
-                if (player_id){
-                    sendCommand('Player.Stop', {'playerid': player_id}, () => {
-                        sendCommand('Player.Open', {"item": {"channelid": param}});
+                SwitchPVRbyID(param, (res) => {
+                    if (player_id){
+                        sendCommand('Player.Stop', {'playerid': player_id}, () => {
+                            sendCommand('Player.Open', res);
+                            SwitchPVRTimer = setTimeout(() => {
+                                sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                            }, 5000);
+                        });
+                    } else {
+                        sendCommand('Player.Open', res);
                         SwitchPVRTimer = setTimeout(() => {
                             sendCommand('GUI.SetFullscreen', {"fullscreen": true});
                         }, 5000);
-                    });
-                } else {
-                    sendCommand('Player.Open', {"item": {"channelid": param}});
-                    SwitchPVRTimer = setTimeout(() => {
-                        sendCommand('GUI.SetFullscreen', {"fullscreen": true});
-                    }, 5000);
-                }
+                    }
+                });
                 break;
             case "ShowNotif":
                 ShowNotification(param, (res) => {
@@ -759,6 +761,21 @@ function getConnection(cb){
         }
         adapter.setState('info.connection', false, true);
         reconnectTimer = setTimeout(connect, 5000, cb);
+    });
+}
+
+function SwitchPVRbyID(val, cb){
+    adapter.getState(adapter.namespace + '.pvr.playlist_tv', (err, state) => {
+        if (val < 1) val = 1;
+        if (state){
+            let Break = {};
+            let obj = JSON.parse(state.val);
+            try {
+                if (obj.channels[val-1]) cb({"item": {"channelid": obj.channels[val-1].channelid}});
+            } catch (e) {
+                if (e !== Break) throw e;
+            }
+        }
     });
 }
 
