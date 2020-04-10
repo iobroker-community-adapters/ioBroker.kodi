@@ -46,59 +46,48 @@
 
 </head>
 <body>
-
-<!--<div id="adapter-container">-->
-<!--    <table>-->
-<!--    <tr><td class="translate">IP:</td><td> <input class="value" id="ip"/></td></tr>-->
-<!--        <tr><td  class="translate">PortRPC:</td><td> <input class="value" id="port"/><td  class="translate">default:</td></tr>-->
-<!--        <tr><td colspan='2'><h4 class="translate">Kodi webserver settings</h4></td></tr>-->
-<!--        <tr><td  class="translate">PortWeb:</td><td> <input class="value" id="portweb"/></td> </tr>-->
-<!--		<tr><td class="translate">Login:</td><td> <input class="value" id="login"/></td></tr>-->
-<!--        <tr><td  class="translate">Password:</td><td> <input type="password" class="value" id="password"/></td></tr>-->
-<!--    </table>-->
-<!--    <p class="translate">on save adapter restarts with new config immediately</p>-->
-<!--</div>-->
-
 <div class="m adapter-container">
     <div class="row">
         <div class="col s12 m4 l2">
-            <img src="kodi.png" class="logo">
+            <img src="kodi.png" class="logo" style="width: 100px">
         </div>
     </div>
     <div class="row">
-        <div class="col s6 m12 l4">
+        <div class="col s12 m12 l12">
             <p class="translate title">Kodi adapter settings</p>
-            <p class="translate">Kodi adapter settings</p>
-            <div class="col s6 input-field">
-                <input type="text" class="value" id="ip"/>
-                <label for="ip" class="translate">ip</label>
-            </div>
-            <div class="col s3 input-field">
-                <input type="number" class="value" id="port"/>
-                <label for="port" class="translate">port</label>
-                <span class="helper-text translate">default</span>
+            <p class="translate">Kodi adapter settings desc</p>
+            <div class="col s6 m4 l4">
+                <div class="col s6 input-field">
+                    <input type="text" class="value" id="ip"/>
+                    <label for="ip" class="translate">ip</label>
+                </div>
+                <div class="col s3 input-field">
+                    <input type="number" class="value" id="port"/>
+                    <label for="port" class="translate">port</label>
+                    <span class="helper-text translate">default</span>
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col s6 m12 l4">
+        <div class="col s12 m12 l12">
             <p class="translate title">Kodi webserver settings</p>
-            <p class="translate">Kodi webserver settings</p>
-            <div class="col s6 input-field">
-                <input type="text" class="value" id="portweb"/>
-                <label for="portweb" class="translate">portweb</label>
-            </div>
-            <div class="col s3 input-field">
-                <input type="text" class="value" id="login"/>
-                <label for="login" class="translate">login</label>
-            </div>
-            <div class="col s3 input-field">
-                <input type="password" class="value" id="password"/>
-                <label for="password" class="translate">password</label>
+            <div class="col s12 m4 l4">
+                <div class="col s3 input-field">
+                    <input type="number" class="value" id="portweb"/>
+                    <label for="portweb" class="translate">portweb</label>
+                </div>
+                <div class="col s4 input-field">
+                    <input type="text" class="value" id="login"/>
+                    <label for="login" class="translate">login</label>
+                </div>
+                <div class="col s4 input-field">
+                    <input type="password" class="value" id="password"/>
+                    <label for="password" class="translate">password</label>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

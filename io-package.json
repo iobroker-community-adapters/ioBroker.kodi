@@ -14,58 +14,20 @@
         "es": "support admin3\nsupport compact mode\nrefactoring\nfixed different error",
         "pl": "support admin3\nsupport compact mode\nrefactoring\nfixed different error",
         "zh-cn": "support admin3\nsupport compact mode\nrefactoring\nfixed different error"
-      },
-      "0.2.4": {
-        "en": "fix error",
-        "de": "fix error",
-        "ru": "fix error"
-      },
-      "0.2.3": {
-        "en": "fix error switchPVR\nAdded description 'System' to readme",
-        "de": "fix error switchPVR\nAdded description 'System' to readme",
-        "ru": "fix error switchPVR\nAdded description 'System' to readme"
-      },
-      "0.2.2": {
-        "en": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
-        "de": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget",
-        "ru": "added object - System (EjectOpticalDrive, Hibernate, Reboot, Shutdown, Suspend)\nfix playlist widget"
-      },
-      "0.2.0": {
-        "en": "added object - state\nchange repeat to bool",
-        "de": "added object - state\nchange repeat to bool",
-        "ru": "added object - state\nchange repeat to bool"
-      },
-      "0.1.9": {
-        "en": "change for vis-players",
-        "de": "change for vis-players",
-        "ru": "change for vis-players"
-      },
-      "0.1.8": {
-        "en": "change open youtube playlist",
-        "de": "change open youtube playlist",
-        "ru": "change open youtube playlist"
-      },
-      "0.1.6": {
-        "en": "added open youtube playlist and open youtube link. Added Tests",
-        "de": "added open youtube playlist and open youtube link. Added Tests",
-        "ru": "added open youtube playlist and open youtube link. Added Tests"
-      },
-      "0.1.4": {
-        "en": "fix error for Open, fix method number",
-        "de": "fix error for Open, fix method number",
-        "ru": "fix error for Open, fix method number"
-      },
-      "0.1.3": {
-        "en": "fix error milti instance",
-        "de": "fix error milti instance",
-        "ru": "fix error milti instance"
       }
     },
     "title": "KODI",
     "desc": {
-      "en": "KODI Adapter",
-      "de": "KODI Adapter",
-      "ru": "KODI драйвер"
+      "en":    "Kodi Control Adapter",
+      "de":    "Kodi Control Adapter",
+      "ru":    "Адаптер для управления Kodi",
+      "pt":    "Kodi Control Adapter",
+      "nl":    "Kodi Control Adapter",
+      "fr":    "Kodi Control Adapter",
+      "it":    "Kodi Control Adapter",
+      "es":    "Kodi Control Adapter",
+      "pl":    "Kodi Control Adapter",
+      "zh-cn": "Kodi Control Adapte"
     },
     "license": "MIT",
     "authors": [
@@ -76,6 +38,7 @@
     "icon": "kodi.png",
     "enabled": false,
     "messagebox": true,
+    "materialize": true,
     "extIcon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
     "keywords": [
       "iobroker.kodi",
@@ -93,12 +56,7 @@
   "native": {
     "ip": "127.0.0.1",
     "port": 9090,
-    "login": "",
-    "password": ""
-  },
-  "native": {
-    "ip": "127.0.0.1",
-    "port": 9090,
+    "portweb": 8080,
     "login": "",
     "password": ""
   },

@@ -1,9 +1,8 @@
 "use strict";
 const utils = require('@iobroker/adapter-core');
 const kodi = require('kodi-ws');
-//let querystring = require('querystring');
 let adapter, object = {}, connection = null, player_id = null, player_type = null, channel = false, canseek = false, playlist_id = 0, mem = null,
-    mem_pos = null, mem_time = null, timer;
+    mem_pos = null, mem_time = null, timer, reconnectTimer, getPlayListTimer, SwitchPVRTimer, GetSourcesTimer, GetNameVersionTimer, infoFileTimer;
 
 function startAdapter(options){
     return adapter = utils.adapter(Object.assign({}, options, {
@@ -13,6 +12,13 @@ function startAdapter(options){
         unload:       (callback) => {
             try {
                 adapter.log.debug('cleaned everything up...');
+                clearTimeout(timer);
+                clearTimeout(reconnectTimer);
+                clearTimeout(getPlayListTimer);
+                clearTimeout(SwitchPVRTimer);
+                clearTimeout(GetSourcesTimer);
+                clearTimeout(GetNameVersionTimer);
+                clearTimeout(infoFileTimer);
                 callback();
             } catch (e) {
                 callback();
@@ -30,14 +36,14 @@ function startAdapter(options){
                 if (id === 'currentplay' && state.val !== mem){
                     mem = state.val;
                     GetCurrentItem();
-                    setTimeout(() => {
+                    getPlayListTimer = setTimeout(() => {
                         GetPlayList();
                     }, 1000);
                 }
                 if (id === 'position' && state.val !== mem_pos){
                     mem_pos = state.val;
                     GetCurrentItem();
-                    setTimeout(() => {
+                    getPlayListTimer = setTimeout(() => {
                         GetPlayList();
                     }, 1000);
                 }
@@ -80,8 +86,6 @@ function startAdapter(options){
     }));
 }
 
-//TODO Изменить виджеты Коди под новый формат
-
 function ConstructorCmd(method, ids, param){
     adapter.log.debug('ConstructorCmd ' + method + ' - ' + ids + ' = ' + param);
     if (method === 'input'){
@@ -98,13 +102,13 @@ function ConstructorCmd(method, ids, param){
                     if (player_id){
                         sendCommand('Player.Stop', {'playerid': player_id}, () => {
                             sendCommand('Player.Open', res);
-                            setTimeout(() => {
+                            SwitchPVRTimer = setTimeout(() => {
                                 sendCommand('GUI.SetFullscreen', {"fullscreen": true});
                             }, 5000);
                         });
                     } else {
                         sendCommand('Player.Open', res);
-                        setTimeout(() => {
+                        SwitchPVRTimer = setTimeout(() => {
                             sendCommand('GUI.SetFullscreen', {"fullscreen": true});
                         }, 5000);
                     }
@@ -198,7 +202,7 @@ function ConstructorCmd(method, ids, param){
             case "clear":
                 method = 'Playlist.Clear';
                 param = {'playlistid': playlist_id};
-                adapter.setState('playlist', {val: '[]', ack: true});
+               setState('playlist', '[]');
                 break;
             case "add":
                 let type;
@@ -219,8 +223,6 @@ function ConstructorCmd(method, ids, param){
                 method = null;
                 if (param){
                     if (~param.indexOf('http')){
-                        /*param = param.replace('&', '?').replace('#', '?');
-                        param = querystring.parse(param, '?', '=');*/
                         param = param.toString().split('=');
                         if (param.length > 2){
                             param = param[param.length - 1];
@@ -300,7 +302,6 @@ function ConstructorCmd(method, ids, param){
             default:
         }
     }
-    //adapter.log.error('stateChange ' + method + ' - ' + ids + ' = ' + JSON.stringify(param));
     sendCommand(method, param);
 }
 
@@ -324,63 +325,40 @@ function sendCommand(method, param, callback){
     }
 }
 
-function connect(){
-    adapter.setState('info.connection', false, true);
-    adapter.log.debug('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
-    getConnection((err, _connection) => {
-        if (_connection){
-            GetNameVersion();
-            GetPlayerId();
-            GetVolume();
-            GetChannels();
-            GetVideoLibrary();
-            setTimeout(() => {
-                GetSources();
-            }, 10000);
-            connection_emit();
-        }
-    });
-}
-
 function connection_emit(){
-
     connection.notification('Application.OnVolumeChanged', (res) => {
         adapter.log.debug('notification: Application.OnVolumeChanged ' + JSON.stringify(res));
-        adapter.setState('volume', {val: res.volume, ack: true});
-        adapter.setState('mute', {val: res.muted, ack: true});
+        setState('volume', res.volume);
+       setState('mute', res.muted);
     });
     connection.notification('Player.OnResume', (res) => {
         adapter.log.debug('notification: Player.OnResume ' + JSON.stringify(res));
-        adapter.setState('state', {val: 'play', ack: true});
+        setState('state', 'play');
     });
     connection.notification('Player.OnPlay', (res) => {
         adapter.log.debug('notification: Player.OnPlay ' + JSON.stringify(res));
-        adapter.setState('state', {val: 'play', ack: true});
+        setState('state', 'play');
     });
     connection.notification('Player.OnPause', (res) => {
         adapter.log.debug('notification: Player.OnPause ' + JSON.stringify(res));
-        adapter.setState('state', {val: 'pause', ack: true});
+       setState('state', 'pause');
     });
     connection.notification('Player.OnStop', (res) => {
         adapter.log.debug('notification: Player.OnStop ' + JSON.stringify(res));
-        adapter.setState('state', {val: 'stop', ack: true});
+        setState('state', 'stop');
     });
     connection.notification('Input.OnInputRequested', (res) => {
         adapter.log.debug('notification: Input.OnInputRequested ' + JSON.stringify(res));
         //{"data":{"title":"Строка поиска","type":"keyboard","value":""},"sender":"xbmc"}
-        //adapter.setState('OnInputRequested', {val: true, ack: true});
+        //setState('OnInputRequested', true);
     });
     connection.notification('Playlist.OnClear', (res) => {
         adapter.log.debug('notification: Playlist.OnClear ' + JSON.stringify(res));
-        adapter.setState('playlist', {val: '[]', ack: true});
+        setState('playlist', '[]');
     });
-
 }
 
-
 function main(){
-    /***/
-    //adapter.setState('Directory', false, true);
     adapter.subscribeStates('*');
     connect();
 }
@@ -397,17 +375,15 @@ function GetSources(root){
     if (connection){
         Object.keys(obj).forEach((key) => {
             connection.run('Files.GetSources', {"media": key}).then((res) => {
-                //adapter.log.debug('GetSources: ' + JSON.stringify(res));
                 if (res.limits.total > 0){
                     for (let i = 0; i < res.limits.total; i++) {
                         obj[key][i] = res.sources[i];
-                        //adapter.log.debug('GetSources: ' + JSON.stringify(obj));
                     }
                 }
                 count++;
                 if (count === 5){
                     adapter.log.debug('GetSources: ' + JSON.stringify(obj));
-                    adapter.setState('Sources', {val: JSON.stringify(obj), ack: true});
+                    adapter.setState('Sources', JSON.stringify(obj), true);
                     filemanager(root, obj);
                 }
             }, (e) => {
@@ -434,7 +410,7 @@ function filemanager(root, obj){
         }
     }
     browser.files = files;
-    adapter.setState('Directory', {val: JSON.stringify(browser), ack: true});
+    adapter.setState('Directory', JSON.stringify(browser), true);
 }
 
 function GetDirectory(path){
@@ -448,7 +424,7 @@ function GetDirectory(path){
                 "sort":       {"method": "none", "order": "ascending"}
             }).then((res) => {
                 adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
-                adapter.setState('Directory', {val: JSON.stringify(res), ack: true});
+               adapter.setState('Directory', JSON.stringify(res), true);
             }, (e) => {
                 ErrProcessing(e);
             }).catch((e) => {
@@ -468,7 +444,7 @@ function GetVideoLibrary(){
             "sort":       {"method": "dateadded", "ignorearticle": true}
         }).then((res) => {
             adapter.log.debug('GetVideoLibrary: ' + JSON.stringify(res));
-            adapter.setState('VideoLibrary', {val: JSON.stringify(res), ack: true});
+            adapter.setState('VideoLibrary', JSON.stringify(res), true);
         }, (e) => {
             ErrProcessing(e);
         }).catch((e) => {
@@ -485,7 +461,7 @@ function GetPlayList(){
         }).then((res) => {
             let plst = res.items;
             adapter.log.debug('GetPlayList: ' + JSON.stringify(plst));
-            adapter.setState('playlist', {val: JSON.stringify(plst), ack: true});
+            adapter.setState('playlist', JSON.stringify(plst), true);
         }, (e) => {
             ErrProcessing(e);
         }).catch((e) => {
@@ -500,7 +476,7 @@ function GetCurrentItem(){
             for (let state in obj) {
                 if (!Object.hasOwnProperty.call(obj, state)) continue;
                 if (state !== adapter.namespace + '.info.connection'){
-                    adapter.setState(state, {val: '', ack: true});
+                    setState(state, '');
                 }
             }
             connection.run('Player.GetItem', {
@@ -520,23 +496,23 @@ function GetCurrentItem(){
                                     let _obj = obj[_key][0];
                                     for (let __key in _obj) {
                                         if (!Object.hasOwnProperty.call(_obj, __key)) continue;
-                                        adapter.setState('info.' + _key + '_' + __key, {val: _obj[__key], ack: true});
+                                        setState('info.' + _key + '_' + __key, _obj[__key]);
                                         //adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
                                     }
                                 } else {
-                                    adapter.setState('info.' + _key, {val: obj[_key], ack: true});
+                                   setState('info.' + _key, obj[_key]);
                                     //adapter.log.debug('GetPlayList: ' +_key+' = '+ JSON.stringify(obj[_key]) +' - '+typeof obj[_key] +' length = '+obj[_key].length);
                                 }
                             }
                         } else {
                             for (let id in obj) { //TODO
                                 if (!Object.hasOwnProperty.call(obj, id)) continue;
-                                adapter.setState('info.' + key, {val: obj[id], ack: true});
+                                setState('info.' + key, obj[id]);
                                 //adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
                             }
                         }
                     } else {
-                        adapter.setState('info.' + key, {val: res[key], ack: true});
+                        setState('info.' + key, res[key]);
                         //adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
                     }
                     //adapter.log.debug('GetPlayList: ' +key+' = '+ JSON.stringify(res[0][key]) +' - '+typeof res[0][key]);
@@ -560,24 +536,21 @@ function GetNameVersion(){
         Promise.all([GetProperties, GetInfoBooleans, GetInfoLabels]).then((res) => {
             adapter.log.debug('GetNameVersion: ' + JSON.stringify(res[1]));
             if (res[2]['System.KernelVersion'] === 'Ждите…' || res[2]['System.KernelVersion'] === 'Wait…' || res[2]['System.KernelVersion'] === 'Warten…'){
-                setTimeout(() => {
+                GetNameVersionTimer = setTimeout(() => {
                     GetNameVersion();
                 }, 10000);
             } else {
-                adapter.setState('systeminfo.name', {val: res[0].name, ack: true});
-                adapter.setState('systeminfo.version', {
-                    val: res[0].version.major + '.' + res[0].version.minor,
-                    ack: true
-                });
+                setState('systeminfo.name', res[0].name);
+                setState('systeminfo.version', res[0].version.major + '.' + res[0].version.minor);
                 for (let key in res[1]) {
                     if (!Object.hasOwnProperty.call(res[1], key)) continue;
                     if (res[1][key] === true){
                         let system = key.split(".");
                         system = system[system.length - 1];
-                        adapter.setState('systeminfo.system', {val: system, ack: true});
+                        setState('systeminfo.system', system);
                     }
                 }
-                adapter.setState('systeminfo.kernel', {val: res[2]['System.KernelVersion'], ack: true});
+                setState('systeminfo.kernel', res[2]['System.KernelVersion']);
             }
         }, (e) => {
             ErrProcessing(e);
@@ -601,8 +574,8 @@ function GetChannels(){
         batch.send();
         Promise.all([alltv, allradio]).then((res) => {
             if (res){
-                adapter.setState('pvr.playlist_tv', {val: JSON.stringify(res[0]), ack: true});
-                adapter.setState('pvr.playlist_radio', {val: JSON.stringify(res[1]), ack: true});
+                adapter.setState('pvr.playlist_tv', JSON.stringify(res[0]), true);
+                adapter.setState('pvr.playlist_radio', JSON.stringify(res[1]), true);
             }
         }, (e) => {
             ErrProcessing(e);
@@ -610,6 +583,20 @@ function GetChannels(){
             ErrProcessing(e);
         });
     }
+}
+
+function setState(name, val, cb){
+    adapter.getState(name, (err, state) => {
+        if (!state){
+           adapter.setState(name, val, true);
+        } else if (state.val === val){
+            adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
+        } else if (state.val !== val){
+            adapter.setState(name, val, true);
+            adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
+        }
+        cb && cb();
+    });
 }
 
 function GetPlayerProperties(){
@@ -623,59 +610,51 @@ function GetPlayerProperties(){
         let CurrentPlay = batch.Player.GetItem({"playerid": player_id});
         batch.send();
         Promise.all([Properties, InfoLabels, CurrentPlay]).then((res) => {
-            //TODO сохранять только изменения
-            //pre = res[0];
             adapter.log.debug('Response GetPlayerProperties ' + JSON.stringify(res));
             let total = (res[0].totaltime.hours * 3600) + (res[0].totaltime.minutes * 60) + res[0].totaltime.seconds;
             let cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
             playlist_id = res[0].playlistid;
-            adapter.setState('playing_time', {
-                val: time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds),
-                ack: true
-            });
-            adapter.setState('playing_time_total', {
-                val: time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds),
-                ack: true
-            });
             canseek = res[0].canseek;
-            adapter.setState('seek', {val: parseInt(cur * 100 / total), ack: true});
-            adapter.setState('canseek', {val: res[0].canseek, ack: true});
-            adapter.setState('repeat', {val: res[0].repeat, ack: true});
-            adapter.setState('shuffle', {val: res[0].shuffled, ack: true});
-            adapter.setState('speed', {val: res[0].speed, ack: true});
-            adapter.setState('position', {val: res[0].position, ack: true});
-            adapter.setState('playlistid', {val: res[0].playlistid, ack: true});
-            adapter.setState('partymode', {val: res[0].partymode, ack: true});
+            setState('playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
+            setState('playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
+            setState('seek', parseInt(cur * 100 / total));
+            setState('canseek', res[0].canseek);
+            setState('repeat', res[0].repeat);
+            setState('shuffle', res[0].shuffled);
+            setState('speed', res[0].speed);
+            setState('position', res[0].position);
+            setState('playlistid', res[0].playlistid);
+            setState('partymode', res[0].partymode);
             if (res[0].audiostreams.length > 0){
-                adapter.setState('codec', {val: res[0].audiostreams[0].codec, ack: true});
-                adapter.setState('bitrate', {val: res[0].audiostreams[0].bitrate, ack: true});
-                adapter.setState('channels', {val: res[0].audiostreams[0].channels, ack: true});
-                adapter.setState('language', {val: res[0].audiostreams[0].language, ack: true});
-                adapter.setState('audiostream', {val: res[0].audiostreams[0].name, ack: true});
+                setState('codec', res[0].audiostreams[0].codec);
+                setState('bitrate', res[0].audiostreams[0].bitrate);
+                setState('channels', res[0].audiostreams[0].channels);
+                setState('language', res[0].audiostreams[0].language);
+                setState('audiostream', res[0].audiostreams[0].name);
             } else {
-                adapter.setState('channels', {val: 2, ack: true});
-                adapter.setState('audiostream', {val: '', ack: true});
-                adapter.setState('language', {val: '', ack: true});
-                adapter.setState('codec', {val: res[1]['MusicPlayer.Codec'], ack: true});
-                adapter.setState('samplerate', {val: res[1]['MusicPlayer.SampleRate'], ack: true});
-                adapter.setState('bitrate', {val: res[1]['MusicPlayer.BitRate'], ack: true});
+                setState('channels', 2);
+                setState('audiostream', '');
+                setState('language', '');
+                setState('codec', res[1]['MusicPlayer.Codec']);
+                setState('samplerate', res[1]['MusicPlayer.SampleRate']);
+                setState('bitrate', res[1]['MusicPlayer.BitRate']);
             }
             if (res[2].item.type === 'channel'){
-                adapter.setState('type', {val: res[2].item.type, ack: true});
+                setState('type', res[2].item.type);
                 channel = true;
             } else {
-                adapter.setState('type', {val: res[0].type, ack: true});
+                setState('type', res[0].type);
                 channel = false;
             }
             if (res[2].item.label.toString().length < 2){
-                setTimeout(() => {
+                infoFileTimer = setTimeout(() => {
                     adapter.getState(adapter.namespace + '.info.file', (err, state) => {
                         state = state.val.substring(state.val.lastIndexOf('/') + 1, state.val.length - 4);
-                        adapter.setState('currentplay', {val: state, ack: true});
+                        setState('currentplay', state);
                     });
                 }, 1000);
             } else {
-                adapter.setState('currentplay', {val: res[2].item.label, ack: true});
+                setState('currentplay', res[2].item.label);
             }
 
         }, (e) => {
@@ -712,6 +691,24 @@ function GetPlayerId(){
     }
 }
 
+function connect(){
+    adapter.setState('info.connection', false, true);
+    adapter.log.debug('KODI connecting to: ' + adapter.config.ip + ':' + adapter.config.port);
+    getConnection((err, _connection) => {
+        if (_connection){
+            GetNameVersion();
+            GetPlayerId();
+            GetVolume();
+            GetChannels();
+            GetVideoLibrary();
+            GetSourcesTimer = setTimeout(() => {
+                GetSources();
+            }, 10000);
+            connection_emit();
+        }
+    });
+}
+
 function getConnection(cb){
     if (connection){
         cb && cb(null, connection);
@@ -727,17 +724,16 @@ function getConnection(cb){
                 console.log('Connection closed');
                 if (connection.socket) connection.socket.close();
                 connection = null;
-                setTimeout(connect, 5000);
+                reconnectTimer = setTimeout(connect, 5000);
             }
         });
         adapter.log.info('KODI connected');
         adapter.setState('info.connection', true, true);
-        GetPlayerId();
         cb && cb(null, connection);
     }, (error) => {
         adapter.log.debug(error);
         adapter.setState('info.connection', false, true);
-        setTimeout(connect, 5000, cb);
+        reconnectTimer = setTimeout(connect, 5000, cb);
     }).catch((error) => {
         if (error.stack){
             adapter.log.error(error.stack);
@@ -745,7 +741,7 @@ function getConnection(cb){
             adapter.log.error(error);
         }
         adapter.setState('info.connection', false, true);
-        setTimeout(connect, 5000, cb);
+        reconnectTimer = setTimeout(connect, 5000, cb);
     });
 }
 
@@ -813,8 +809,8 @@ function GetVolume(){
             'properties': ['volume', 'muted']
         }).then((res) => {
             adapter.log.debug('GetVolume: ' + JSON.stringify(res));
-            adapter.setState('mute', {val: res.muted, ack: true});
-            adapter.setState('volume', {val: res.volume, ack: true});
+            setState('mute', res.muted);
+            setState('volume', res.volume);
         }, (e) => {
             ErrProcessing(e);
         }).catch((e) => {
