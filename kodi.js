@@ -343,7 +343,7 @@ function connect(){
 }
 
 function connection_emit(){
-   
+
     connection.notification('Application.OnVolumeChanged', (res) => {
         adapter.log.debug('notification: Application.OnVolumeChanged ' + JSON.stringify(res));
         adapter.setState('volume', {val: res.volume, ack: true});
@@ -376,7 +376,6 @@ function connection_emit(){
     });
 
 }
-
 
 
 function main(){
@@ -425,14 +424,14 @@ function filemanager(root, obj){
     let files = [];
     for (let key in obj) {
         if (!Object.hasOwnProperty.call(obj, key)) continue;
-            if (obj[key].length > 0){
-                for (let i = 0; i < obj[key].length; i++) {
-                    let o = {};
-                    o.file = obj[key][i].file;
-                    o.filetype = 'directory';
-                    files.push(o);
-                }
+        if (obj[key].length > 0){
+            for (let i = 0; i < obj[key].length; i++) {
+                let o = {};
+                o.file = obj[key][i].file;
+                o.filetype = 'directory';
+                files.push(o);
             }
+        }
     }
     browser.files = files;
     adapter.setState('Directory', {val: JSON.stringify(browser), ack: true});

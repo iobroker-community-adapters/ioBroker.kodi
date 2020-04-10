@@ -1,7 +1,7 @@
 /*global systemDictionary:true */
 'use strict';
 systemDictionary = {
-    'Kodi adapter settings': {
+    'Kodi adapter settings':   {
         'en':    'Kodi adapter settings',
         'de':    'Kodi adapter settings',
         'ru':    'Настройки драйвера Kodi',
@@ -13,7 +13,7 @@ systemDictionary = {
         'pl':    'Kodi adapter settings',
         'zh-cn': 'Kodi adapter settings'
     },
-    'Kodi webserver settings':             {
+    'Kodi webserver settings': {
         'en':    'Kodi webserver settings',
         'de':    'Kodi webserver settings',
         'ru':    'Kodi webserver settings',
@@ -25,7 +25,7 @@ systemDictionary = {
         'pl':    'Kodi webserver settings',
         'zh-cn': 'Kodi webserver settings'
     },
-    'ip':             {
+    'ip':                      {
         'en':    'IP Adress KODI',
         'de':    'IP Adress KODI',
         'ru':    'IP Adress KODI',
@@ -37,7 +37,7 @@ systemDictionary = {
         'pl':    'IP Adress KODI',
         'zh-cn': 'IP Adress KODI'
     },
-    'port':           {
+    'port':                    {
         'en':    'Port jsonrpc',
         'de':    'Port jsonrpc',
         'ru':    'Port jsonrpc',
@@ -49,7 +49,7 @@ systemDictionary = {
         'pl':    'Port jsonrpc',
         'zh-cn': 'Port jsonrpc'
     },
-    'login':    {
+    'login':                   {
         'en':    'Login',
         'de':    'Login',
         'ru':    'Логин',
@@ -61,7 +61,7 @@ systemDictionary = {
         'pl':    'Login',
         'zh-cn': 'Login'
     },
-    'password':             {
+    'password':                {
         'en':    'Password',
         'de':    'Password',
         'ru':    'Пароль',
@@ -73,7 +73,7 @@ systemDictionary = {
         'pl':    'Password',
         'zh-cn': 'Password'
     },
-    'portweb':             {
+    'portweb':                 {
         'en':    'Port Webserver KODI',
         'de':    'Port Webserver KODI',
         'ru':    'Port Webserver KODI',
@@ -85,7 +85,7 @@ systemDictionary = {
         'pl':    'Port Webserver KODI',
         'zh-cn': 'Port Webserver KODI'
     },
-    'default':             {
+    'default':                 {
         'en':    'default 9090',
         'de':    'default 9090',
         'ru':    'default 9090',

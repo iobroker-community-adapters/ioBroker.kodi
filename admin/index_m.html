@@ -22,7 +22,7 @@
                 } else {
                     $key.val(settings[id])
                         .on('change', () => onChange())
-                .on('keyup', () => onChange())
+                        .on('keyup', () => onChange())
                     ;
                 }
             });
@@ -67,6 +67,8 @@
     </div>
     <div class="row">
         <div class="col s6 m12 l4">
+            <p class="translate title">Kodi adapter settings</p>
+            <p class="translate">Kodi adapter settings</p>
             <div class="col s6 input-field">
                 <input type="text" class="value" id="ip"/>
                 <label for="ip" class="translate">ip</label>
@@ -79,6 +81,8 @@
     </div>
     <div class="row">
         <div class="col s6 m12 l4">
+            <p class="translate title">Kodi webserver settings</p>
+            <p class="translate">Kodi webserver settings</p>
             <div class="col s6 input-field">
                 <input type="text" class="value" id="portweb"/>
                 <label for="portweb" class="translate">portweb</label>
