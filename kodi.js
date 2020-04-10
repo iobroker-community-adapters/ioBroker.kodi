@@ -114,6 +114,22 @@ function ConstructorCmd(method, ids, param){
                     }
                 });
                 break;
+            case "SwitchPVRbyID":
+                method = null;
+                if (player_id){
+                    sendCommand('Player.Stop', {'playerid': player_id}, () => {
+                        sendCommand('Player.Open', {"item": {"channelid": param}});
+                        SwitchPVRTimer = setTimeout(() => {
+                            sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                        }, 5000);
+                    });
+                } else {
+                    sendCommand('Player.Open', {"item": {"channelid": param}});
+                    SwitchPVRTimer = setTimeout(() => {
+                        sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                    }, 5000);
+                }
+                break;
             case "ShowNotif":
                 ShowNotification(param, (res) => {
                     method = 'GUI.ShowNotification';
@@ -202,7 +218,7 @@ function ConstructorCmd(method, ids, param){
             case "clear":
                 method = 'Playlist.Clear';
                 param = {'playlistid': playlist_id};
-               setState('playlist', '[]');
+                setState('playlist', '[]');
                 break;
             case "add":
                 let type;
@@ -329,7 +345,7 @@ function connection_emit(){
     connection.notification('Application.OnVolumeChanged', (res) => {
         adapter.log.debug('notification: Application.OnVolumeChanged ' + JSON.stringify(res));
         setState('volume', res.volume);
-       setState('mute', res.muted);
+        setState('mute', res.muted);
     });
     connection.notification('Player.OnResume', (res) => {
         adapter.log.debug('notification: Player.OnResume ' + JSON.stringify(res));
@@ -341,7 +357,7 @@ function connection_emit(){
     });
     connection.notification('Player.OnPause', (res) => {
         adapter.log.debug('notification: Player.OnPause ' + JSON.stringify(res));
-       setState('state', 'pause');
+        setState('state', 'pause');
     });
     connection.notification('Player.OnStop', (res) => {
         adapter.log.debug('notification: Player.OnStop ' + JSON.stringify(res));
@@ -424,7 +440,7 @@ function GetDirectory(path){
                 "sort":       {"method": "none", "order": "ascending"}
             }).then((res) => {
                 adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
-               adapter.setState('Directory', JSON.stringify(res), true);
+                adapter.setState('Directory', JSON.stringify(res), true);
             }, (e) => {
                 ErrProcessing(e);
             }).catch((e) => {
@@ -500,7 +516,7 @@ function GetCurrentItem(){
                                         //adapter.log.debug('GetPlayList: ' +_key+'_'+__key+' = '+ JSON.stringify(_obj[__key]) +' - '+typeof _obj[__key]);
                                     }
                                 } else {
-                                   setState('info.' + _key, obj[_key]);
+                                    setState('info.' + _key, obj[_key]);
                                     //adapter.log.debug('GetPlayList: ' +_key+' = '+ JSON.stringify(obj[_key]) +' - '+typeof obj[_key] +' length = '+obj[_key].length);
                                 }
                             }
@@ -588,7 +604,7 @@ function GetChannels(){
 function setState(name, val, cb){
     adapter.getState(name, (err, state) => {
         if (!state){
-           adapter.setState(name, val, true);
+            adapter.setState(name, val, true);
         } else if (state.val === val){
             adapter.log.debug('setState ' + name + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
         } else if (state.val !== val){
@@ -615,9 +631,10 @@ function GetPlayerProperties(){
             let cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
             playlist_id = res[0].playlistid;
             canseek = res[0].canseek;
+            const seek = parseInt(cur * 100 / total);
             setState('playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
             setState('playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
-            setState('seek', parseInt(cur * 100 / total));
+            setState('seek', isNaN(seek) ? 0 :seek);
             setState('canseek', res[0].canseek);
             setState('repeat', res[0].repeat);
             setState('shuffle', res[0].shuffled);

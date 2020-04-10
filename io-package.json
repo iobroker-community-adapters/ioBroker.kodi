@@ -515,6 +515,19 @@
       "native": {}
     },
     {
+      "_id": "SwitchPVRbyID",
+      "type": "state",
+      "common": {
+        "name": "SwitchPVRbyID",
+        "type": "number",
+        "def": false,
+        "read": true,
+        "write": true,
+        "role": "state"
+      },
+      "native": {}
+    },
+    {
       "_id": "next",
       "type": "state",
       "common": {
