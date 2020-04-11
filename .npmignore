@@ -6,4 +6,5 @@ node_modules
 test
 .travis.yml
 temp.txt
+schema.json
 appveyor.yml
