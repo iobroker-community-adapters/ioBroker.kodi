@@ -13,30 +13,30 @@ let states = {
         Suspend:           {val: false, name: "Suspends the system running Kodi", role: "button", type: "boolean", read: false, write: true}
     },
     systeminfo: {
-        name:    {val: "", name: "systeminfo.name", role: "media", type: "string", read: true, write: false},
-        version: {val: "", name: "systeminfo.version", role: "media", type: "string", read: true, write: false},
-        system:  {val: "", name: "systeminfo.system", role: "media", type: "string", read: true, write: false},
-        kernel:  {val: "", name: "systeminfo.kernel", role: "media", type: "string", read: true, write: false},
+        name:    {val: "", name: "name", role: "media", type: "string", read: true, write: false},
+        version: {val: "", name: "version", role: "media", type: "string", read: true, write: false},
+        system:  {val: "", name: "system", role: "media", type: "string", read: true, write: false},
+        kernel:  {val: "", name: "kernel", role: "media", type: "string", read: true, write: false},
     },
     input:      {
-        Back:        {val: false, name: "Back", role: "button", type: "boolean", read: false, write: true},
-        ContextMenu: {val: false, name: "ContextMenu", role: "button", type: "boolean", read: false, write: true},
-        Down:        {val: false, name: "Down", role: "button", type: "boolean", read: false, write: true},
-        Home:        {val: false, name: "Home", role: "button", type: "boolean", read: false, write: true},
-        Info:        {val: false, name: "Info", role: "button", type: "boolean", read: false, write: true},
-        Left:        {val: false, name: "Left", role: "button", type: "boolean", read: false, write: true},
-        Right:       {val: false, name: "Right", role: "button", type: "boolean", read: false, write: true},
-        Select:      {val: false, name: "Select", role: "button", type: "boolean", read: false, write: true},
-        SendText:    {val: false, name: "SendText", role: "button", type: "boolean", read: false, write: true},
-        ShowCodec:   {val: false, name: "ShowCodec", role: "button", type: "boolean", read: false, write: true},
-        ShowOSD:     {val: false, name: "ShowOSD", role: "button", type: "boolean", read: false, write: true},
-        Up:          {val: false, name: "Up", role: "button", type: "boolean", read: false, write: true}
+        Back:        {val: false, name: "Button Back", role: "button", type: "boolean", read: false, write: true},
+        ContextMenu: {val: false, name: "Button ContextMenu", role: "button", type: "boolean", read: false, write: true},
+        Down:        {val: false, name: "Button Down", role: "button", type: "boolean", read: false, write: true},
+        Home:        {val: false, name: "Button Home", role: "button", type: "boolean", read: false, write: true},
+        Info:        {val: false, name: "Button Info", role: "button", type: "boolean", read: false, write: true},
+        Left:        {val: false, name: "Button Left", role: "button", type: "boolean", read: false, write: true},
+        Right:       {val: false, name: "Button Right", role: "button", type: "boolean", read: false, write: true},
+        Select:      {val: false, name: "Button Select", role: "button", type: "boolean", read: false, write: true},
+        SendText:    {val: false, name: "Button SendText", role: "button", type: "boolean", read: false, write: true},
+        ShowCodec:   {val: false, name: "Button ShowCodec", role: "button", type: "boolean", read: false, write: true},
+        ShowOSD:     {val: false, name: "Button ShowOSD", role: "button", type: "boolean", read: false, write: true},
+        Up:          {val: false, name: "Button Up", role: "button", type: "boolean", read: false, write: true}
     },
     pvr:        {
-        SwitchPVR:      {val: false, name: "SwitchPVR", role: "media", type: "string", read: false, write: true},
-        SwitchPVRbyID:  {val: false, name: "SwitchPVRbyID", role: "state", type: "number", read: false, write: true},
-        playlist_tv:    {val: false, name: "pvr.playlist_tv", role: "media", type: "string", read: true, write: true},
-        playlist_radio: {val: false, name: "pvr.playlist_radio", role: "media", type: "string", read: true, write: true},
+        SwitchPVR:      {val: '', name: "Switch PVR by name channel", role: "media", type: "string", read: false, write: true},
+        SwitchPVRbyId:  {val: 0,  name: "Switch PVR by id channel", role: "state", type: "number", read: false, write: true},
+        playlist_tv:    {val: '', name: "PVR playlist tv channel", role: "media", type: "string", read: true, write: true},
+        playlist_radio: {val: '', name: "PVR playlist radio channel", role: "media", type: "string", read: true, write: true},
     },
     info:       {
         album:              {val: "", name: "Album of current played song", role: "media.album", type: "string", read: true, write: false},
@@ -45,46 +45,45 @@ let states = {
         title:              {val: "", name: "Title of current played song", role: "media.title", type: "string", read: true, write: false},
         playing_time:       {val: "", name: "playback duration", role: "media.elapsed.text", type: "string", read: true, write: false},
         playing_time_total: {val: "", name: "playback duration", role: "media.duration.text", type: "string", read: true, write: false},
-        fanart:             {val: "", name: "info.fanart", role: "media", type: "string", read: true, write: false},
-        file:               {val: "", name: "info.file", role: "media", type: "string", read: true, write: false},
-        label:              {val: "", name: "info.label", role: "media", type: "string", read: true, write: false},
-        playcount:          {val: 0, name: "info.playcount", role: "media", type: "number", read: true, write: false},
-        rating:             {val: 0, name: "info.rating", role: "media", type: "number", read: true, write: false},
-        thumbnail:          {val: "", name: "info.thumbnail", role: "media", type: "string", read: true, write: false},
-        track:              {val: 0, name: "info.track", role: "media", type: "number", read: true, write: false},
-        type:               {val: "", name: "info.type", role: "media", type: "string", read: true, write: false},
-        year:               {val: 0, name: "info.year", role: "media", type: "number", read: true, write: false},
-        episode:            {val: 0, name: "info.episode", role: "media", type: "number", read: true, write: false},
-        imdbnumber:         {val: "", name: "info.imdbnumber", role: "media", type: "string", read: true, write: false},
-        originaltitle:      {val: "", name: "info.originaltitle", role: "media", type: "string", read: true, write: false},
-        plot:               {val: "", name: "info.plot", role: "media", type: "string", read: true, write: false},
-        season:             {val: 0, name: "info.season", role: "media", type: "number", read: true, write: false},
-        showtitle:          {val: "", name: "info.showtitle", role: "media", type: "string", read: true, write: false},
-        subtitle:           {val: "", name: "info.subtitle", role: "media", type: "object", read: true, write: false},
-        tagline:            {val: "", name: "info.tagline", role: "media", type: "string", read: true, write: false},
-        audio_channels:     {val: 0, name: "info.audio_channels", role: "media", type: "number", read: true, write: false},
-        audio_codec:        {val: "", name: "info.audio_codec", role: "media", type: "string", read: true, write: false},
-        audio_language:     {val: "", name: "info.audio_language", role: "media", type: "string", read: true, write: false},
-        video_aspect:       {val: 0, name: "info.video_aspect", role: "media", type: "number", read: true, write: false},
-        video_codec:        {val: "", name: "info.video_codec", role: "media", type: "string", read: true, write: false},
-        video_duration:     {val: 0, name: "info.video_duration", role: "media", type: "number", read: true, write: false},
-        video_height:       {val: 0, name: "info.video_height", role: "media", type: "number", read: true, write: false},
-        video_stereomode:   {val: "", name: "info.video_stereomode", role: "media", type: "string", read: true, write: false},
-        video_width:        {val: 0, name: "info.video_width", role: "media", type: "number", read: true, write: false},
-        subtitle_language:  {val: '', name: "info.subtitle_language", role: "media", type: "string", read: true, write: false},
-        canseek:            {val: false, name: "canseek", role: "media", type: "boolean", read: true, write: false},
-        id:                 {val: 0, name: "info.id", role: "media", type: "number", read: true, write: false},
-        albumartist:        {val: '', name: "info.albumartist", role: "media", type: "string", read: true, write: false},
+        fanart:             {val: "", name: "fanart", role: "media", type: "string", read: true, write: false},
+        file:               {val: "", name: "file", role: "media", type: "string", read: true, write: false},
+        playcount:          {val: 0, name: "play count", role: "media", type: "number", read: true, write: false},
+        rating:             {val: 0, name: "rating", role: "media", type: "number", read: true, write: false},
+        thumbnail:          {val: "", name: "thumbnail", role: "media", type: "string", read: true, write: false},
+        track:              {val: 0, name: "track", role: "media", type: "number", read: true, write: false},
+        type:               {val: "", name: "type", role: "media", type: "string", read: true, write: false},
+        year:               {val: 0, name: "year", role: "media", type: "number", read: true, write: false},
+        episode:            {val: 0, name: "episode", role: "media", type: "number", read: true, write: false},
+        imdbnumber:         {val: "", name: "imdb number", role: "media", type: "string", read: true, write: false},
+        originaltitle:      {val: "", name: "original title", role: "media", type: "string", read: true, write: false},
+        plot:               {val: "", name: "plot", role: "media", type: "string", read: true, write: false},
+        season:             {val: 0, name: "season", role: "media", type: "number", read: true, write: false},
+        showtitle:          {val: "", name: "show title", role: "media", type: "string", read: true, write: false},
+        subtitle:           {val: "", name: "subtitle", role: "media", type: "object", read: true, write: false},
+        tagline:            {val: "", name: "tag line", role: "media", type: "string", read: true, write: false},
+        audio_channels:     {val: 0, name: "audio channels", role: "media", type: "number", read: true, write: false},
+        audio_codec:        {val: "", name: "audio codec", role: "media", type: "string", read: true, write: false},
+        audio_language:     {val: "", name: "audio language", role: "media", type: "string", read: true, write: false},
+        video_aspect:       {val: 0, name: "video aspect", role: "media", type: "number", read: true, write: false},
+        video_codec:        {val: "", name: "video codec", role: "media", type: "string", read: true, write: false},
+        video_duration:     {val: 0, name: "video duration", role: "media", type: "number", read: true, write: false},
+        video_height:       {val: 0, name: "video height", role: "media", type: "number", read: true, write: false},
+        video_stereomode:   {val: "", name: "video stereomode", role: "media", type: "string", read: true, write: false},
+        video_width:        {val: 0, name: "video width", role: "media", type: "number", read: true, write: false},
+        subtitle_language:  {val: '', name: "subtitle language", role: "media", type: "string", read: true, write: false},
+        canseek:            {val: false, name: "can seek", role: "media", type: "boolean", read: true, write: false},
+        id:                 {val: 0, name: "id", role: "media", type: "number", read: true, write: false},
+        albumartist:        {val: '', name: "album artist", role: "media", type: "string", read: true, write: false},
         language:           {val: '', name: "language", role: "media", type: "string", read: true, write: false},
-        currentplay:        {val: '', name: "currentplay", role: "media", type: "string", read: true, write: false},
-        player_id:          {val: '', name: "player_id", role: "media", type: "number", read: true, write: false},
-        player_type:        {val: '', name: "player_type", role: "media", type: "string", read: true, write: false},
+        currentplay:        {val: '', name: "current play", role: "media", type: "string", read: true, write: false},
+        player_id:          {val: '', name: "player id", role: "media", type: "number", read: true, write: false},
+        player_type:        {val: '', name: "player type", role: "media", type: "string", read: true, write: false},
         audiostream:        {val: '', name: "audiostream", role: "media", type: "string", read: true, write: false},
-        audio_bitrate:      {val: false, name: "info.audio_bitrate", role: "media", type: "string", read: false, write: true},
-        audio_stream:       {val: false, name: "info.audio_stream", role: "media", type: "string", read: false, write: true},
-        video_language:     {val: false, name: "info.video_language", role: "media", type: "string", read: false, write: true},
-        video_stream:       {val: false, name: "info.video_stream", role: "media", type: "string", read: false, write: true},
-        live:               {val: false, name: "info.live", role: "media", type: "string", read: false, write: true},
+        audio_bitrate:      {val: false, name: "audio bitrate", role: "media", type: "string", read: false, write: true},
+        audio_stream:       {val: false, name: "audio stream", role: "media", type: "string", read: false, write: true},
+        video_language:     {val: false, name: "video language", role: "media", type: "string", read: false, write: true},
+        video_stream:       {val: false, name: "video stream", role: "media", type: "string", read: false, write: true},
+        live:               {val: false, name: "live", role: "media", type: "string", read: false, write: true},
     },
     main:       {
         play:              {val: false, name: "Controlling playback play", role: "button.play", type: "boolean", read: false, write: true},
@@ -106,25 +105,25 @@ let states = {
         add:               {val: "", name: "The current playlist add", role: "media.add", type: "string", read: true, write: true},
         OnInputRequested:  {val: "", name: "OnInputRequested", role: "media", type: "string", read: false, write: true},
         Sources:           {val: "", name: "Sources", role: "media", type: "string", read: false, write: true},
-        CleanAudioLibrary: {val: "", name: "CleanAudioLibrary", role: "media", type: "string", read: false, write: true},
-        CleanVideoLibrary: {val: "", name: "CleanVideoLibrary", role: "media", type: "string", read: false, write: true},
-        ScanAudioLibrary:  {val: "", name: "ScanAudioLibrary", role: "media", type: "string", read: false, write: true},
-        ScanVideoLibrary:  {val: "", name: "ScanVideoLibrary", role: "media", type: "string", read: false, write: true},
-        VideoLibrary:      {val: "", name: "VideoLibrary", role: "media", type: "object", read: false, write: true},
-        setsubtitle:       {val: "", name: "setsubtitle", role: "media", type: "string", read: false, write: true},
+        CleanAudioLibrary: {val: "", name: "Clean Audio Library", role: "media", type: "string", read: false, write: true},
+        CleanVideoLibrary: {val: "", name: "Clean Video Library", role: "media", type: "string", read: false, write: true},
+        ScanAudioLibrary:  {val: "", name: "Scan Audio Library", role: "media", type: "string", read: false, write: true},
+        ScanVideoLibrary:  {val: "", name: "Scan Video Library", role: "media", type: "string", read: false, write: true},
+        VideoLibrary:      {val: "", name: "Video Library", role: "media", type: "object", read: false, write: true},
+        setsubtitle:       {val: "", name: "set subtitle", role: "media", type: "string", read: false, write: true},
         zoom:              {val: "", name: "zoom", role: "media", type: "string", read: false, write: true},
-        ExecuteAction:     {val: "", name: "ExecuteAction", role: "media", type: "string", read: false, write: true},
-        ActivateWindow:    {val: "", name: "ActivateWindow", role: "media", type: "string", read: false, write: true},
-        ShowNotif:         {val: "", name: "ShowNotif", role: "media", type: "string", read: false, write: true},
+        ExecuteAction:     {val: "", name: "Execute Action", role: "media", type: "string", read: false, write: true},
+        ActivateWindow:    {val: "", name: "Activate Window", role: "media", type: "string", read: false, write: true},
+        ShowNotif:         {val: "", name: "Show Notification", role: "media", type: "string", read: false, write: true},
         open:              {val: "", name: "open", role: "media", type: "string", read: false, write: true},
-        youtube:           {val: "", name: "youtube", role: "media", type: "string", read: false, write: true},
+        youtube:           {val: "", name: "Open youtube video", role: "media", type: "string", read: false, write: true},
         speed:             {val: 0, name: "speed", role: "media", type: "number", read: false, write: true},
-        playlistid:        {val: 0, name: "playlistid", role: "media", type: "number", read: false, write: true},
-        partymode:         {val: false, name: "partymode", role: "media", type: "boolean", read: false, write: true},
-        subtitleenabled:   {val: false, name: "main.subtitleenabled", role: "media", type: "string", read: false, write: true},
-        canchangespeed:    {val: false, name: "main.canchangespeed", role: "media", type: "string", read: false, write: true},
-        canrepeat:         {val: false, name: "main.canrepeat", role: "media", type: "string", read: false, write: true},
-        canshuffle:        {val: false, name: "main.canshuffle", role: "media", type: "string", read: false, write: true}
+        playlistid:        {val: 0, name: "playlist id", role: "media", type: "number", read: false, write: true},
+        partymode:         {val: false, name: "party mode", role: "media", type: "boolean", read: false, write: true},
+        subtitleenabled:   {val: false, name: "subtitle enabled", role: "media", type: "string", read: false, write: true},
+        canchangespeed:    {val: false, name: "can changespeed", role: "media", type: "string", read: false, write: true},
+        canrepeat:         {val: false, name: "can repeat", role: "media", type: "string", read: false, write: true},
+        canshuffle:        {val: false, name: "can shuffle", role: "media", type: "string", read: false, write: true}
     }
 };
 
@@ -219,6 +218,7 @@ function connection_emit(cb){
     connection.notification('Player.OnPlay', (res) => {
         adapter.log.debug('notification: Player.OnPlay ' + JSON.stringify(res));
         saveState('main.state', 'play');
+        GetCurrentItem();
     });
     connection.notification('Player.OnPause', (res) => {
         adapter.log.debug('notification: Player.OnPause ' + JSON.stringify(res));
@@ -226,8 +226,9 @@ function connection_emit(cb){
     });
     connection.notification('Player.OnStop', (res) => {
         adapter.log.debug('notification: Player.OnStop ' + JSON.stringify(res));
-        saveState('main.state', 'stop');
-        clearInfo();
+        if (res.data.item.channeltype !== 'tv'){
+            clearInfo();
+        }
     });
     connection.notification('Input.OnInputRequested', (res) => {
         adapter.log.debug('notification: Input.OnInputRequested ' + JSON.stringify(res));
@@ -245,16 +246,15 @@ function clearInfo(){
     adapter.getState('state', (err, state) => {
         if (state.val !== 'stop'){
             saveState('main.state', 'stop');
-            clearInfo();
         }
     });
     for (let key in states.info) {
-        if (!Object.hasOwnProperty.call(states, key)) continue;
-        if (states.info[key].type = 'string'){
+        if (!Object.hasOwnProperty.call(states.info, key)) continue;
+        if (states.info[key].type === 'string'){
             states.info[key].val = '';
-        } else if (states.info[key].type = 'number'){
+        } else if (states.info[key].type === 'number'){
             states.info[key].val = 0;
-        } else if (states.info[key].type = 'boolean'){
+        } else if (states.info[key].type === 'boolean'){
             states.info[key].val = false;
         }
     }
@@ -264,22 +264,24 @@ function clearInfo(){
 function creatObject(_id, key, key2){
     adapter.getObject(_id, function (err, _obj){
         let common = {};
+        common.name = states[key][key2].name;
+        common.role = states[key][key2].role;
+        common.type = states[key][key2].type;
+        if (states[key][key2].unit !== undefined) common.unit = states[key][key2].unit;
+        if (states[key][key2].min !== undefined) common.min = states[key][key2].unit;
+        if (states[key][key2].max !== undefined) common.max = states[key][key2].unit;
+        common.read = states[key][key2].read;
+        common.write = states[key][key2].write;
+        common.def = states[key][key2].val;
         if (err || !_obj){
-            common.name = states[key][key2].name;
-            common.role = states[key][key2].role;
-            common.type = states[key][key2].type;
-            if (states[key][key2].unit !== undefined) common.unit = states[key][key2].unit;
-            if (states[key][key2].min !== undefined) common.min = states[key][key2].unit;
-            if (states[key][key2].max !== undefined) common.max = states[key][key2].unit;
-            common.read = states[key][key2].read;
-            common.write = states[key][key2].write;
-            common.def = states[key][key2].val;
             adapter.setObject(_id, {
                 type:   'state',
                 common: common,
                 native: {}
             });
             adapter.setState(_id, {val: common.def, ack: true});
+        } else {
+            adapter.extendObject(_id, {common: common});
         }
     });
 }
@@ -314,12 +316,68 @@ function setStates(_id, key, key2){
         if (!state){
             adapter.setState(_id, val, true);
         } else if (state.val === val){
-            adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
+            //adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
         } else if (state.val !== val){
             adapter.setState(_id, val, true);
-            adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
+            //adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
         }
     });
+}
+
+function isPlayerId(cb){
+    if (connection){
+        if (player_id !== undefined && player_id !== null){
+            cb && cb();
+        } else {
+            connection.run('Player.GetActivePlayers').then((res) => {
+                adapter.log.debug('Response isPlayerId: ' + JSON.stringify(res));
+                if (res.length > 0){
+                    player_id = res[0].playerid;
+                } else {
+                    player_id = null;
+                }
+                cb && cb();
+            }, (e) => {
+                ErrProcessing(e + ' {isPlayerId}');
+            }).catch((e) => {
+                ErrProcessing(e + ' {isPlayerId}');
+            });
+        }
+    }
+}
+
+function GetCurrentItem(){
+    if (connection){
+        isPlayerId(() => {
+            // https://github.com/xbmc/xbmc/issues/16245
+            connection.run('Player.GetItem', { // !!! Выдает данные только при первом запрос, если постоянно оправшивать выдает пыстые значения
+                "playerid":   player_id,
+                "properties": ["album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
+            }).then(function (res){
+                adapter.log.debug('GetCurrentItem: ' + JSON.stringify(res));
+                res = res.item;
+                saveState('info.fanart', res.fanart);
+                saveState('info.thumbnail', res.thumbnail);
+                saveState('info.currentplay', res.label);
+                saveState('info.title', res.title ? res.title :res.label);
+                saveState('info.album', res.album);
+                saveState('info.episode', res.episode);
+                saveState('info.file', res.file);
+                saveState('info.imdbnumber', res.imdbnumber);
+                saveState('info.originaltitle', res.originaltitle);
+                saveState('info.plot', res.plot);
+                saveState('info.playcount', res.playcount);
+                saveState('info.rating', res.rating);
+                saveState('info.year', res.year);
+                saveState('info.genre', res.genre ? res.genre.join(', ') :'');
+                saveState('info.id', res.id);
+            }, function (e){
+                ErrProcessing(e + '{GetCurrentItem}');
+            }).catch(function (e){
+                ErrProcessing(e + '{GetCurrentItem}');
+            });
+        });
+    }
 }
 
 function GetPlayerProperties(){
@@ -330,22 +388,15 @@ function GetPlayerProperties(){
             "properties": ["audiostreams", "canchangespeed", "canrepeat", "canseek", "canshuffle", "percentage", "live", "currentvideostream", "currentaudiostream", "currentsubtitle", "partymode", "playlistid", "position", "repeat", "shuffled", "speed", "subtitleenabled", "subtitles", "time", "totaltime", "type"]
         });
         const InfoLabels = batch.XBMC.GetInfoLabels({"labels": ["MusicPlayer.Codec", "MusicPlayer.SampleRate", "MusicPlayer.BitRate"]});
-        const CurrentPlay = batch.Player.GetItem({
-            "playerid":   player_id,
-            "properties": ["album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
-        });
+        const CurrentPlay = batch.Player.GetItem({"playerid": player_id});
         batch.send();
         Promise.all([Properties, InfoLabels, CurrentPlay]).then((res) => {
             adapter.log.debug('Response GetPlayerProperties ' + JSON.stringify(res));
             ///////////////////////////////////////////////////////////////////////////////////////
-            //let total = (res[0].totaltime.hours * 3600) + (res[0].totaltime.minutes * 60) + res[0].totaltime.seconds;
-            //let cur = (res[0].time.hours * 3600) + (res[0].time.minutes * 60) + res[0].time.seconds;
             playlist_id = res[0].playlistid;
             canseek = res[0].canseek;
-            //const seek = parseInt(cur * 100 / total);
             saveState('info.playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
             saveState('info.playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
-            //saveState('main.seek', isNaN(seek) ? 0 :seek);
             saveState('info.canseek', res[0].canseek);
             saveState('main.repeat', res[0].repeat);
             saveState('main.shuffle', res[0].shuffled);
@@ -353,20 +404,6 @@ function GetPlayerProperties(){
             saveState('main.position', res[0].position);
             saveState('main.playlistid', res[0].playlistid);
             saveState('main.partymode', res[0].partymode);
-            /*if (res[0].audiostreams.length >= 0){
-                states.info.codec', res[0].audiostreams[0].codec;
-                states.info.bitrate', res[0].audiostreams[0].bitrate;
-                states.info.channels', res[0].audiostreams[0].channels;
-                states.info.language', res[0].audiostreams[0].language;
-                states.info.audiostream', res[0].audiostreams[0].name;
-            } else {
-                states.info.channels', 2;
-                states.info.audiostream', '';
-                states.info.language', '';
-                states.info.codec', res[1]['MusicPlayer.Codec'];
-                states.info.samplerate', res[1]['MusicPlayer.SampleRate'];
-                states.info.bitrate', res[1]['MusicPlayer.BitRate'];
-            }*/
             saveState('info.audio_codec', res[0].currentaudiostream.codec);
             saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate);
             saveState('info.audio_channels', res[0].currentaudiostream.channels);
@@ -391,22 +428,6 @@ function GetPlayerProperties(){
             saveState('main.canchangespeed', res[0].canchangespeed);
             saveState('main.canrepeat', res[0].canrepeat);
             saveState('main.canshuffle', res[0].canshuffle);
-            //////////////////////////////////////////////////////////////////////////////
-            saveState('info.currentplay', res[2].item.label);
-            saveState('info.fanart', res[2].item.fanart);
-            saveState('info.thumbnail', res[2].item.thumbnail);
-            saveState('info.title', res[2].item.title);
-            saveState('info.album', res[2].item.album);
-            saveState('info.episode', res[2].item.episode);
-            saveState('info.file', res[2].item.file);
-            saveState('info.imdbnumber', res[2].item.imdbnumber);
-            saveState('info.originaltitle', res[2].item.originaltitle);
-            saveState('info.plot', res[2].item.plot);
-            saveState('info.playcount', res[2].item.playcount);
-            saveState('info.rating', res[2].item.rating);
-            saveState('info.year', res[2].item.year);
-            saveState('info.genre', res[2].item.genre ? res[2].item.genre.join(', '): '');
-            saveState('info.id', res[2].item.id);
 
             setObject('states');
         }, (e) => {
@@ -422,7 +443,7 @@ function saveState(name, val){
     if (!states[k[0]][k[1]]){
         adapter.log.error('saveState Object not found - ' + name + ': {val: false, name: "' + name + '", role: "media", type: "string", read: false, write: true}');
     } else {
-        if(val === undefined){
+        if (val === undefined){
             if (states[k[0]][k[1]].type = 'string'){
                 val = '';
             } else if (states[k[0]][k[1]].type = 'number'){
@@ -444,6 +465,9 @@ function GetPlayerId(cb){
                 player_id = res[0].playerid;
                 saveState('info.player_id', player_id);
                 saveState('info.player_type', res[0].playertype + ' ' + res[0].type);
+                if (states.main.state === 'stop'){
+                    saveState('main.state', 'play');
+                }
                 GetPlayerProperties();
             } else {
                 player_id = null;
@@ -476,6 +500,7 @@ function connect(){
                             connection_emit(() => {
                                 GetPlayerId(() => {
                                     GetSources();
+                                    GetCurrentItem();
                                 });
                             });
                         });
@@ -498,7 +523,7 @@ function getConnection(cb){
             adapter.log.debug('Error: ' + err);
         }).on('close', () => {
             if (connection){
-                console.log('Connection closed');
+                adapter.log.debug('Connection closed');
                 if (connection.socket) connection.socket.close();
                 connection = null;
                 reconnectTimer = setTimeout(connect, 5000);
@@ -542,13 +567,14 @@ function GetSources(root){
                 count++;
                 if (count === 5){
                     adapter.log.debug('GetSources: ' + JSON.stringify(obj));
-                    adapter.setState('Sources', JSON.stringify(obj), true);
+                    //adapter.setState('Sources', JSON.stringify(obj), true);
+                    saveState('main.Sources', JSON.stringify(obj));
                     filemanager(root, obj);
                 }
             }, (e) => {
-                ErrProcessing(e + ' GetSources: ' + JSON.stringify(obj));
+                ErrProcessing(e + ' {GetSources}');
             }).catch((e) => {
-                ErrProcessing(e + ' GetSources: ' + JSON.stringify(obj));
+                ErrProcessing(e + ' {GetSources}');
             })
         });
     }
@@ -569,7 +595,8 @@ function filemanager(root, obj){
         }
     }
     browser.files = files;
-    adapter.setState('Directory', JSON.stringify(browser), true);
+    //adapter.setState('Directory', JSON.stringify(browser), true);
+    saveState('main.Directory', JSON.stringify(browser), true);
 }
 
 function GetDirectory(path){
@@ -583,11 +610,12 @@ function GetDirectory(path){
                 "sort":       {"method": "none", "order": "ascending"}
             }).then((res) => {
                 adapter.log.debug('GetDirectory: ' + JSON.stringify(res));
-                adapter.setState('Directory', JSON.stringify(res), true);
+                //adapter.setState('Directory', JSON.stringify(res), true);
+                saveState('main.Directory', JSON.stringify(res), true);
             }, (e) => {
-                ErrProcessing(e);
+                ErrProcessing(e + '{GetDirectory}');
             }).catch((e) => {
-                ErrProcessing(e);
+                ErrProcessing(e + '{GetDirectory}');
             })
         }
     } else {
@@ -603,12 +631,13 @@ function GetVideoLibrary(cb){
             "sort":       {"method": "dateadded", "ignorearticle": true}
         }).then((res) => {
             adapter.log.debug('GetVideoLibrary: ' + JSON.stringify(res));
-            adapter.setState('VideoLibrary', JSON.stringify(res), true);
+            //adapter.setState('VideoLibrary', JSON.stringify(res), true);
+            saveState('main.VideoLibrary', JSON.stringify(res), true);
             cb && cb();
         }, (e) => {
-            ErrProcessing(e);
+            ErrProcessing(e + '{GetVideoLibrary}');
         }).catch((e) => {
-            ErrProcessing(e);
+            ErrProcessing(e + '{GetVideoLibrary}');
         })
     }
 }
@@ -621,11 +650,12 @@ function GetPlayList(){
         }).then((res) => {
             let plst = res.items;
             adapter.log.debug('GetPlayList: ' + JSON.stringify(plst));
-            adapter.setState('playlist', JSON.stringify(plst), true);
+            //adapter.setState('playlist', JSON.stringify(plst), true);
+            saveState('playlist', JSON.stringify(plst), true);
         }, (e) => {
-            ErrProcessing(e);
+            ErrProcessing(e + '{GetPlayList}');
         }).catch((e) => {
-            ErrProcessing(e);
+            ErrProcessing(e + '{GetPlayList}');
         })
     }
 }
@@ -644,14 +674,16 @@ function GetChannels(cb){
         batch.send();
         Promise.all([alltv, allradio]).then((res) => {
             if (res){
-                adapter.setState('pvr.playlist_tv', JSON.stringify(res[0]), true);
-                adapter.setState('pvr.playlist_radio', JSON.stringify(res[1]), true);
+                //adapter.setState('pvr.playlist_tv', JSON.stringify(res[0]), true);
+                saveState('pvr.playlist_tv', JSON.stringify(res[0]));
+                //adapter.setState('pvr.playlist_radio', JSON.stringify(res[1]), true);
+                saveState('pvr.playlist_radio', JSON.stringify(res[1]));
             }
             cb && cb();
         }, (e) => {
-            ErrProcessing(e);
+            ErrProcessing(e + '{GetChannels}');
         }).catch((e) => {
-            ErrProcessing(e);
+            ErrProcessing(e + '{GetChannels}');
         });
     }
 }
@@ -690,8 +722,8 @@ function GetNameVersion(cb){
     }
 }
 
-function SwitchPVRbyID(val, cb){
-    adapter.getState(adapter.namespace + '.pvr.playlist_tv', (err, state) => {
+function SwitchPVRbyId(val, cb){
+    adapter.getState('pvr.playlist_tv', (err, state) => {
         if (val < 1) val = 1;
         if (state){
             let Break = {};
@@ -706,7 +738,7 @@ function SwitchPVRbyID(val, cb){
 }
 
 function SwitchPVR(val, callback){
-    adapter.getState(adapter.namespace + '.pvr.playlist_tv', (err, state) => {
+    adapter.getState('pvr.playlist_tv', (err, state) => {
         if (state){
             let Break = {};
             val = val.toString().toLowerCase();
@@ -808,9 +840,9 @@ function ConstructorCmd(method, ids, param){
                     }
                 });
                 break;
-            case "SwitchPVRbyID":
+            case "SwitchPVRbyId":
                 method = null;
-                SwitchPVRbyID(param, (res) => {
+                SwitchPVRbyId(param, (res) => {
                     if (player_id){
                         sendCommand('Player.Stop', {'playerid': player_id}, () => {
                             sendCommand('Player.Open', res);
@@ -1039,6 +1071,7 @@ function sendCommand(method, param, callback){
 
 function ErrProcessing(error){
     adapter.log.error(error);
+    if (connection.socket) connection.socket.close();
     connection = null;
     connect();
 }
