@@ -120,11 +120,13 @@ sendTo("kodi.0", {
 
 ## Changelog
 
-#### 2.0.0 (2020-04-20)
+#### 2.0.0 (2020-04-12)
 * (instalator) support admin3
 * (instalator) support compact mode
 * (instalator) refactoring
 * (instalator) fixed different error
+* (instalator) added english manual
+* (instalator) big change code
 
 #### 1.0.0 (2017-11-13)
 * (instalator) up to stable
