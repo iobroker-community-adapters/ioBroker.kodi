@@ -76,7 +76,7 @@ systemDictionary = {
     'portweb':                 {
         'en':    'Port Webserver',
         'de':    'Port Webserver',
-        'ru':    'Порт вэб сервера',
+        'ru':    'Порт веб-сервера',
         'pt':    'Port Webserver',
         'nl':    'Port Webserver',
         'fr':    'Port Webserver',
