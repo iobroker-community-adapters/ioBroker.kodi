@@ -11,8 +11,8 @@ let states = {
         Reboot:            {val: false, name: "Reboots the system running Kodi", role: "button", type: "boolean", read: false, write: true},
         Shutdown:          {val: false, name: "Shuts the system running Kodi down", role: "button", type: "boolean", read: false, write: true},
         Suspend:           {val: false, name: "Suspends the system running Kodi", role: "button", type: "boolean", read: false, write: true},
-        webport:           {val: 0, name: "Port Webserver Kodi", role: "media.webport", type: "number", read: true, write: false},
-        webserver:         {val: '', name: "Webserver Kodi", role: "media.webserver", type: "string", read: true, write: false}
+        webport:           {val: 0, name: "Port Webserver Kodi", role: "media.webport", type: "number", read: false, write: false},
+        webserver:         {val: '', name: "Webserver Kodi", role: "media.webserver", type: "string", read: false, write: false}
     },
     systeminfo: {
         name:    {val: "", name: "name", role: "media", type: "string", read: true, write: false},
@@ -78,52 +78,52 @@ let states = {
         currentplay:        {val: '', name: "current play", role: "media", type: "string", read: true, write: false},
         player_id:          {val: '', name: "player id", role: "media", type: "number", read: true, write: false},
         player_type:        {val: '', name: "player type", role: "media", type: "string", read: true, write: false},
-        audio_bitrate:      {val: '', name: "audio bitrate", role: "media", type: "string", read: false, write: true},
-        audio_stream:       {val: '', name: "audio stream", role: "media", type: "string", read: false, write: true},
-        video_language:     {val: '', name: "video language", role: "media", type: "string", read: false, write: true},
-        video_stream:       {val: '', name: "video stream", role: "media", type: "string", read: false, write: true},
-        live:               {val: false, name: "live", role: "media", type: "boolean", read: false, write: true},
+        audio_bitrate:      {val: '', name: "audio bitrate", role: "media", type: "string", read: true, write: false},
+        audio_stream:       {val: '', name: "audio stream", role: "media", type: "string", read: true, write: false},
+        video_language:     {val: '', name: "video language", role: "media", type: "string", read: true, write: false},
+        video_stream:       {val: '', name: "video stream", role: "media", type: "string", read: true, write: false},
+        live:               {val: false, name: "live", role: "media", type: "boolean", read: true, write: false},
         canseek:            {val: false, name: "can seek", role: "media", type: "boolean", read: true, write: false},
-        canrepeat:          {val: false, name: "Can repeat", role: "media", type: "boolean", read: false, write: true},
-        canshuffle:         {val: false, name: "Can shuffle", role: "media", type: "boolean", read: false, write: true},
-        canchangespeed:     {val: false, name: "Can change speed", role: "media", type: "boolean", read: false, write: true},
+        canrepeat:          {val: false, name: "Can repeat", role: "media", type: "boolean", read: false, write: false},
+        canshuffle:         {val: false, name: "Can shuffle", role: "media", type: "boolean", read: false, write: false},
+        canchangespeed:     {val: false, name: "Can change speed", role: "media", type: "boolean", read: false, write: false},
     },
     main:       {
         play:              {val: false, name: "Controlling playback play", role: "button.play", type: "boolean", read: false, write: true},
         pause:             {val: false, name: "Controlling playback pause", role: "button.pause", type: "boolean", read: false, write: true},
-        state:             {val: "stop", name: "Play, stop, or pause", role: "media.state", type: "string", values: "stop,play,pause", read: true, write: false},
+        state:             {val: "stop", name: "Status Play, stop, or pause", role: "media.state", type: "string", values: "stop,play,pause", read: true, write: false},
         next:              {val: false, name: "Controlling playback next", role: "button.next", type: "boolean", read: false, write: true},
         previous:          {val: false, name: "Controlling playback previous", role: "button.prev", type: "boolean", read: false, write: true},
         stop:              {val: false, name: "Controlling playback stop", role: "button.stop", type: "boolean", read: false, write: true},
         mute:              {val: false, name: "Mute mode", role: "media.mute", type: "boolean", read: true, write: true},
         playid:            {val: 0, name: "Controlling playback playid", role: "media.playid", type: "number", read: true, write: true},
         seek:              {val: 0, name: "Controlling playback seek", role: "media.seek", type: "number", unit: "%", min: 0, max: 100, read: true, write: true},
-        volume:            {val: 0, name: "Volume", role: "level.volume", type: "number", read: true, write: true, min: 0, max: 100},
-        repeat:            {val: false, name: "Repeat", role: "media.mode.repeat", type: "boolean", read: true, write: true},
-        shuffle:           {val: false, name: "Shuffle", role: "media.mode.shuffle", type: "boolean", read: true, write: true},
+        volume:            {val: 0, name: "Volume control", role: "level.volume", type: "number", read: true, write: true, min: 0, max: 100},
+        repeat:            {val: '', name: "Repeat control", role: "media.mode.repeat", type: "string", read: true, write: true, states: {off: "off", all: "all", one: "one"}},
+        shuffle:           {val: false, name: "Shuffle control", role: "media.mode.shuffle", type: "boolean", read: true, write: true},
         position:          {val: 0, name: "Current playing track", role: "media.track", type: "number", read: true, write: true},
-        playlist:          {val: '', name: "playlist", role: "media.playlist", type: "string", read: true, write: true},
+        playlist:          {val: '', name: "Current playlist", role: "media.playlist", type: "string", read: true, write: true},
         Directory:         {val: '', name: "The database browser", role: "media.browser", type: "string", read: true, write: true},
         clear:             {val: false, name: "Clear current playlist", role: "media.clear", type: "boolean", read: false, write: true},
-        add:               {val: '', name: "Add to current playlist", role: "media.add", type: "string", read: true, write: true},
+        add:               {val: '', name: "Add to current playlist", role: "media.add", type: "string", read: false, write: true},
         OnInputRequested:  {val: '', name: "On Input Requested", role: "media", type: "string", read: false, write: true},
-        Sources:           {val: '', name: "Sources", role: "media", type: "string", read: false, write: true},
+        Sources:           {val: '', name: "Sources", role: "media", type: "string", read: true, write: true},
         CleanAudioLibrary: {val: '', name: "Clean Audio Library", role: "media", type: "string", read: false, write: true},
         CleanVideoLibrary: {val: '', name: "Clean Video Library", role: "media", type: "string", read: false, write: true},
         ScanAudioLibrary:  {val: '', name: "Scan Audio Library", role: "media", type: "string", read: false, write: true},
         ScanVideoLibrary:  {val: '', name: "Scan Video Library", role: "media", type: "string", read: false, write: true},
-        VideoLibrary:      {val: '', name: "Video Library", role: "media", type: "object", read: false, write: true},
-        setsubtitle:       {val: '', name: "Set subtitle", role: "media", type: "string", read: false, write: true},
+        VideoLibrary:      {val: '', name: "Video Library", role: "media", type: "object", read: true, write: true},
+        setsubtitle:       {val: '', name: "Set subtitle", role: "media", type: "string", read: false, write: true, states: {previous: "previous", next: "next", off: "off", on: "on"}},
         zoom:              {val: '', name: "Zoom", role: "media", type: "string", read: false, write: true},
         ExecuteAction:     {val: '', name: "Execute Action", role: "media", type: "string", read: false, write: true},
         ActivateWindow:    {val: '', name: "Activate Window", role: "media", type: "string", read: false, write: true},
         ShowNotif:         {val: '', name: "Show Notification", role: "media", type: "string", read: false, write: true},
         open:              {val: '', name: "Play file or URL", role: "media", type: "string", read: false, write: true},
         youtube:           {val: '', name: "Open youtube video", role: "media", type: "string", read: false, write: true},
-        speed:             {val: 0, name: "Playback speed", role: "media.speed", type: "number", read: false, write: true},
-        playlistid:        {val: 0, name: "Playlist id", role: "media", type: "number", read: false, write: true},
-        partymode:         {val: false, name: "Party mode toggle", role: "media", type: "boolean", read: false, write: true},
-        subtitleenabled:   {val: false, name: "Subtitle enabled", role: "media", type: "string", read: false, write: true},
+        speed:             {val: 0, name: "Playback speed", role: "media.speed", type: "number", read: true, write: true, states: {'-32': '-32', '-16': '-16', '-8': '-8', '-4': '-4', '-2': '-2', '-1': '-1', '0': '0', '1': '1', '2': '2', '4': '4', '8': '8', '16': '16', '32': '32'}},
+        playlistid:        {val: 0, name: "Playlist id", role: "media", type: "number", read: true, write: true},
+        partymode:         {val: false, name: "Party mode toggle", role: "media", type: "boolean", read: true, write: true},
+        subtitleenabled:   {val: false, name: "Subtitle enabled", role: "media", type: "string", read: true, write: false},
     }
 };
 
@@ -268,6 +268,7 @@ function creatObject(_id, key, key2){
         if (states[key][key2].unit !== undefined) common.unit = states[key][key2].unit;
         if (states[key][key2].min !== undefined) common.min = states[key][key2].unit;
         if (states[key][key2].max !== undefined) common.max = states[key][key2].unit;
+        if (states[key][key2].states !== undefined) common.states = states[key][key2].states;
         common.read = states[key][key2].read;
         common.write = states[key][key2].write;
         common.def = states[key][key2].val;
@@ -581,7 +582,7 @@ function GetSources(root){
                     adapter.log.debug('GetSources: ' + JSON.stringify(obj));
                     //adapter.setState('Sources', JSON.stringify(obj), true);
                     saveState('main.Sources', JSON.stringify(obj));
-                    filemanager(root, obj);
+                    fileManager(root, obj);
                 }
             }, (e) => {
                 ErrProcessing(e + ' {GetSources}');
@@ -592,7 +593,7 @@ function GetSources(root){
     }
 }
 
-function filemanager(root, obj){
+function fileManager(root, obj){
     let browser = {};
     let files = [];
     for (let key in obj) {

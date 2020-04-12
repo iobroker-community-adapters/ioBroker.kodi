@@ -13,7 +13,7 @@
 # Kodi's JSON-RPC API for IoBroker
 You can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).
 
-***Note: This adapter requires Node 0.12+ (so 0.10 not supported)***
+***Note: This adapter requires Node 8.0+***
 
 ## Конфигурация KODI
 Remote control enable.
@@ -43,7 +43,7 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
   * 'error' - 2.
 
 **displaytime:**
-Время отображения сообщения в милисекундах, минимум 1500 макс 30000 мс.
+Время отображения сообщения в миллисекундах, минимум 1500 макс 30000 мс.
 
 **Пример:**
  * 1;Внимание;Протечка воды;15000
@@ -57,7 +57,7 @@ sendTo("kodi.0", {
     message:  'Возможно протечка воды ', //Текст сообщения
     title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
     image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
-    delay: 7000 //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
+    delay: 7000 //Время отображения сообщения миллисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 ### SwitchPVR:
@@ -71,7 +71,7 @@ sendTo("kodi.0", {
 
 ### Open:
 Сюда записывается ссылка на медиконтент в сети интернет либо путь до локального медиа файла.
-После записи значения начнется воспроизведение на проигрователе KODI.
+После записи значения начнется воспроизведение на проигрывателе KODI.
 
 ### Position:
 Текущая позиция в плейлисте, так же в этот статус можно записать необходимую позицую и KODI тут же перейдет к воспроизведению этой позиции.
@@ -93,7 +93,7 @@ sendTo("kodi.0", {
 Старт воспроизведения (true, false)
 
 ### Speed:
-Скорость воспроизведения. Фиксированные значения -32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32, а также increment и decrement
+Скорость воспроизведения. Фиксированные значения (-32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32), а также 'increment' и 'decrement'
 
 ### Directory:
 Сюда записывается путь до папки или диска, в ответ в этот статус записывается список каталогов указанной папки или диска.

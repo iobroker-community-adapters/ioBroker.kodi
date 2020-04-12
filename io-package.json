@@ -21,13 +21,13 @@
       "en":    "Kodi Control Adapter",
       "de":    "Kodi Control Adapter",
       "ru":    "Адаптер для управления Kodi",
-      "pt":    "Kodi Control Adapter",
-      "nl":    "Kodi Control Adapter",
-      "fr":    "Kodi Control Adapter",
-      "it":    "Kodi Control Adapter",
-      "es":    "Kodi Control Adapter",
-      "pl":    "Kodi Control Adapter",
-      "zh-cn": "Kodi Control Adapte"
+      "pt":    "Adaptador de controle Kodi",
+      "nl":    "Kodi-besturingsadapter",
+      "fr":    "Adaptateur de commande Kodi",
+      "it":    "Adattatore di controllo Kodi",
+      "es":    "Kodi juhtiadapter",
+      "pl":    "Adapter sterowania Kodi",
+      "zh-cn": "Kodi控制適配器"
     },
     "license": "MIT",
     "authors": [
@@ -41,10 +41,10 @@
     "materialize": true,
     "extIcon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
     "keywords": [
-      "iobroker.kodi",
-      "vis",
-      "GUI",
-      "graphical"
+      "kodi",
+      "player",
+      "xbmc",
+      "vis"
     ],
     "readme": "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
     "loglevel": "info",
