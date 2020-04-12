@@ -10,29 +10,30 @@
 
 [![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)](https://nodei.co/npm/iobroker.kodi/)
 
-# Kodi's JSON-RPC API for IoBroker
-You can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).
+[English manual](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
 
-***Note: This adapter requires Node 8.0+***
+# Адаптер Kodi для IoBroker (JSON-RPC API) 
+Вы можете найти официальную документацию KODI по API JSON-RCP [тут](http://kodi.wiki/view/JSON-RPC_API) и полный список доступных команд (для протокола версии 6) [тут](http://kodi.wiki/view/JSON-RPC_API/v6).
+
+***Примечание: Этот адаптер требует Nodejs 8.0+***
 
 ## Конфигурация KODI
-Remote control enable.
-![Remote control enable.] (admin/remote.jpg)
+Включение удаленного управления и веб-сервера.
+![Remote control enable.](admin/remote.png)
 JSON-RPC API использует **по умолчанию порт 9090**, для того чтобы его изменить необходимо внести изменения в файл [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
 
-_Note: The advancedsettings.xml file does not exist by default. You have to create it first!_
+_Примечание: Файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его!_
 ```xml
 <jsonrpc>
     <compactoutput>true</compactoutput>
     <tcpport>9999</tcpport>
 </jsonrpc>
 ```
-![http enable.](admin/web.jpg)
 
 ## Конфигурация драйвера
 В найстройках драйвера указывается IP адрес KODI и порт для JSON-RPC API (по умолчанию 9090).
 
-## Using
+## Использование
 ### ShowNotif:
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 
