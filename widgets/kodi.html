@@ -1,33 +1,33 @@
 <!--
     ioBroker.iobroker.kodi Widget-Set
-
-    version: "0.0.6"
-
-    Copyright 10.2015-2016 instalator<vvvalt@mail.ru>
+    version: "2.0.0"
+    Copyright 10.2015-2020 instalator<vvvalt@mail.ru>
 -->
 
-<link rel="stylesheet" href="widgets/kodi/css/style.css" />
+<link rel="stylesheet" href="widgets/kodi/css/style.css"/>
 <script type="text/javascript" src="widgets/kodi/js/kodi.js"></script>
 
 
 <script id="tplkodiProgressBar"
-        type="text/ejs"
+        type="text/ejs" 
         class="vis-tpl"
         data-vis-prev='<img style="width:110px; height:10px" src="widgets/kodi/img/w_icon/progress.png"></img>'
-		data-vis-attrs="oid_seek/id/;"
+        data-vis-attrs="oid_seek/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="Progress Bar">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:200px; height:20px; overflow: initial" id="<%= this.data.attr('wid') %>" >
        <% vis.binds.kodi.Progress(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiPlaylist"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:110px; height:90px" src="widgets/kodi/img/w_icon/playlist.png"></img>'
-		data-vis-attrs="oid_playlist/id/;oid_position/id;oid_server/id/;"
+        data-vis-attrs="oid_playlist/id/onPlaylistBrowserChanged;oid_position/id;oid_server/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Playlist">
@@ -38,29 +38,33 @@
 			</div>
        <% vis.binds.kodi.Playlist(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiThumbnail"
-		type="text/ejs"
-		class="vis-tpl"
-		data-vis-prev='<img style="width:110px; height:110px" src="widgets/kodi/img/defaultplaylist.png"></img>'
-		data-vis-attrs="oid_thumbnail/id/;oid_type/id/;oid_server/id/;"
-		data-vis-set="kodi"
-		data-vis-type="val"
-		data-vis-name="KODI Thumbnail">
+        type="text/ejs"
+        class="vis-tpl"
+        data-vis-prev='<img style="width:110px; height:110px" src="widgets/kodi/img/defaultplaylist.png"></img>'
+        data-vis-attrs="oid_thumbnail/id/onThumbnailBrowserChanged;oid_type/id/;oid_server/id/;"
+        data-vis-set="kodi"
+        data-vis-type="val"
+        data-vis-name="KODI Thumbnail">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:110px; height:110px" id="<%= this.data.attr('wid') %>" >
 			<ul class="kodicover">
 				<li class="cover"></li>
 				</ul>
        <% vis.binds.kodi.Thumbnail(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiCodec"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:100px; height:50px" src="widgets/kodi/img/w_icon/codec.png"></img>'
-		data-vis-attrs="oid_codec/id/;"
+        data-vis-attrs="oid_codec/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI codec info">
@@ -70,13 +74,15 @@
 				</ul>
        <% vis.binds.kodi.CodecInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiAspect"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:67px; height:50px" src="widgets/kodi/img/w_icon/aspect.png"></img>'
-		data-vis-attrs="oid_aspect/id/;"
+        data-vis-attrs="oid_aspect/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI AspectRatio info">
@@ -86,13 +92,15 @@
 				</ul>
        <% vis.binds.kodi.AspectInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiResolut"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:67px; height:50px" src="widgets/kodi/img/w_icon/resolution.png"></img>'
-		data-vis-attrs="oid_resolut/id/;"
+        data-vis-attrs="oid_resolut/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Video Resolution info">
@@ -102,13 +110,15 @@
 				</ul>
        <% vis.binds.kodi.ResolutInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiChannel"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:64px; height:50px" src="widgets/kodi/img/w_icon/channel.png"></img>'
-		data-vis-attrs="oid_channel/id/;"
+        data-vis-attrs="oid_channel/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Audio Channel info">
@@ -118,13 +128,15 @@
 				</ul>
        <% vis.binds.kodi.ChannelInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
 </script>
 
 <script id="tplkodiVideoCodec"
         type="text/ejs"
         class="vis-tpl"
         data-vis-prev='<img style="width:100px; height:50px" src="widgets/kodi/img/w_icon/video_codec.png"></img>'
-		data-vis-attrs="oid_videocodec/id/;"
+        data-vis-attrs="oid_videocodec/id/;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI VideoCodec info">
@@ -134,13 +146,16 @@
 				</ul>
        <% vis.binds.kodi.VideoCodec(this.data.wid, this.view, this.data, this.style);%>
 	</div>
+
+
+
 </script>
 
 <script id="tplkodiButton"
-        type="text/ejs"
+        type="text/ejs" 
         class="vis-tpl"
         data-vis-prev='<img style="width:110px; height:20px" src="widgets/kodi/img/w_icon/button.png"></img>'
-		data-vis-attrs="oid_play/id/;oid_speed/id;oid_prev/id;oid_next/id;oid_stop/id;oid_mute/id;oid_rpt/id;oid_shf/id;oid_seek/id;"
+        data-vis-attrs="oid_play/id/onKodiButtonBrowserChanged;oid_speed/id;oid_prev/id;oid_next/id;oid_stop/id;oid_mute/id;oid_rpt/id;oid_shf/id;oid_seek/id;"
         data-vis-set="kodi"
         data-vis-type="val"
         data-vis-name="KODI Button">
@@ -154,7 +169,7 @@
 					<li class="next"></li>
 					<li class="repeat"></li>
 					<li class="shuffle"></li>
-				</ul>
+				</ul> 
        <% vis.binds.kodi.Button(this.data.wid, this.view, this.data, this.style);%>
 	</div>
 </script>

@@ -49,9 +49,9 @@ let states = {
         file:               {val: '', name: "file", role: "media", type: "string", read: true, write: false},
         playcount:          {val: 0, name: "Number of plays", role: "media", type: "number", read: true, write: false},
         rating:             {val: 0, name: "rating", role: "media", type: "number", read: true, write: false},
-        thumbnail:          {val: '', name: "thumbnail", role: "media", type: "string", read: true, write: false},
+        thumbnail:          {val: '', name: "thumbnail", role: "media.cover", type: "string", read: true, write: false},
         track:              {val: 0, name: "track", role: "media", type: "number", read: true, write: false},
-        type:               {val: '', name: "type", role: "media", type: "string", read: true, write: false},
+        type:               {val: '', name: "type", role: "media.type", type: "string", read: true, write: false},
         year:               {val: 0, name: "year", role: "media", type: "number", read: true, write: false},
         episode:            {val: 0, name: "episode", role: "media", type: "number", read: true, write: false},
         imdbnumber:         {val: '', name: "imdb number", role: "media", type: "string", read: true, write: false},
@@ -118,7 +118,7 @@ let states = {
         ShowNotif:         {val: '', name: "Show Notification", role: "media", type: "string", read: false, write: true},
         open:              {val: '', name: "Play file or URL", role: "media", type: "string", read: false, write: true},
         youtube:           {val: '', name: "Open youtube video", role: "media", type: "string", read: false, write: true},
-        speed:             {val: 0, name: "Playback speed", role: "media", type: "number", read: false, write: true},
+        speed:             {val: 0, name: "Playback speed", role: "media.speed", type: "number", read: false, write: true},
         playlistid:        {val: 0, name: "Playlist id", role: "media", type: "number", read: false, write: true},
         partymode:         {val: false, name: "Party mode toggle", role: "media", type: "boolean", read: false, write: true},
         subtitleenabled:   {val: false, name: "Subtitle enabled", role: "media", type: "string", read: false, write: true},
@@ -204,8 +204,8 @@ function startAdapter(options){
 function connection_emit(cb){
     connection.notification('Application.OnVolumeChanged', (res) => {
         adapter.log.debug('notification: Application.OnVolumeChanged ' + JSON.stringify(res));
-        saveState('main.volume', res.volume);
-        saveState('main.mute', res.muted);
+        saveState('main.volume', res.data.volume);
+        saveState('main.mute', res.data.muted);
     });
     connection.notification('Player.OnResume', (res) => {
         adapter.log.debug('notification: Player.OnResume ' + JSON.stringify(res));
@@ -310,11 +310,11 @@ function setStates(_id, key, key2){
     adapter.getState(_id, (err, state) => {
         if (!state){
             adapter.setState(_id, val, true);
-        } else if (state.val === val){
-            //adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
         } else if (state.val !== val){
             adapter.setState(_id, val, true);
             //adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
+        } else if (state.val === val){
+            //adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' = newVal: ' + val + ' }');
         }
     });
 }
@@ -897,10 +897,9 @@ function ConstructorCmd(method, ids, param){
             case "repeat":
                 if (states.info.canrepeat){
                     method = 'Player.SetRepeat'; //off, on, all
-                    param = !!param;
-                    if (param){
+                    if (param === true || param === 'true'){
                         param = 'all';
-                    } else {
+                    } else if(param === false || param === 'false'){
                         param = 'off';
                     }
                     param = {'playerid': player_id, "repeat": param};
@@ -928,6 +927,18 @@ function ConstructorCmd(method, ids, param){
 
                 break;
             case "playid":
+                method = null;
+                if (player_id !== 'undefined'){
+                    method = 'Player.GoTo';
+                } else {
+                    sendCommand('Input.ExecuteAction', 'play', () => { //TODO
+                        sendCommand('Player.GoTo', {"playerid": player_id, "to": param}, () => {
+                        });
+                    });
+                }
+                param = {"playerid": player_id, "to": param};
+                break;
+            case "position":
                 method = null;
                 if (player_id !== 'undefined'){
                     method = 'Player.GoTo';
