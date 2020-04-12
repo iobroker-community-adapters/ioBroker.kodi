@@ -10,7 +10,9 @@ let states = {
         Hibernate:         {val: false, name: "Puts the system running Kodi into hibernate mode", role: "button", type: "boolean", read: false, write: true},
         Reboot:            {val: false, name: "Reboots the system running Kodi", role: "button", type: "boolean", read: false, write: true},
         Shutdown:          {val: false, name: "Shuts the system running Kodi down", role: "button", type: "boolean", read: false, write: true},
-        Suspend:           {val: false, name: "Suspends the system running Kodi", role: "button", type: "boolean", read: false, write: true}
+        Suspend:           {val: false, name: "Suspends the system running Kodi", role: "button", type: "boolean", read: false, write: true},
+        webport:           {val: 0, name: "Port Webserver Kodi", role: "media.webport", type: "number", read: true, write: false},
+        webserver:         {val: '', name: "Webserver Kodi", role: "media.webserver", type: "string", read: true, write: false}
     },
     systeminfo: {
         name:    {val: "", name: "name", role: "media", type: "string", read: true, write: false},
@@ -133,13 +135,13 @@ function startAdapter(options){
         unload:       (callback) => {
             try {
                 adapter.log.debug('cleaned everything up...');
-                clearTimeout(timer);
-                clearTimeout(reconnectTimer);
-                clearTimeout(getPlayListTimer);
-                clearTimeout(SwitchPVRTimer);
-                clearTimeout(GetSourcesTimer);
-                clearTimeout(GetNameVersionTimer);
-                clearTimeout(infoFileTimer);
+                timer && clearTimeout(timer);
+                reconnectTimer && clearTimeout(reconnectTimer);
+                getPlayListTimer && clearTimeout(getPlayListTimer);
+                SwitchPVRTimer && clearTimeout(SwitchPVRTimer);
+                GetSourcesTimer && clearTimeout(GetSourcesTimer);
+                GetNameVersionTimer && clearTimeout(GetNameVersionTimer);
+                infoFileTimer && clearTimeout(infoFileTimer);
                 callback();
             } catch (e) {
                 callback();
@@ -201,7 +203,7 @@ function startAdapter(options){
     }));
 }
 
-function connection_emit(cb){
+function subscribeNotification(cb){
     connection.notification('Application.OnVolumeChanged', (res) => {
         adapter.log.debug('notification: Application.OnVolumeChanged ' + JSON.stringify(res));
         saveState('main.volume', res.data.volume);
@@ -465,7 +467,7 @@ function saveState(name, val){
 }
 
 function GetPlayerId(cb){
-    clearTimeout(timer);
+    timer && clearTimeout(timer);
     if (connection){
         connection.run('Player.GetActivePlayers').then((res) => {
             adapter.log.debug('Response GetPlayerId: ' + JSON.stringify(res));
@@ -501,14 +503,16 @@ function connect(){
     connection = null;
     getConnection((err, _connection) => {
         if (_connection){
-            GetNameVersion(() => {
-                GetVolume(() => {
-                    GetChannels(() => {
-                        GetVideoLibrary(() => {
-                            connection_emit(() => {
-                                GetPlayerId(() => {
-                                    GetSources();
-                                    GetCurrentItem();
+            GetPortWebServer(() => {
+                GetNameVersion(() => {
+                    GetVolume(() => {
+                        GetChannels(() => {
+                            GetVideoLibrary(() => {
+                                subscribeNotification(() => {
+                                    GetPlayerId(() => {
+                                        GetSources();
+                                        GetCurrentItem();
+                                    });
                                 });
                             });
                         });
@@ -524,7 +528,7 @@ function getConnection(cb){
         cb && cb(null, connection);
         return;
     }
-    clearTimeout(timer);
+    timer && clearTimeout(timer);
     kodi(adapter.config.ip, adapter.config.port).then((_connection) => {
         connection = _connection;
         _connection.on('error', (err) => {
@@ -653,14 +657,31 @@ function GetPlayList(){
             "playlistid": playlist_id,
             "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "album", "showtitle", "playcount", "file"]/*,"limits":{"start":0,"end":750}*/
         }).then((res) => {
-                let plst = res? res.items: '';
-                adapter.log.debug('GetPlayList: ' + JSON.stringify(plst));
-                saveState('main.playlist', JSON.stringify(plst));
+            let plst = res ? res.items :'';
+            adapter.log.debug('GetPlayList: ' + JSON.stringify(plst));
+            saveState('main.playlist', JSON.stringify(plst));
         }, (e) => {
             ErrProcessing(e + '{GetPlayList}');
         }).catch((e) => {
             ErrProcessing(e + '{GetPlayList}');
         })
+    }
+}
+
+function GetPortWebServer(cb){
+    if (connection){
+        connection.run('Settings.GetSettingValue', {"setting": "services.webserverport"}).then((res) => {
+            adapter.log.debug('GetPortWebServer: ' + JSON.stringify(res));
+            saveState('system.webport', res.value);
+            saveState('system.webserver', adapter.config.ip + ':' + res.value);
+            adapter.config.portweb = res.value;
+            cb && cb();
+        }, (e) => {
+            ErrProcessing(e + '{GetPlayList}');
+        }).catch((e) => {
+            ErrProcessing(e + '{GetPlayList}');
+        })
+
     }
 }
 
@@ -899,7 +920,7 @@ function ConstructorCmd(method, ids, param){
                     method = 'Player.SetRepeat'; //off, on, all
                     if (param === true || param === 'true'){
                         param = 'all';
-                    } else if(param === false || param === 'false'){
+                    } else if (param === false || param === 'false'){
                         param = 'off';
                     }
                     param = {'playerid': player_id, "repeat": param};

@@ -14,16 +14,16 @@ systemDictionary = {
         'zh-cn': 'Kodi adapter settings'
     },
     'Kodi webserver settings': {
-        'en':    'Kodi Web Server Settings',
-        'de':    'Kodi Web Server Settings',
-        'ru':    'Настройки вэб сервера Kodi',
-        'pt':    'Kodi Web Server Settings',
-        'nl':    'Kodi Web Server Settings',
-        'fr':    'Kodi Web Server Settings',
-        'it':    'Kodi Web Server Settings',
-        'es':    'Kodi Web Server Settings',
-        'pl':    'Kodi Web Server Settings',
-        'zh-cn': 'Kodi Web Server Settings'
+        'en':    'Kodi Web Server Access Settings',
+        'de':    'Kodi Web Server Access Settings',
+        'ru':    'Настройки для доступа к вэбсерверу Kodi',
+        'pt':    'Kodi Web Server Access Settings',
+        'nl':    'Kodi Web Server Access Settings',
+        'fr':    'Kodi Web Server Access Settings',
+        'it':    'Kodi Web Server Access Settings',
+        'es':    'Kodi Web Server Access Settings',
+        'pl':    'Kodi Web Server Access Settings',
+        'zh-cn': 'Kodi Web Server Access Settings'
     },
     'ip':                      {
         'en':    'Kodi IP Address',

@@ -65,6 +65,7 @@ vis.binds.kodi = {
 		oid_mute:      		{val: undefined,	role: 'media.mute',       	kodi: true},
 		oid_rpt:      		{val: undefined,	role: 'media.mode.repeat',  kodi: true},
 		oid_shf:      		{val: undefined,	role: 'media.mode.shuffle', kodi: true},
+        oid_server:       	{val: undefined,	role: 'media.webserver',    kodi: true},
     },
     /***********************************************************************/
     Thumbnail:   function (widgetID, view, data, style){

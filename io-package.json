@@ -49,6 +49,7 @@
     "readme": "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
     "loglevel": "info",
     "type": "multimedia",
+    "localLink": "%web_protocol%://%native_ip%:%native_portweb%",
     "restartAdapters": [
       "vis"
     ]
