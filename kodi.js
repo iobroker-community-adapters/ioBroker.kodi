@@ -507,7 +507,7 @@ function connect(){
             GetPortWebServer(() => {
                 GetNameVersion(() => {
                     GetVolume(() => {
-                        GetChannels(() => {
+                        GetPVRChannels(() => {
                             GetVideoLibrary(() => {
                                 subscribeNotification(() => {
                                     GetPlayerId(() => {
@@ -653,7 +653,7 @@ function GetVideoLibrary(cb){
 }
 
 function GetPlayList(){
-    if (connection){
+    if (connection && player_id !== undefined && player_id !== null){
         connection.run('Playlist.GetItems', {
             "playlistid": playlist_id,
             "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "album", "showtitle", "playcount", "file"]/*,"limits":{"start":0,"end":750}*/
@@ -686,7 +686,7 @@ function GetPortWebServer(cb){
     }
 }
 
-function GetChannels(cb){
+function GetPVRChannels(cb){
     if (connection){
         let batch = connection.batch();
         let alltv = batch.PVR.GetChannels({
@@ -705,7 +705,9 @@ function GetChannels(cb){
             }
             cb && cb();
         }, (e) => {
-            ErrProcessing(e + '{GetChannels}');
+            adapter.log.debug('Error GetChannels: PVR is not use?' + JSON.stringify(e));
+            cb && cb();
+            //ErrProcessing(e + '{GetChannels}');
         }).catch((e) => {
             ErrProcessing(e + '{GetChannels}');
         });
