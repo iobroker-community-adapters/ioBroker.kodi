@@ -20,6 +20,7 @@
 ## Конфигурация KODI
 Включение удаленного управления и веб-сервера.
 ![Remote control enable.](admin/remote.png)
+
 JSON-RPC API использует **по умолчанию порт 9090**, для того чтобы его изменить необходимо внести изменения в файл [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
 
 _Примечание: Файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его!_
@@ -119,6 +120,9 @@ sendTo("kodi.0", {
  - Suspend - приостанавливает Kodi
 
 ## Changelog
+
+#### 2.0.1 (2020-04-13)
+* (instalator) fixed error if not used PVR
 
 #### 2.0.0 (2020-04-12)
 * (instalator) support admin3

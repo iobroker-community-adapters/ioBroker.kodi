@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "news": {
+      "2.0.1": {
+        "en": "fixed error if not used PVR",
+        "de": "fixed error if not used PVR",
+        "ru": "fixed error if not used PVR",
+        "pt": "fixed error if not used PVR",
+        "nl": "fixed error if not used PVR",
+        "fr": "fixed error if not used PVR",
+        "it": "fixed error if not used PVR",
+        "es": "fixed error if not used PVR",
+        "pl": "fixed error if not used PVR",
+        "zh-cn": "fixed error if not used PVR"
+      },
       "2.0.0": {
         "en": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
         "de": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
