@@ -201,7 +201,7 @@ function startAdapter(options){
             }
         }
     }));
-}
+} 
 
 function subscribeNotification(cb){
     connection.notification('Application.OnVolumeChanged', (res) => {
