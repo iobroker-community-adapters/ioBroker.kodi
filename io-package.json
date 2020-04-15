@@ -28,7 +28,7 @@
         "zh-cn": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code"
       }
     },
-    "title": "Kodi Control Adapter",
+    "title": "Kodi media player control",
     "desc": {
       "en":    "Kodi Control Adapter",
       "de":    "Kodi Control Adapter",
