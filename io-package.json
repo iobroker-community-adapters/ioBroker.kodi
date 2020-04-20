@@ -51,6 +51,7 @@
     "enabled": false,
     "messagebox": true,
     "materialize": true,
+    "compact": true,
     "extIcon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
     "keywords": [
       "kodi",
