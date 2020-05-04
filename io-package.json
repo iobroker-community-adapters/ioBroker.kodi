@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "news": {
+      "2.0.2": {
+        "en": "changed title in io-package.json\nchanged seek\nfixed widgets\nfixed for thumbnails",
+        "de": "Titel in io-package.json geändert\nveränderte Suche\nfeste Widgets\nbehoben für Thumbnails",
+        "ru": "изменил название в io-package.json\nизменил искать\nисправлены виджеты\nисправлено для миниатюр",
+        "pt": "título alterado em io-package.json\nbusca alterada\nwidgets fixos\nfixo para miniaturas",
+        "nl": "titel gewijzigd in io-package.json\nveranderd zoeken\nvaste widgets\nopgelost voor miniaturen",
+        "fr": "changement de titre dans io-package.json\nchangé de recherche\nwidgets fixes\nfixe pour les vignettes",
+        "it": "titolo modificato in io-package.json\nricerca cambiata\nwidget fissi\nriparato per le anteprime",
+        "es": "título cambiado en io-package.json\nbúsqueda cambiada\nwidgets fijos\narreglado para miniaturas",
+        "pl": "zmieniono tytuł w io-package.json\nzmieniono poszukiwanie\nnaprawione widżety\nnaprawiono dla miniatur",
+        "zh-cn": "更改了io-package.json中的标题\n寻求改变\n固定的小部件\n固定缩略图"
+      },
       "2.0.1": {
         "en": "fixed error if not used PVR",
         "de": "fixed error if not used PVR",
