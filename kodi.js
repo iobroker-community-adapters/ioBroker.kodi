@@ -434,7 +434,7 @@ function GetPlayerProperties(){
                 channel = false;
             }
             saveState('info.live', res[0].live);
-            saveState('main.seek', res[0].percentage);
+            saveState('main.seek', parseFloat(res[0].percentage).toFixed(4));
             saveState('main.subtitleenabled', res[0].subtitleenabled);
             saveState('info.canchangespeed', res[0].canchangespeed);
             saveState('info.canrepeat', res[0].canrepeat);
