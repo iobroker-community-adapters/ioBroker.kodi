@@ -84,10 +84,10 @@ vis.binds.kodi = {
                 $div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
             } else {
                 if (cover && cover !== 'image://DefaultAlbumCover.png/'){
-                    url_thumb = 'http://' + data.oid_server + '/image/' + encodeURI(cover);
+                    url_thumb = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(cover);
                     $div.find('li').removeClass().addClass("cover").css('backgroundImage', 'url(' + url_thumb + ')');
                 } else {
-                    if (type == 'video'){
+                    if (type === 'video'){
                         $div.find('li').removeClass().addClass("cover vdef").css('backgroundImage', 'url()');
                     } else {
                         $div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
@@ -245,35 +245,37 @@ vis.binds.kodi = {
         var playlist;
 
         function SetPlaylist(val){
-            playlist = JSON.parse(val);
-            var _playlist = {};
-            if (playlist){
-                _playlist = playlist;
-                $div.find("#playListContainer").empty();
-                _playlist.forEach(function (item, i, arr){
-					let file = _playlist[i].file.split('/');
-					file = file[file.length - 1]; 
-					let label = _playlist[i].label ? _playlist[i].label : file;
-                    $div.find("#playListContainer").append("<li class='item" + (i + 1) + "'>" + (i + 1) + ' - ' + label + "</li>");
-                });
-                $div.find("#playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
-                $div.find('#playListContainer').on('click', "li", function (){
-                    var n = $(this).index();
-                    vis.setValue(data.oid_position, n);
-                });
-            } else if (playlist.channels){
-                _playlist = playlist.channels;
-                $div.find("#playListContainer").empty();
-                _playlist.forEach(function (item, i, arr){
-                    var url = 'http://' + data.oid_server + '/image/' + encodeURI(_playlist[i].thumbnail);
-                    $div.find("#playListContainer").append("<li class='item" + (i + 1) + "'><img src='" + url + "' style='width: 50px; height: 50px; vertical-align: middle; margin: 2px;'> " + _playlist[i].label + "</li>");
-                });
-                $div.find("#playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
+            if(val !== 'null'){
+                playlist = JSON.parse(val);
+                if (playlist.channels === undefined){
+                    //playlist = playlist;
+                    //var _playlist = [];
+                    $div.find("#playListContainer").empty();
+                    playlist.forEach(function (item, i){
+                        let file = playlist[i].file.split('/');
+                        file = file[file.length - 1];
+                        let label = playlist[i].label ? playlist[i].label :file;
+                        $div.find("#playListContainer").append("<li class='item" + (i + 1) + "'>" + (i + 1) + ' - ' + label + "</li>");
+                    });
+                    $div.find("#playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
+                    $div.find('#playListContainer').on('click', "li", function (){
+                        var n = $(this).index();
+                        vis.setValue(data.oid_position, n);
+                    });
+                } else if (playlist.channels){
+                    playlist = playlist.channels;
+                    $div.find("#playListContainer").empty();
+                    playlist.forEach(function (item, i, arr){
+                        var url = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(item.thumbnail);
+                        $div.find("#playListContainer").append("<li class='item" + (i + 1) + "'><img src='" + url + "' style='width: 50px; height: 50px; vertical-align: middle; margin: 2px;'> " + item.label + "</li>");
+                    });
+                    $div.find("#playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
 
-                $div.find('#playListContainer').on('click', "li", function (){
-                    var n = $(this).index() + 1;
-                    vis.setValue(data.oid_position, n);
-                });
+                    $div.find('#playListContainer').on('click', "li", function (){
+                        var n = $(this).index() + 1;
+                        vis.setValue(data.oid_position, n);
+                    });
+                }
             }
         }
 
@@ -281,7 +283,9 @@ vis.binds.kodi = {
 		var bound = [];
         if (data.oid_playlist){
 			bound.push(data.oid_playlist + '.val');
-			vis.states.bind(data.oid_playlist + '.val', SetPlaylist);
+			vis.states.bind(data.oid_playlist + '.val', function (e, newVal, oldVal){
+                SetPlaylist(newVal);
+            });
         }
         if (data.oid_position){
             vis.states.bind(data.oid_position + '.val', function (e, newVal, oldVal){

@@ -407,7 +407,7 @@ function GetPlayerProperties(){
             saveState('main.partymode', res[0].partymode);
             if (res[0].currentaudiostream){
                 saveState('info.audio_codec', res[0].currentaudiostream.codec);
-                saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate);
+                saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate > 10000 ? (res[0].currentaudiostream.bitrate / 1000): res[0].currentaudiostream.bitrate);
                 saveState('info.audio_channels', res[0].currentaudiostream.channels);
                 saveState('info.audio_language', res[0].currentaudiostream.language);
                 saveState('info.audio_stream', res[0].currentaudiostream.name);
