@@ -201,7 +201,7 @@ function startAdapter(options){
             }
         }
     }));
-} 
+}
 
 function subscribeNotification(cb){
     connection.notification('Application.OnVolumeChanged', (res) => {
@@ -407,7 +407,7 @@ function GetPlayerProperties(){
             saveState('main.partymode', res[0].partymode);
             if (res[0].currentaudiostream){
                 saveState('info.audio_codec', res[0].currentaudiostream.codec);
-                saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate > 10000 ? (res[0].currentaudiostream.bitrate / 1000): res[0].currentaudiostream.bitrate);
+                saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate > 10000 ? (res[0].currentaudiostream.bitrate / 1000) :res[0].currentaudiostream.bitrate);
                 saveState('info.audio_channels', res[0].currentaudiostream.channels);
                 saveState('info.audio_language', res[0].currentaudiostream.language);
                 saveState('info.audio_stream', res[0].currentaudiostream.name);
@@ -441,6 +441,9 @@ function GetPlayerProperties(){
             saveState('info.canshuffle', res[0].canshuffle);
 
             setObject('states');
+            if(!res[0].live){
+                GetCurrentItem();
+            }
         }, (e) => {
             ErrProcessing(e + ' GetPlayerProperties');
         }).catch((e) => {
@@ -1113,6 +1116,8 @@ function sendCommand(method, param, callback){
                 }).catch((e) => {
                     ErrProcessing(e + ' sendCommand: ' + method + ' - ' + JSON.stringify(param));
                 })
+            } else {
+                ErrProcessing(e + ' getConnection Error: ' + method + ' - ' + JSON.stringify(param));
             }
         });
     } else {

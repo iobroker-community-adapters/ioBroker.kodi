@@ -78,7 +78,7 @@ vis.binds.kodi = {
             }, 100);
         }
 
-        function Thumb(cover){
+        function Thumb(cover, server){
             var url_thumb;
             if (vis.editMode){
                 $div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
@@ -105,7 +105,7 @@ vis.binds.kodi = {
         if (data.oid_type){
             vis.states.bind(data.oid_type + '.val', function (e, newVal, oldVal){
                 type = newVal;
-                Thumb();
+                //Thumb();
             });
         }
         Thumb(vis.states[data.oid_thumbnail + '.val']);
