@@ -85,7 +85,7 @@ vis.binds.kodi = {
             } else {
                 if (cover && cover !== 'image://DefaultAlbumCover.png/'){
                     url_thumb = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(cover);
-                    $div.find('li').removeClass().addClass("cover").css('backgroundImage', 'url(' + url_thumb + ')');
+                    $div.find('li').removeClass().addClass("cover").css({'background': 'url(' + url_thumb + ')', 'background-size': 'contain', 'background-position': 'center', 'background-repeat': 'no-repeat'});
                 } else {
                     if (type === 'video'){
                         $div.find('li').removeClass().addClass("cover vdef").css('backgroundImage', 'url()');
