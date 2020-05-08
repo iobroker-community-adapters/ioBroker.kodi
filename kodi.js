@@ -344,7 +344,8 @@ function isPlayerId(cb){
     }
 }
 
-function GetCurrentItem(){
+function GetCurrentItem(cb){
+    adapter.log.debug('GetCurrentItem');
     if (connection){
         isPlayerId(() => {
             if (player_id !== undefined && player_id !== null){
@@ -354,24 +355,30 @@ function GetCurrentItem(){
                     "properties": ["album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
                 }).then(function (res){
                     adapter.log.debug('GetCurrentItem: ' + JSON.stringify(res));
-                    res = res.item;
-                    saveState('info.fanart', res.fanart);
-                    saveState('info.thumbnail', res.thumbnail);
-                    saveState('info.currentplay', res.label);
-                    saveState('info.title', res.title ? res.title :res.label);
-                    saveState('info.album', res.album);
-                    saveState('info.episode', res.episode);
-                    saveState('info.file', res.file);
-                    saveState('info.imdbnumber', res.imdbnumber);
-                    saveState('info.originaltitle', res.originaltitle);
-                    saveState('info.plot', res.plot);
-                    saveState('info.playcount', res.playcount);
-                    saveState('info.rating', res.rating);
-                    saveState('info.year', res.year);
-                    saveState('info.genre', res.genre ? res.genre.join(', ') :'');
-                    saveState('info.id', res.id);
-                    saveState('info.artist', res.artist ? res.artist.join(', ') :'');
-                    saveState('info.albumartist', res.albumartist ? res.albumartist.join(', ') :'');
+                    try {
+                        res = res.item;
+                        saveState('info.tagline', res.tagline);
+                        saveState('info.fanart', res.fanart);
+                        saveState('info.thumbnail', res.thumbnail);
+                        saveState('info.currentplay', res.label);
+                        saveState('info.title', res.title ? res.title :res.label);
+                        saveState('info.album', res.album);
+                        saveState('info.episode', res.episode);
+                        saveState('info.file', res.file);
+                        saveState('info.imdbnumber', res.imdbnumber);
+                        saveState('info.originaltitle', res.originaltitle);
+                        saveState('info.plot', res.plot);
+                        saveState('info.playcount', res.playcount);
+                        saveState('info.rating', res.rating);
+                        saveState('info.year', res.year);
+                        saveState('info.genre', res.genre ? res.genre.join(', ') :'');
+                        saveState('info.id', res.id);
+                        saveState('info.artist', res.artist ? res.artist.join(', ') :'');
+                        saveState('info.albumartist', res.albumartist ? res.albumartist.join(', ') :'');
+                    } catch (e) {
+                        ErrProcessing(e + ' catch {GetCurrentItem}');
+                    }
+                    cb && cb();
                 }, function (e){
                     ErrProcessing(e + '{GetCurrentItem}');
                 }).catch(function (e){
@@ -395,54 +402,60 @@ function GetPlayerProperties(){
         Promise.all([Properties, InfoLabels, CurrentPlay]).then((res) => {
             adapter.log.debug('Response GetPlayerProperties ' + JSON.stringify(res));
             ///////////////////////////////////////////////////////////////////////////////////////
-            playlist_id = res[0].playlistid;
-            saveState('info.playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
-            saveState('info.playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
-            saveState('info.canseek', res[0].canseek);
-            saveState('main.repeat', res[0].repeat);
-            saveState('main.shuffle', res[0].shuffled);
-            saveState('main.speed', res[0].speed);
-            saveState('main.position', res[0].position);
-            saveState('main.playlistid', res[0].playlistid);
-            saveState('main.partymode', res[0].partymode);
-            if (res[0].currentaudiostream){
-                saveState('info.audio_codec', res[0].currentaudiostream.codec);
-                saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate > 10000 ? (res[0].currentaudiostream.bitrate / 1000) :res[0].currentaudiostream.bitrate);
-                saveState('info.audio_channels', res[0].currentaudiostream.channels);
-                saveState('info.audio_language', res[0].currentaudiostream.language);
-                saveState('info.audio_stream', res[0].currentaudiostream.name);
+            try {
+                playlist_id = res[0].playlistid;
+                saveState('info.playing_time', time(res[0].time.hours, res[0].time.minutes, res[0].time.seconds));
+                saveState('info.playing_time_total', time(res[0].totaltime.hours, res[0].totaltime.minutes, res[0].totaltime.seconds));
+                saveState('info.canseek', res[0].canseek);
+                saveState('main.repeat', res[0].repeat);
+                saveState('main.shuffle', res[0].shuffled);
+                saveState('main.speed', res[0].speed);
+                saveState('main.position', res[0].position);
+                saveState('main.playlistid', res[0].playlistid);
+                saveState('main.partymode', res[0].partymode);
+                if (res[0].currentaudiostream){
+                    saveState('info.audio_codec', res[0].currentaudiostream.codec);
+                    saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate > 10000 ? (res[0].currentaudiostream.bitrate / 1000) :res[0].currentaudiostream.bitrate);
+                    saveState('info.audio_channels', res[0].currentaudiostream.channels);
+                    saveState('info.audio_language', res[0].currentaudiostream.language);
+                    saveState('info.audio_stream', res[0].currentaudiostream.name);
+                }
+                if (res[0].currentvideostream){
+                    saveState('info.video_codec', res[0].currentvideostream.codec);
+                    saveState('info.video_height', res[0].currentvideostream.height);
+                    saveState('info.video_width', res[0].currentvideostream.width);
+                    saveState('info.video_language', res[0].currentvideostream.language);
+                    saveState('info.video_stream', res[0].currentvideostream.name);
+                }
+                if (res[0].type === 'audio'){
+                    saveState('info.audio_codec', res[1]['MusicPlayer.Codec']);
+                    saveState('info.audio_bitrate', res[1]['MusicPlayer.BitRate']);
+                    saveState('info.audio_channels', res[1]['MusicPlayer.Channels']);
+                    //saveState('info.rating', res[1]['MusicPlayer.Rating']);
+                    //saveState('info.artist', res[1]['MusicPlayer.Artist']);
+                }
+                if (res[2].item.type === 'channel'){
+                    saveState('info.type', res[2].item.type);
+                    channel = true;
+                } else {
+                    saveState('info.type.val', res[0].type);
+                    channel = false;
+                }
+                saveState('info.live', res[0].live);
+                saveState('main.seek', parseFloat(res[0].percentage).toFixed(4));
+                saveState('main.subtitleenabled', res[0].subtitleenabled);
+                saveState('info.canchangespeed', res[0].canchangespeed);
+                saveState('info.canrepeat', res[0].canrepeat);
+                saveState('info.canshuffle', res[0].canshuffle);
+            } catch (e) {
+                ErrProcessing(e + ' catch GetPlayerProperties');
             }
-            if (res[0].currentvideostream){
-                saveState('info.video_codec', res[0].currentvideostream.codec);
-                saveState('info.video_height', res[0].currentvideostream.height);
-                saveState('info.video_width', res[0].currentvideostream.width);
-                saveState('info.video_language', res[0].currentvideostream.language);
-                saveState('info.video_stream', res[0].currentvideostream.name);
-            }
-            if (res[0].type === 'audio'){
-                saveState('info.audio_codec', res[1]['MusicPlayer.Codec']);
-                saveState('info.audio_bitrate', res[1]['MusicPlayer.BitRate']);
-                saveState('info.audio_channels', res[1]['MusicPlayer.Channels']);
-                //saveState('info.rating', res[1]['MusicPlayer.Rating']);
-                //saveState('info.artist', res[1]['MusicPlayer.Artist']);
-            }
-            if (res[2].item.type === 'channel'){
-                saveState('info.type', res[2].item.type);
-                channel = true;
-            } else {
-                saveState('info.type.val', res[0].type);
-                channel = false;
-            }
-            saveState('info.live', res[0].live);
-            saveState('main.seek', parseFloat(res[0].percentage).toFixed(4));
-            saveState('main.subtitleenabled', res[0].subtitleenabled);
-            saveState('info.canchangespeed', res[0].canchangespeed);
-            saveState('info.canrepeat', res[0].canrepeat);
-            saveState('info.canshuffle', res[0].canshuffle);
-
-            setObject('states');
             if(!res[0].live){
-                GetCurrentItem();
+                GetCurrentItem(()=>{
+                    setObject('states');
+                });
+            } else {
+                setObject('states');
             }
         }, (e) => {
             ErrProcessing(e + ' GetPlayerProperties');
