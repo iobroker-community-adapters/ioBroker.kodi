@@ -121,8 +121,9 @@ sendTo("kodi.0", {
 
 ## Changelog
 
-#### 2.0.3
+#### 2.0.4
 * (instalator) fixed thumbnails widget
+* (instalator) fixed info.tagline
 
 #### 2.0.2
 * (instalator) changed title in io-package.json

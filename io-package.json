@@ -1,19 +1,19 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "news": {
       "2.0.3": {
-        "en": "fixed thumbnails widget",
-        "de": "fixed thumbnails widget",
-        "ru": "fixed thumbnails widget",
-        "pt": "fixed thumbnails widget",
-        "nl": "fixed thumbnails widget",
-        "fr": "fixed thumbnails widget",
-        "it": "fixed thumbnails widget",
-        "es": "fixed thumbnails widget",
-        "pl": "fixed thumbnails widget",
-        "zh-cn": "fixed thumbnails widget"
+        "en": "fixed thumbnails widget\nfixed info.tagline",
+        "de": "fixed thumbnails widget\nfixed info.tagline",
+        "ru": "fixed thumbnails widget\nfixed info.tagline",
+        "pt": "fixed thumbnails widget\nfixed info.tagline",
+        "nl": "fixed thumbnails widget\nfixed info.tagline",
+        "fr": "fixed thumbnails widget\nfixed info.tagline",
+        "it": "fixed thumbnails widget\nfixed info.tagline",
+        "es": "fixed thumbnails widget\nfixed info.tagline",
+        "pl": "fixed thumbnails widget\nfixed info.tagline",
+        "zh-cn": "fixed thumbnails widget\nfixed info.tagline"
       },
       "2.0.2": {
         "en": "changed title in io-package.json\nchanged seek\nfixed widgets\nfixed for thumbnails",
