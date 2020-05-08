@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "news": {
+      "2.0.3": {
+        "en": "fixed thumbnails widget",
+        "de": "fixed thumbnails widget",
+        "ru": "fixed thumbnails widget",
+        "pt": "fixed thumbnails widget",
+        "nl": "fixed thumbnails widget",
+        "fr": "fixed thumbnails widget",
+        "it": "fixed thumbnails widget",
+        "es": "fixed thumbnails widget",
+        "pl": "fixed thumbnails widget",
+        "zh-cn": "fixed thumbnails widget"
+      },
       "2.0.2": {
         "en": "changed title in io-package.json\nchanged seek\nfixed widgets\nfixed for thumbnails",
         "de": "Titel in io-package.json geändert\nveränderte Suche\nfeste Widgets\nbehoben für Thumbnails",
@@ -14,30 +26,6 @@
         "es": "título cambiado en io-package.json\nbúsqueda cambiada\nwidgets fijos\narreglado para miniaturas",
         "pl": "zmieniono tytuł w io-package.json\nzmieniono poszukiwanie\nnaprawione widżety\nnaprawiono dla miniatur",
         "zh-cn": "更改了io-package.json中的标题\n寻求改变\n固定的小部件\n固定缩略图"
-      },
-      "2.0.1": {
-        "en": "fixed error if not used PVR",
-        "de": "fixed error if not used PVR",
-        "ru": "fixed error if not used PVR",
-        "pt": "fixed error if not used PVR",
-        "nl": "fixed error if not used PVR",
-        "fr": "fixed error if not used PVR",
-        "it": "fixed error if not used PVR",
-        "es": "fixed error if not used PVR",
-        "pl": "fixed error if not used PVR",
-        "zh-cn": "fixed error if not used PVR"
-      },
-      "2.0.0": {
-        "en": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "de": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "ru": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "pt": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "nl": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "fr": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "it": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "es": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "pl": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code",
-        "zh-cn": "support admin3\nsupport compact mode\nrefactoring\nfixed different error\nadded english manual\nbig change code"
       }
     },
     "title": "Kodi media player control",
