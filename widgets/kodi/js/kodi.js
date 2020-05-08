@@ -29,9 +29,9 @@ if (vis.editMode){
         "oid_shf":         {"en": "shuffle", "de": "shuffle", "ru": "shuffle"},
         "oid_seek":        {"en": "seek", "de": "seek", "ru": "seek"},
         "oid_server":      {
-            "en": "IP adress and port of Kodi system. Example: 127.0.0.1:8080",
-            "de": "IP Adresse und Port des Kodi Systems. Beispiel: 127.0.0.1:8080",
-            "ru": "IP адрес и порт веб сервера коди. Например: 127.0.0.1:8080"
+            "en": "system.webserver",
+            "de": "system.webserver",
+            "ru": "system.webserver"
         },
         "oid_resolut":     {"en": "video_height", "de": "video_height", "ru": "video_height"}
     });
