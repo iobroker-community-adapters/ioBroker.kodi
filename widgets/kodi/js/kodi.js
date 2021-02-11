@@ -81,16 +81,16 @@ vis.binds.kodi = {
         function Thumb(cover, server){
             var url_thumb;
             if (vis.editMode){
-                $div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
+                $div.find('li').removeClass().addClass("kodi-cover adef").css('backgroundImage', 'url()');
             } else {
                 if (cover && cover !== 'image://DefaultAlbumCover.png/'){
                     url_thumb = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(cover);
-                    $div.find('li').removeClass().addClass("cover").css({'background': 'url(' + url_thumb + ')', 'background-size': 'contain', 'background-position': 'center', 'background-repeat': 'no-repeat'});
+                    $div.find('li').removeClass().addClass("kodi-cover").css({'background': 'url(' + url_thumb + ')', 'background-size': 'contain', 'background-position': 'center', 'background-repeat': 'no-repeat'});
                 } else {
                     if (type === 'video'){
-                        $div.find('li').removeClass().addClass("cover vdef").css('backgroundImage', 'url()');
+                        $div.find('li').removeClass().addClass("kodi-cover vdef").css('backgroundImage', 'url()');
                     } else {
-                        $div.find('li').removeClass().addClass("cover adef").css('backgroundImage', 'url()');
+                        $div.find('li').removeClass().addClass("kodi-cover adef").css('backgroundImage', 'url()');
                     }
                 }
             }
@@ -132,13 +132,13 @@ vis.binds.kodi = {
             var clickPos = e.pageX - this.offsetLeft;
             var percentage = clickPos / maxWidth * 100;
             vis.setValue(data.oid_seek, percentage);
-            $div.progressbar("option", "value", percentage);
+            $div.kodi-progressbar("option", "value", percentage);
         });
 
         // subscribe on updates of value
         if (data.oid_seek){
             vis.states.bind(data.oid_seek + '.val', function (e, newVal, oldVal){
-                $div.progressbar("value", newVal);
+                $div.kodi-progressbar("value", newVal);
             });
         }
     },
@@ -152,14 +152,14 @@ vis.binds.kodi = {
             }, 100);
         }
 
-        $("#kodicontrols .prev").on('click', function (){
+        $("#kodi-controls .kodi-prev").on('click', function (){
             vis.setValue(data.oid_prev, '');
         });
-        $("#kodicontrols .rewind").on('click', function (){
+        $("#kodi-controls .kodi-rewind").on('click', function (){
             var seek = vis.states[data.oid_seek + '.val'];
             vis.setValue(data.oid_speed, 'decrement');
         });
-        $("#kodicontrols .playpause").on('click', function (){
+        $("#kodi-controls .kodi-playpause").on('click', function (){
             var speed = vis.states[data.oid_speed + '.val'];
             if (speed === 1){
                 vis.setValue(data.oid_speed, 0);
@@ -167,17 +167,17 @@ vis.binds.kodi = {
                 vis.setValue(data.oid_speed, 1);
             }
         });
-        $("#kodicontrols .stop").on('click', function (){
+        $("#kodi-controls .kodi-stop").on('click', function (){
             vis.setValue(data.oid_stop, '');
         });
-        $("#kodicontrols .forward").on('click', function (){
+        $("#kodi-controls .kodi-forward").on('click', function (){
             var seek = vis.states[data.oid_seek + '.val'];
             vis.setValue(data.oid_speed, 'increment');
         });
-        $("#kodicontrols .next").on('click', function (){
+        $("#kodi-controls .kodi-next").on('click', function (){
             vis.setValue(data.oid_next, '');
         });
-        $("#kodicontrols .repeat").on('click', function (){
+        $("#kodi-controls .kodi-repeat").on('click', function (){
             var rpt = vis.states[data.oid_rpt + '.val'];
             if (rpt === 'off'){
                 vis.setValue(data.oid_rpt, 'one');
@@ -187,7 +187,7 @@ vis.binds.kodi = {
                 vis.setValue(data.oid_rpt, 'off');
             }
         });
-        $("#kodicontrols .shuffle").on('click', function (){
+        $("#kodi-controls .kodi-shuffle").on('click', function (){
             var shf = vis.states[data.oid_shf + '.val'];
             if (shf === false){
                 vis.setValue(data.oid_shf, true);
@@ -199,32 +199,32 @@ vis.binds.kodi = {
         // subscribe on updates of value
         if (data.oid_speed){
             vis.states.bind(data.oid_speed + '.val', function (e, newVal, oldVal){
-                var sp = $("#kodicontrols > .playpause");
+                var sp = $("#kodi-controls > .kodi-playpause");
                 if (newVal !== 1){
-                    sp.removeClass().addClass('playpause play');
+                    sp.removeClass().addClass('kodi-playpause play');
                 } else {
-                    sp.removeClass().addClass('playpause');
+                    sp.removeClass().addClass('kodi-playpause');
                 }
             });
         }
         if (data.oid_rpt){
             vis.states.bind(data.oid_rpt + '.val', function (e, newVal, oldVal){
-                var r = $("#kodicontrols > .repeat");
+                var r = $("#kodi-controls > .kodi-repeat");
                 if (newVal === 'off'){
                     r.removeClass();
-                    r.addClass("repeat off");
+                    r.addClass("kodi-repeat off");
                 } else if (newVal === 'one'){
                     r.removeClass();
-                    r.addClass("repeat one");
+                    r.addClass("kodi-repeat one");
                 } else if (newVal === 'all'){
                     r.removeClass();
-                    r.addClass("repeat all");
+                    r.addClass("kodi-repeat all");
                 }
             });
         }
         if (data.oid_shf){
             vis.states.bind(data.oid_shf + '.val', function (e, newVal, oldVal){
-                var s = $("#kodicontrols > .shuffle");
+                var s = $("#kodi-controls > .kodi-shuffle");
 				if (newVal){
 					s.removeClass('off').addClass('on');
 				} else {
@@ -250,28 +250,28 @@ vis.binds.kodi = {
                 if (playlist.channels === undefined){
                     //playlist = playlist;
                     //var _playlist = [];
-                    $div.find("#playListContainer").empty();
+                    $div.find("#kodi-playListContainer").empty();
                     playlist.forEach(function (item, i){
                         let file = playlist[i].file.split('/');
                         file = file[file.length - 1];
                         let label = playlist[i].label ? playlist[i].label :file;
-                        $div.find("#playListContainer").append("<li class='item" + (i + 1) + "'>" + (i + 1) + ' - ' + label + "</li>");
+                        $div.find("#kodi-playListContainer").append("<li class='item" + (i + 1) + "'>" + (i + 1) + ' - ' + label + "</li>");
                     });
-                    $div.find("#playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
-                    $div.find('#playListContainer').on('click', "li", function (){
+                    $div.find("#kodi-playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
+                    $div.find('#kodi-playListContainer').on('click', "li", function (){
                         var n = $(this).index();
                         vis.setValue(data.oid_position, n);
                     });
                 } else if (playlist.channels){
                     playlist = playlist.channels;
-                    $div.find("#playListContainer").empty();
+                    $div.find("#kodi-playListContainer").empty();
                     playlist.forEach(function (item, i, arr){
                         var url = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(item.thumbnail);
-                        $div.find("#playListContainer").append("<li class='item" + (i + 1) + "'><img src='" + url + "' style='width: 50px; height: 50px; vertical-align: middle; margin: 2px;'> " + item.label + "</li>");
+                        $div.find("#kodi-playListContainer").append("<li class='item" + (i + 1) + "'><img src='" + url + "' style='width: 50px; height: 50px; vertical-align: middle; margin: 2px;'> " + item.label + "</li>");
                     });
-                    $div.find("#playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
+                    $div.find("#kodi-playListContainer .item" + (parseInt(vis.states[data.oid_position + '.val']) + 1)).addClass("active");
 
-                    $div.find('#playListContainer').on('click', "li", function (){
+                    $div.find('#kodi-playListContainer').on('click', "li", function (){
                         var n = $(this).index() + 1;
                         vis.setValue(data.oid_position, n);
                     });
@@ -289,12 +289,12 @@ vis.binds.kodi = {
         }
         if (data.oid_position){
             vis.states.bind(data.oid_position + '.val', function (e, newVal, oldVal){
-                $div.find("#playListContainer li").removeClass("active");
+                $div.find("#kodi-playListContainer li").removeClass("active");
                 newVal = parseInt(newVal);
                 //if (playlist.items){
                     newVal++;
                //}
-                $div.find("#playListContainer .item" + newVal).addClass("active");
+                $div.find("#kodi-playListContainer .item" + newVal).addClass("active");
             });
         }
         if ($div.length){
@@ -317,7 +317,7 @@ vis.binds.kodi = {
 
         function SetCodecInfo(val){
             if (val){
-                $('.kodiinfo > .codec').css('backgroundImage', 'url(./widgets/kodi/img/audio/' + val + '.png)');
+                $('.kodi-info > .kodi-codec').css('backgroundImage', 'url(./widgets/kodi/img/audio/' + val + '.png)');
             }
         }
 
@@ -346,7 +346,7 @@ vis.binds.kodi = {
         function SetAspectInfo(val){
             if (val){
                 val = parseFloat(val).toFixed(2);
-                $('.kodiinfo > .aspect').css('backgroundImage', 'url(./widgets/kodi/img/aspectratio/' + val + '.png)');
+                $('.kodi-info > .kodi-aspect').css('backgroundImage', 'url(./widgets/kodi/img/aspectratio/' + val + '.png)');
             }
         }
 
@@ -374,7 +374,7 @@ vis.binds.kodi = {
 
         function SetResolutInfo(val){
             if (val){
-                $('.kodiinfo > .resolut').css('backgroundImage', 'url(./widgets/kodi/img/video/' + val + '.png)');
+                $('.kodi-info > .kodi-resolut').css('backgroundImage', 'url(./widgets/kodi/img/video/' + val + '.png)');
             }
         }
 
@@ -403,7 +403,7 @@ vis.binds.kodi = {
 
         function SetChannelInfo(val){
             if (val){
-                $('.kodiinfo > .channel').css('backgroundImage', 'url(./widgets/kodi/img/audio/' + val + '.png)');
+                $('.kodi-info > .kodi-channel').css('backgroundImage', 'url(./widgets/kodi/img/audio/' + val + '.png)');
             }
         }
 
@@ -431,7 +431,7 @@ vis.binds.kodi = {
 
         function SetVideoCodecInfo(val){
             if (val){
-                $('.kodiinfo > .videocodec').css('backgroundImage', 'url(./widgets/kodi/img/video/' + val + '.png)');
+                $('.kodi-info > .kodi-videocodec').css('backgroundImage', 'url(./widgets/kodi/img/video/' + val + '.png)');
             }
         }
 

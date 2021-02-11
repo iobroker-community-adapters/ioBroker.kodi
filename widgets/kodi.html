@@ -32,8 +32,8 @@
         data-vis-type="val"
         data-vis-name="KODI Playlist">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:500px; height:240px" id="<%= this.data.attr('wid') %>" >
-			<div id="kodiplaylist">
-				<ul id="playListContainer">
+			<div id="kodi-playlist">
+				<ul id="kodi-playListContainer">
 				</ul>
 			</div>
        <% vis.binds.kodi.Playlist(this.data.wid, this.view, this.data, this.style);%>
@@ -49,8 +49,8 @@
         data-vis-type="val"
         data-vis-name="KODI Thumbnail">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:110px; height:110px" id="<%= this.data.attr('wid') %>" >
-			<ul class="kodicover">
-				<li class="cover"></li>
+			<ul class="kodi-cover">
+				<li class="kodi-cover"></li>
 				</ul>
        <% vis.binds.kodi.Thumbnail(this.data.wid, this.view, this.data, this.style);%>
 	</div>
@@ -65,8 +65,8 @@
         data-vis-type="val"
         data-vis-name="KODI codec info">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
-				<ul class="kodiinfo">
-					<li class="codec"></li>
+				<ul class="kodi-info">
+					<li class="kodi-codec"></li>
 				</ul>
        <% vis.binds.kodi.CodecInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
@@ -83,8 +83,8 @@
         data-vis-type="val"
         data-vis-name="KODI AspectRatio info">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:70px; height:50px" id="<%= this.data.attr('wid') %>" >
-				<ul class="kodiinfo">
-					<li class="aspect"></li>
+				<ul class="kodi-info">
+					<li class="kodi-aspect"></li>
 				</ul>
        <% vis.binds.kodi.AspectInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
@@ -101,8 +101,8 @@
         data-vis-type="val"
         data-vis-name="KODI Video Resolution info">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:70px; height:50px" id="<%= this.data.attr('wid') %>" >
-				<ul class="kodiinfo">
-					<li class="resolut"></li>
+				<ul class="kodi-info">
+					<li class="kodi-resolut"></li>
 				</ul>
        <% vis.binds.kodi.ResolutInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
@@ -119,8 +119,8 @@
         data-vis-type="val"
         data-vis-name="KODI Audio Channel info">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:70px; height:50px" id="<%= this.data.attr('wid') %>" >
-				<ul class="kodiinfo">
-					<li class="channel"></li>
+				<ul class="kodi-info">
+					<li class="kodi-channel"></li>
 				</ul>
        <% vis.binds.kodi.ChannelInfo(this.data.wid, this.view, this.data, this.style);%>
 	</div>
@@ -137,8 +137,8 @@
         data-vis-type="val"
         data-vis-name="KODI VideoCodec info">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:100px; height:50px" id="<%= this.data.attr('wid') %>" >
-				<ul class="kodiinfo">
-					<li class="videocodec"></li>
+				<ul class="kodi-info">
+					<li class="kodi-videocodec"></li>
 				</ul>
        <% vis.binds.kodi.VideoCodec(this.data.wid, this.view, this.data, this.style);%>
 	</div>
@@ -156,15 +156,15 @@
         data-vis-type="val"
         data-vis-name="KODI Button">
 	<div class="vis-widget <%== this.data.attr('class') %>" style="width:400px; height:50px" id="<%= this.data.attr('wid') %>" >
-				<ul id="kodicontrols">
-					<li class="prev"></li>
-					<li class="rewind"></li>
-					<li class="playpause"></li>
-					<li class="stop"></li>
-					<li class="forward"></li>
-					<li class="next"></li>
-					<li class="repeat"></li>
-					<li class="shuffle"></li>
+				<ul id="kodi-controls">
+					<li class="kodi-prev"></li>
+					<li class="kodi-rewind"></li>
+					<li class="kodi-playpause"></li>
+					<li class="kodi-stop"></li>
+					<li class="kodi-forward"></li>
+					<li class="kodi-next"></li>
+					<li class="kodi-repeat"></li>
+					<li class="kodi-shuffle"></li>
 				</ul> 
        <% vis.binds.kodi.Button(this.data.wid, this.view, this.data, this.style);%>
 	</div>

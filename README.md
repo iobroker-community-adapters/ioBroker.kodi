@@ -122,6 +122,10 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 2.0.5
+* (instalator) changed css classes
+* (instalator) fixed error
+
 #### 2.0.4
 * (instalator) fixed thumbnails widget
 * (instalator) fixed info.tagline

@@ -1,9 +1,20 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "news": {
-      "2.0.3": {
+      "2.0.5": {
+        "en": "changed css classes\nfixed error",
+        "de": "changed css classes\nfixed error",
+        "ru": "changed css classes\nfixed error",
+        "pt": "changed css classes\nfixed error",
+        "nl": "changed css classes\nfixed error",
+        "fr": "changed css classes\nfixed error",
+        "it": "changed css classes\nfixed error",
+        "es": "changed css classes\nfixed error",
+        "pl": "changed css classes\nfixed error",
+        "zh-cn": "changed css classes\nfixed error"
+      },"2.0.3": {
         "en": "fixed thumbnails widget\nfixed info.tagline",
         "de": "fixed thumbnails widget\nfixed info.tagline",
         "ru": "fixed thumbnails widget\nfixed info.tagline",

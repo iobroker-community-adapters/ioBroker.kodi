@@ -3,7 +3,7 @@
 }
 
 
-.kodicover, .cover{
+.kodi-cover, .cover{
 	width: 100%;
 	height: 100%;
 	text-align:center; 
@@ -14,7 +14,7 @@
 	padding: 0;
 }
 
-.cover.adef {
+.kodi-cover.adef {
 background-image: url("../img/defaultplaylist.png") !important;
 background-position: center top;
 background-repeat: no-repeat;
@@ -24,7 +24,7 @@ height:100%;
 margin: 0;
 padding: 0;
 }
-.cover.vdef {
+.kodi-cover.vdef {
 background-image: url("../img/defaultvideo.png") !important;
 background-position: center top;
 background-repeat: no-repeat;
@@ -36,45 +36,45 @@ padding: 0;
 }
 
 
-#progressbar {
+#kodi-progressbar {
 	width: 100%;
 	height: 100%;
 }
 
-#kodiplaylist {
+#kodi-playlist {
 	height: 100%;
 	width: 100%;
 	overflow-x: hidden;
 }
-#kodiplaylist li:hover, #kodiplaylist li:nth-child(even):hover { background-color:#00bd9b; color:#fff; }
-#kodiplaylist li.active{
+#kodi-playlist li:hover, #kodi-playlist li:nth-child(even):hover { background-color:#00bd9b; color:#fff; }
+#kodi-playlist li.active{
 	background-color:#00bd9b;
 	color:#fff;
 }
-#kodiplaylist li img{
+#kodi-playlist li img{
 	box-shadow: 0 0 5px 0px #FFF, 0 0 0 1px #000, 0 0 0 1px #484848;
     border-radius: 5px;
 }
-#kodiplaylist ul { 
+#kodi-playlist ul { 
 	margin: 0;
 	padding-left: 5px;
 	clear: both;
 	cursor: pointer;  
 }
-#kodicontrols, .kodiinfo{
+#kodi-controls, .kodi-info{
 	height: 100%;
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
 }
-#kodicontrols li { 
+#kodi-controls li { 
 	float:left; 
 	display:inline-block; 
 	width:50px;
 	height: 50px;
 	text-align:center; 
 }
-.kodiinfo li{ 
+.kodi-info li{ 
 	width: 100%;
 	height: 100%;
 	text-align:center; 
@@ -82,27 +82,27 @@ padding: 0;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-.prev 		{ background: url("../img/btn/btn_sprite.png") -48px -48px }
-.prev:hover { background: url("../img/btn/btn_sprite.png") -48px -0px;}
-.rewind 		{ background: url("../img/btn/btn_sprite.png") -144px 48px;}
-.rewind:hover { background: url("../img/btn/btn_sprite.png") -144px -0px;}
-.playpause 		{ background: url("../img/btn/btn_sprite.png") -192px -48px }
-.playpause:hover { background: url("../img/btn/btn_sprite.png") -192px -0px;}
-.playpause.play	{ background: url("../img/btn/btn_sprite.png") -240px -48px;}
-.playpause.play:hover { background: url("../img/btn/btn_sprite.png") -240px -0px}
-.stop 		{ background: url("../img/btn/btn_sprite.png") -528px 48px;}
-.stop:hover { background: url("../img/btn/btn_sprite.png") -528px -0px;}
-.forward 		{ background: url("../img/btn/btn_sprite.png") -96px -48px}
-.forward:hover { background: url("../img/btn/btn_sprite.png") -96px -0px}
-.next 		{ background: url("../img/btn/btn_sprite.png") -0px -48px}
-.next:hover { background: url("../img/btn/btn_sprite.png") -0px -0px}
-.repeat 		{ background: url("../img/btn/btn_sprite.png") -480px -48px;}
-.repeat:hover { background: url("../img/btn/btn_sprite.png") -480px -0px;}
-.repeat.one 	{ background: url("../img/btn/btn_sprite.png") -432px -48px;}
-.repeat.one:hover { background: url("../img/btn/btn_sprite.png") -432px -0px;}
-.repeat.all 		{ background: url("../img/btn/btn_sprite.png") -384px -48px;}
-.repeat.all:hover { background: url("../img/btn/btn_sprite.png") -384px -0px;}
-.shuffle 		{ background: url("../img/btn/btn_sprite.png") -336px -48px;}
-.shuffle:hover { background: url("../img/btn/btn_sprite.png") -336px -0px}
-.shuffle.on		{ background: url("../img/btn/btn_sprite.png") -288px -48px;}
-.shuffle.on:hover { background: url("../img/btn/btn_sprite.png") -288px -0px;}
+.kodi-prev 		{ background: url("../img/btn/btn_sprite.png") -48px -48px }
+.kodi-prev:hover { background: url("../img/btn/btn_sprite.png") -48px -0px;}
+.kodi-rewind 		{ background: url("../img/btn/btn_sprite.png") -144px 48px;}
+.kodi-rewind:hover { background: url("../img/btn/btn_sprite.png") -144px -0px;}
+.kodi-playpause 		{ background: url("../img/btn/btn_sprite.png") -192px -48px }
+.kodi-playpause:hover { background: url("../img/btn/btn_sprite.png") -192px -0px;}
+.kodi-playpause.play	{ background: url("../img/btn/btn_sprite.png") -240px -48px;}
+.kodi-playpause.play:hover { background: url("../img/btn/btn_sprite.png") -240px -0px}
+.kodi-stop 		{ background: url("../img/btn/btn_sprite.png") -528px 48px;}
+.kodi-stop:hover { background: url("../img/btn/btn_sprite.png") -528px -0px;}
+.kodi-forward 		{ background: url("../img/btn/btn_sprite.png") -96px -48px}
+.kodi-forward:hover { background: url("../img/btn/btn_sprite.png") -96px -0px}
+.kodi-next 		{ background: url("../img/btn/btn_sprite.png") -0px -48px}
+.kodi-next:hover { background: url("../img/btn/btn_sprite.png") -0px -0px}
+.kodi-repeat 		{ background: url("../img/btn/btn_sprite.png") -480px -48px;}
+.kodi-repeat:hover { background: url("../img/btn/btn_sprite.png") -480px -0px;}
+.kodi-repeat.one 	{ background: url("../img/btn/btn_sprite.png") -432px -48px;}
+.kodi-repeat.one:hover { background: url("../img/btn/btn_sprite.png") -432px -0px;}
+.kodi-repeat.all 		{ background: url("../img/btn/btn_sprite.png") -384px -48px;}
+.kodi-repeat.all:hover { background: url("../img/btn/btn_sprite.png") -384px -0px;}
+.kodi-shuffle 		{ background: url("../img/btn/btn_sprite.png") -336px -48px;}
+.kodi-shuffle:hover { background: url("../img/btn/btn_sprite.png") -336px -0px}
+.kodi-shuffle.on		{ background: url("../img/btn/btn_sprite.png") -288px -48px;}
+.kodi-shuffle.on:hover { background: url("../img/btn/btn_sprite.png") -288px -0px;}

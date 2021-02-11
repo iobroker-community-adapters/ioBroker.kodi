@@ -1140,7 +1140,7 @@ function sendCommand(method, param, callback){
 
 function ErrProcessing(error){
     adapter.log.debug(error);
-    if (connection.socket) connection.socket.close();
+    if (connection && connection.socket) connection.socket.close();
     connection = null;
     connect();
 }
