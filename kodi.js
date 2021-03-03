@@ -1009,7 +1009,7 @@ function ConstructorCmd(method, ids, param){
             case "clear":
                 method = 'Playlist.Clear';
                 param = {'playlistid': playlist_id};
-                setState('playlist', '[]');
+                saveState('playlist', '[]'); 
                 break;
             case "partymode":
                 method = 'Player.SetPartymode';
