@@ -51,6 +51,9 @@ let states = {
         file:               {val: '', name: "file", role: "media", type: "string", read: true, write: false},
         playcount:          {val: 0, name: "Number of plays", role: "media", type: "number", read: true, write: false},
         rating:             {val: 0, name: "rating", role: "media", type: "number", read: true, write: false},
+        userrating_song:    {val: 0, name: "user rating song", role: "media", type: "number", min: 0, max: 10, read: true, write: true},
+        userrating_album:   {val: 0, name: "user rating album", role: "media", type: "number", min: 0, max: 10, read: true, write: true},
+        albumid:            {val: 0, name: "albumid", role: "media", type: "number", read: true, write: false},
         thumbnail:          {val: '', name: "thumbnail", role: "media.cover", type: "string", read: true, write: false},
         track:              {val: 0, name: "track", role: "media", type: "number", read: true, write: false},
         type:               {val: '', name: "type", role: "media.type", type: "string", read: true, write: false},
@@ -211,7 +214,7 @@ function subscribeNotification(cb){
         saveState('main.mute', res.data.muted);
     });
     adapter.log.debug('subscribeNotification Player.OnResume');
-    if(version > 8){
+    if (version > 8){
         connection.notification('Player.OnResume', (res) => {
             adapter.log.debug('notification: Player.OnResume ' + JSON.stringify(res));
             saveState('main.state', 'play');
@@ -275,8 +278,8 @@ function creatObject(_id, key, key2){
         common.role = states[key][key2].role;
         common.type = states[key][key2].type;
         if (states[key][key2].unit !== undefined) common.unit = states[key][key2].unit;
-        if (states[key][key2].min !== undefined) common.min = states[key][key2].unit;
-        if (states[key][key2].max !== undefined) common.max = states[key][key2].unit;
+        if (states[key][key2].min !== undefined) common.min = states[key][key2].min;
+        if (states[key][key2].max !== undefined) common.max = states[key][key2].max;
         if (states[key][key2].states !== undefined) common.states = states[key][key2].states;
         common.read = states[key][key2].read;
         common.write = states[key][key2].write;
@@ -361,7 +364,7 @@ function GetCurrentItem(cb){
                 // https://github.com/xbmc/xbmc/issues/16245
                 connection.run('Player.GetItem', { // !!! Выдает данные только при первом запрос, если постоянно оправшивать выдает пыстые значения
                     "playerid":   player_id,
-                    "properties": ["album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
+                    "properties": ["albumid", "userrating", "album", "albumartist", "artist", "director", "episode", "fanart", "file", "genre", "plot", "rating", "season", "showtitle", "studio", "imdbnumber", "tagline", "thumbnail", "title", "track", "writer", "year", "streamdetails", "originaltitle", "cast", "playcount"]
                 }).then(function (res){
                     adapter.log.debug('GetCurrentItem: ' + JSON.stringify(res));
                     try {
@@ -373,12 +376,15 @@ function GetCurrentItem(cb){
                         saveState('info.title', res.title ? res.title :res.label);
                         saveState('info.album', res.album);
                         saveState('info.episode', res.episode);
+                        saveState('info.season', res.season);
                         saveState('info.file', res.file);
                         saveState('info.imdbnumber', res.imdbnumber);
                         saveState('info.originaltitle', res.originaltitle);
                         saveState('info.plot', res.plot);
                         saveState('info.playcount', res.playcount);
                         saveState('info.rating', res.rating);
+                        saveState('info.userrating_song', res.userrating);
+                        saveState('info.albumid', res.albumid);
                         saveState('info.year', res.year);
                         saveState('info.genre', res.genre ? res.genre.join(', ') :'');
                         saveState('info.id', res.id);
@@ -394,6 +400,36 @@ function GetCurrentItem(cb){
                     ErrProcessing(e + '{GetCurrentItem}');
                 });
             }
+        });
+    }
+}
+
+function getRatigs(cb){
+    if (connection && player_id !== undefined && player_id !== null){
+        const batch = connection.batch();
+        const GetSongDetails = batch.AudioLibrary.GetSongDetails({
+            "songid":     states.info.id.val,
+            "properties": ["albumid", "userrating"]
+        });
+        const GetAlbumDetails = batch.AudioLibrary.GetAlbumDetails({
+            "albumid":    states.info.albumid.val,
+            "properties": ["userrating"]
+        });
+        batch.send();
+        Promise.all([GetSongDetails, GetAlbumDetails]).then((res) => {
+            adapter.log.debug('Response getRatigs ' + JSON.stringify(res));
+            ///////////////////////////////////////////////////////////////////////////////////////
+            try {
+                saveState('info.userrating_song', res[0].songdetails.userrating);
+                saveState('info.userrating_album', res[1].albumdetails.userrating);
+            } catch (e) {
+                ErrProcessing(e + ' catch getRatigs');
+            }
+            cb && cb();
+        }, (e) => {
+            ErrProcessing(e + ' getRatigs');
+        }).catch((e) => {
+            ErrProcessing(e + ' getRatigs');
         });
     }
 }
@@ -459,9 +495,12 @@ function GetPlayerProperties(){
             } catch (e) {
                 ErrProcessing(e + ' catch GetPlayerProperties');
             }
-            if(!res[0].live){
-                GetCurrentItem(()=>{
-                    setObject('states');
+            if (!res[0].live){
+                GetCurrentItem(() => {
+                    getRatigs(() => {
+                        setObject('states');
+                    });
+                    //setObject('states');
                 });
             } else {
                 setObject('states');
@@ -1019,7 +1058,7 @@ function ConstructorCmd(method, ids, param){
             case "clear":
                 method = 'Playlist.Clear';
                 param = {'playlistid': playlist_id};
-                saveState('playlist', '[]'); 
+                saveState('playlist', '[]');
                 break;
             case "partymode":
                 method = 'Player.SetPartymode';
@@ -1119,7 +1158,18 @@ function ConstructorCmd(method, ids, param){
             case "CleanAudioLibrary":
                 method = 'AudioLibrary.Clean';
                 break;
-
+            case "userrating_song":
+                method = 'AudioLibrary.SetSongDetails';
+                param = param > 10 ? 10:param;
+                param = param < 0 ? 0:param;
+                param = {'songid': states.info.id.val, "userrating": param};
+                break;
+            case "userrating_album":
+                method = 'AudioLibrary.SetAlbumDetails';
+                param = param > 10 ? 10:param;
+                param = param < 0 ? 0:param;
+                param = {'albumid': states.info.albumid.val, "userrating": param};
+                break;
             default:
         }
     }

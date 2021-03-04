@@ -123,8 +123,8 @@ sendTo("kodi.0", {
 ## Changelog
 
 #### 2.0.6
-* (instalator) fixed error subscribeNotification Player.OnResume
-* (instalator) 
+* (instalator) fixed error subscribeNotification Player.OnResume [issues 49](https://github.com/instalator/ioBroker.kodi/issues/49)
+* (instalator) added user ratings [issues 57](https://github.com/instalator/ioBroker.kodi/issues/57)
 
 #### 2.0.5
 * (instalator) changed css classes
