@@ -405,7 +405,7 @@ function GetCurrentItem(cb){
 }
 
 function getRatigs(cb){
-    if (connection && player_id !== undefined && player_id !== null){
+    if (connection && player_id !== undefined && player_id !== null && states.info.id.val && states.info.albumid.val){
         const batch = connection.batch();
         const GetSongDetails = batch.AudioLibrary.GetSongDetails({
             "songid":     states.info.id.val,
@@ -431,6 +431,8 @@ function getRatigs(cb){
         }).catch((e) => {
             ErrProcessing(e + ' getRatigs');
         });
+    } else {
+        cb && cb();
     }
 }
 
