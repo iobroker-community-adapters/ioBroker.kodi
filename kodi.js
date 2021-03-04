@@ -2,7 +2,7 @@
 const utils = require('@iobroker/adapter-core');
 const kodi = require('kodi-ws');
 let adapter, connection = null, player_id = null, channel = false, playlist_id = 0, mem = null,
-    mem_pos = null, mem_time = null, timer, reconnectTimer, getPlayListTimer, SwitchPVRTimer, GetSourcesTimer, GetNameVersionTimer, infoFileTimer;
+    mem_pos = null, mem_time = null, timer, reconnectTimer, getPlayListTimer, SwitchPVRTimer, GetSourcesTimer, GetNameVersionTimer, infoFileTimer, version;
 
 let states = {
     system:     {
@@ -204,35 +204,44 @@ function startAdapter(options){
 }
 
 function subscribeNotification(cb){
+    adapter.log.debug('subscribeNotification Application.OnVolumeChanged');
     connection.notification('Application.OnVolumeChanged', (res) => {
         adapter.log.debug('notification: Application.OnVolumeChanged ' + JSON.stringify(res));
         saveState('main.volume', res.data.volume);
         saveState('main.mute', res.data.muted);
     });
-    connection.notification('Player.OnResume', (res) => {
-        adapter.log.debug('notification: Player.OnResume ' + JSON.stringify(res));
-        saveState('main.state', 'play');
-    });
+    adapter.log.debug('subscribeNotification Player.OnResume');
+    if(version > 8){
+        connection.notification('Player.OnResume', (res) => {
+            adapter.log.debug('notification: Player.OnResume ' + JSON.stringify(res));
+            saveState('main.state', 'play');
+        });
+    }
+    adapter.log.debug('subscribeNotification Player.OnPlay');
     connection.notification('Player.OnPlay', (res) => {
         adapter.log.debug('notification: Player.OnPlay ' + JSON.stringify(res));
         saveState('main.state', 'play');
         GetCurrentItem();
     });
+    adapter.log.debug('subscribeNotification Player.OnPause');
     connection.notification('Player.OnPause', (res) => {
         adapter.log.debug('notification: Player.OnPause ' + JSON.stringify(res));
         saveState('main.state', 'pause');
     });
+    adapter.log.debug('subscribeNotification Player.OnStop');
     connection.notification('Player.OnStop', (res) => {
         adapter.log.debug('notification: Player.OnStop ' + JSON.stringify(res));
         if (res.data.item.channeltype !== 'tv'){
             clearInfo();
         }
     });
+    adapter.log.debug('subscribeNotification Input.OnInputRequested');
     connection.notification('Input.OnInputRequested', (res) => {
         adapter.log.debug('notification: Input.OnInputRequested ' + JSON.stringify(res));
         //{"data":{"title":"Строка поиска","type":"keyboard","value":""},"sender":"xbmc"}
         //setState('OnInputRequested', true);
     });
+    adapter.log.debug('subscribeNotification Playlist.OnClear');
     connection.notification('Playlist.OnClear', (res) => {
         adapter.log.debug('notification: Playlist.OnClear ' + JSON.stringify(res));
         //saveState('main.playlist', '[]');
@@ -560,6 +569,7 @@ function getConnection(cb){
         });
         adapter.log.info('KODI connected');
         adapter.setState('info.connection', true, true);
+        version = parseInt(connection.schema.rawSchema.version, 10);
         cb && cb(null, connection);
     }, (error) => {
         adapter.log.debug('getConnection ' + error);

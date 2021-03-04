@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "news": {
+      "2.0.6": {
+        "en": "",
+        "de": "",
+        "ru": "",
+        "pt": "",
+        "nl": "",
+        "fr": "",
+        "it": "",
+        "es": "",
+        "pl": "",
+        "zh-cn": ""
+      },
       "2.0.5": {
         "en": "changed css classes\nfixed error",
         "de": "changed css classes\nfixed error",
@@ -14,7 +26,8 @@
         "es": "changed css classes\nfixed error",
         "pl": "changed css classes\nfixed error",
         "zh-cn": "changed css classes\nfixed error"
-      },"2.0.3": {
+      },
+      "2.0.3": {
         "en": "fixed thumbnails widget\nfixed info.tagline",
         "de": "fixed thumbnails widget\nfixed info.tagline",
         "ru": "fixed thumbnails widget\nfixed info.tagline",
@@ -40,16 +53,28 @@
       }
     },
     "title": "Kodi media player control",
+    "titleLang": {
+      "en": "Kodi media player control",
+      "de": "Kodi Media Player-Steuerung",
+      "ru": "Управление медиаплеером Kodi",
+      "pt": "Controle do reprodutor de mídia Kodi",
+      "nl": "Kodi mediaspelerbediening",
+      "fr": "Contrôle du lecteur multimédia Kodi",
+      "it": "Controllo del lettore multimediale Kodi",
+      "es": "Control del reproductor multimedia Kodi",
+      "pl": "Sterowanie odtwarzaczem multimedialnym Kodi",
+      "zh-cn": "Kodi媒体播放器控件"
+    },
     "desc": {
-      "en":    "Kodi Control Adapter",
-      "de":    "Kodi Control Adapter",
-      "ru":    "Адаптер для управления Kodi",
-      "pt":    "Adaptador de controle Kodi",
-      "nl":    "Kodi-besturingsadapter",
-      "fr":    "Adaptateur de commande Kodi",
-      "it":    "Adattatore di controllo Kodi",
-      "es":    "Kodi juhtiadapter",
-      "pl":    "Adapter sterowania Kodi",
+      "en": "Kodi Control Adapter",
+      "de": "Kodi Control Adapter",
+      "ru": "Адаптер для управления Kodi",
+      "pt": "Adaptador de controle Kodi",
+      "nl": "Kodi-besturingsadapter",
+      "fr": "Adaptateur de commande Kodi",
+      "it": "Adattatore di controllo Kodi",
+      "es": "Kodi juhtiadapter",
+      "pl": "Adapter sterowania Kodi",
       "zh-cn": "Kodi控制適配器"
     },
     "license": "MIT",

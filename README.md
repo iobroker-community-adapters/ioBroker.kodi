@@ -122,6 +122,10 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 2.0.6
+* (instalator) fixed error subscribeNotification Player.OnResume
+* (instalator) 
+
 #### 2.0.5
 * (instalator) changed css classes
 * (instalator) fixed error
