@@ -70,7 +70,6 @@ vis.binds.kodi = {
     /***********************************************************************/
     Thumbnail:   function (widgetID, view, data, style){
         var $div = $('#' + widgetID);
-        var type = null;
         // if nothing found => wait
         if (!$div.length){
             return setTimeout(function (){
@@ -78,19 +77,19 @@ vis.binds.kodi = {
             }, 100);
         }
 
-        function Thumb(cover, server){
-            var url_thumb;
+        function Thumb(cover){
             if (vis.editMode){
-                $div.find('li').removeClass().addClass("kodi-cover adef").css('backgroundImage', 'url()');
+                $div.find('li').removeClass().addClass("kodi-cover adef").css('background-image', 'url()');
             } else {
                 if (cover && cover !== 'image://DefaultAlbumCover.png/'){
-                    url_thumb = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(cover);
-                    $div.find('li').removeClass().addClass("kodi-cover").css({'background': 'url(' + url_thumb + ')', 'background-size': 'contain', 'background-position': 'center', 'background-repeat': 'no-repeat'});
+                    var url_thumb = 'http://' + vis.states[data.oid_server + '.val'] + '/image/' + encodeURI(cover);
+                    $div.find('li').removeClass().addClass("kodi-cover").css({'background-image': 'url("' + url_thumb + '")', 'background-size': 'contain', 'background-position': 'center', 'background-repeat': 'no-repeat'});
                 } else {
+                    var type = vis.states[data.oid_type + '.val'];
                     if (type === 'video'){
-                        $div.find('li').removeClass().addClass("kodi-cover vdef").css('backgroundImage', 'url()');
+                        $div.find('li').removeClass().addClass("kodi-cover vdef").css('background-image', 'url()');
                     } else {
-                        $div.find('li').removeClass().addClass("kodi-cover adef").css('backgroundImage', 'url()');
+                        $div.find('li').removeClass().addClass("kodi-cover adef").css('background-image', 'url()');
                     }
                 }
             }
@@ -102,12 +101,12 @@ vis.binds.kodi = {
                 Thumb(newVal);
             });
         }
-        if (data.oid_type){
+        /*if (data.oid_type){
             vis.states.bind(data.oid_type + '.val', function (e, newVal, oldVal){
                 type = newVal;
                 //Thumb();
             });
-        }
+        }*/
         Thumb(vis.states[data.oid_thumbnail + '.val']);
     },
     /************************************************************************/
@@ -132,13 +131,13 @@ vis.binds.kodi = {
             var clickPos = e.pageX - this.offsetLeft;
             var percentage = clickPos / maxWidth * 100;
             vis.setValue(data.oid_seek, percentage);
-            $div.kodi-progressbar("option", "value", percentage);
+            $div.progressbar("option", "value", percentage);
         });
 
         // subscribe on updates of value
         if (data.oid_seek){
             vis.states.bind(data.oid_seek + '.val', function (e, newVal, oldVal){
-                $div.kodi-progressbar("value", newVal);
+                $div.progressbar("value", parseFloat(newVal));
             });
         }
     },
@@ -209,29 +208,37 @@ vis.binds.kodi = {
         }
         if (data.oid_rpt){
             vis.states.bind(data.oid_rpt + '.val', function (e, newVal, oldVal){
-                var r = $("#kodi-controls > .kodi-repeat");
-                if (newVal === 'off'){
-                    r.removeClass();
-                    r.addClass("kodi-repeat off");
-                } else if (newVal === 'one'){
-                    r.removeClass();
-                    r.addClass("kodi-repeat one");
-                } else if (newVal === 'all'){
-                    r.removeClass();
-                    r.addClass("kodi-repeat all");
-                }
+                update_rpt(newVal);
             });
         }
         if (data.oid_shf){
             vis.states.bind(data.oid_shf + '.val', function (e, newVal, oldVal){
-                var s = $("#kodi-controls > .kodi-shuffle");
-				if (newVal){
-					s.removeClass('off').addClass('on');
-				} else {
-					s.removeClass('on').addClass('off');
-				}
+                update_shf(newVal);
             });
         }
+        function update_shf(val){
+            var s = $("#kodi-controls > .kodi-shuffle");
+            if (val){
+                s.removeClass('off').addClass('on');
+            } else {
+                s.removeClass('on').addClass('off');
+            }
+        }
+        function update_rpt(val){
+            var r = $("#kodi-controls > .kodi-repeat");
+            if (val === 'off'){
+                r.removeClass();
+                r.addClass("kodi-repeat off");
+            } else if (val === 'one'){
+                r.removeClass();
+                r.addClass("kodi-repeat one");
+            } else if (val === 'all'){
+                r.removeClass();
+                r.addClass("kodi-repeat all");
+            }
+        }
+        update_rpt(vis.states[data.oid_rpt + '.val']);
+        update_shf(vis.states[data.oid_shf + '.val']);
     },
     /**************************************************************************/
     Playlist:    function (widgetID, view, data, style){
@@ -245,7 +252,7 @@ vis.binds.kodi = {
         var playlist;
 
         function SetPlaylist(val){
-            if(val !== 'null'){
+            if(val !== 'null' && val){
                 playlist = JSON.parse(val);
                 if (playlist.channels === undefined){
                     //playlist = playlist;

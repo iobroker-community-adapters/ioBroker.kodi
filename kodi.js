@@ -922,7 +922,6 @@ function ConstructorCmd(name, ids, param){
     } else {
         switch (ids) {
             case "SwitchPVR":
-                //method = null;
                 SwitchPVR(param, (res) => {
                     if (player_id){
                         sendCommand('Player.Stop', {'playerid': player_id}, () => {
@@ -940,7 +939,6 @@ function ConstructorCmd(name, ids, param){
                 });
                 break;
             case "SwitchPVRbyId":
-                //method = null;
                 SwitchPVRbyId(param, (res) => {
                     if (player_id){
                         sendCommand('Player.Stop', {'playerid': player_id}, () => {
@@ -1024,25 +1022,40 @@ function ConstructorCmd(name, ids, param){
 
                 break;
             case "playid":
-                //method = null;
                 if (player_id !== 'undefined'){
                     method = 'Player.GoTo';
                 } else {
-                    sendCommand('Input.ExecuteAction', 'play', () => { //TODO
-                        sendCommand('Player.GoTo', {"playerid": player_id, "to": param}, () => {
-                        });
+                    sendCommand('Input.ExecuteAction', 'play', () => { 
+                        setTimeout(() => {
+                            if(player_id){
+                                sendCommand('Player.GoTo', {"playerid": player_id, "to": param}, () => {
+                                });
+                            }
+                            else {
+                                sendCommand('Player.Open', {'item': {'playlistid': 0, 'position': 0}}, () => {
+                                    sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                                });
+                            }
+                        }, 5000);
                     });
                 }
                 param = {"playerid": player_id, "to": param};
                 break;
             case "position":
-                //method = null;
-                if (player_id !== 'undefined'){
+                if (player_id !== 'undefined' && player_id !== null){
                     method = 'Player.GoTo';
                 } else {
-                    sendCommand('Input.ExecuteAction', 'play', () => { //TODO
-                        sendCommand('Player.GoTo', {"playerid": player_id, "to": param}, () => {
-                        });
+                    sendCommand('Input.ExecuteAction', 'play', () => { 
+                        setTimeout(() => {
+                            if(player_id){
+                                sendCommand('Player.GoTo', {"playerid": player_id, "to": param}, () => {
+                                });
+                            } else {
+                                sendCommand('Player.Open', {'item': {'playlistid': 0, 'position': 0}}, () => {
+                                    sendCommand('GUI.SetFullscreen', {"fullscreen": true});
+                                });
+                            }
+                        }, 5000);
                     });
                 }
                 param = {"playerid": player_id, "to": param};
@@ -1074,7 +1087,6 @@ function ConstructorCmd(name, ids, param){
                 break;
             case "add":
                 let type;
-                //method = null;
                 param = param.toString();
                 playlist_id = 0;
                 type = {'playlistid': playlist_id, 'item': {'file': param}};
@@ -1088,7 +1100,6 @@ function ConstructorCmd(name, ids, param){
                 });
                 break;
             case "youtube":
-                //method = null;
                 if (param){
                     if (~param.indexOf('http')){
                         param = param.toString().split('=');
@@ -1125,7 +1136,6 @@ function ConstructorCmd(name, ids, param){
                 break;
             case "open":
                 let type2;
-                //method = null;
                 param = param.toString();
                 playlist_id = 0;
                 type2 = {'playlistid': playlist_id, 'item': {'file': param}};
@@ -1150,7 +1160,6 @@ function ConstructorCmd(name, ids, param){
                 }
                 break;
             case "Directory":
-                //method = null;
                 param = param.toString().replace("\\", "\\\\");
                 GetDirectory(param);
                 break;
