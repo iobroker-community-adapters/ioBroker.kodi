@@ -4,16 +4,16 @@
     "version": "2.0.6",
     "news": {
       "2.0.6": {
-        "en": "",
-        "de": "",
-        "ru": "",
-        "pt": "",
-        "nl": "",
-        "fr": "",
-        "it": "",
-        "es": "",
-        "pl": "",
-        "zh-cn": ""
+        "en": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "de": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "ru": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "pt": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "nl": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "fr": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "it": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "es": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "pl": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]",
+        "zh-cn": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]"
       },
       "2.0.5": {
         "en": "changed css classes\nfixed error",

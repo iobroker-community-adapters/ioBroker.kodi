@@ -50,8 +50,8 @@ let states = {
         fanart:             {val: '', name: "fanart", role: "media", type: "string", read: true, write: false},
         file:               {val: '', name: "file", role: "media", type: "string", read: true, write: false},
         playcount:          {val: 0, name: "Number of plays", role: "media", type: "number", read: true, write: false},
-        rating:             {val: 0, name: "rating", role: "media", type: "number", read: true, write: false},
-        userrating_song:    {val: 0, name: "user rating song", role: "media", type: "number", min: 0, max: 10, read: true, write: true},
+        rating:             {val: 0, name: "rating", role: "media", type: "number", read: true, write: true},
+        userrating:         {val: 0, name: "user rating", role: "media", type: "number", min: 0, max: 10, read: true, write: true},
         userrating_album:   {val: 0, name: "user rating album", role: "media", type: "number", min: 0, max: 10, read: true, write: true},
         albumid:            {val: 0, name: "albumid", role: "media", type: "number", read: true, write: false},
         thumbnail:          {val: '', name: "thumbnail", role: "media.cover", type: "string", read: true, write: false},
@@ -173,12 +173,12 @@ function startAdapter(options){
             if (id && state && !state.ack){
                 adapter.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
                 const param = state.val;
-                let method = ids[ids.length - 2].toString();
-                if (isNumeric(method)){
-                    method = null;
+                let name = ids[ids.length - 2].toString();
+                if (isNumeric(name)){
+                    name = null;
                 }
                 ids = ids[ids.length - 1].toString();
-                ConstructorCmd(method, ids, param);
+                ConstructorCmd(name, ids, param);
             }
         },
         message:      (obj) => {
@@ -325,7 +325,7 @@ function setStates(_id, key, key2){
     adapter.getState(_id, (err, state) => {
         if (!state){
             adapter.setState(_id, val, true);
-        } else if (state.val !== val){
+        } else if (state.val !== val || !state.ack){
             adapter.setState(_id, val, true);
             //adapter.log.debug('setState ' + _id + ' { oldVal: ' + state.val + ' != newVal: ' + val + ' }');
         } else if (state.val === val){
@@ -383,7 +383,7 @@ function GetCurrentItem(cb){
                         saveState('info.plot', res.plot);
                         saveState('info.playcount', res.playcount);
                         saveState('info.rating', res.rating);
-                        saveState('info.userrating_song', res.userrating);
+                        saveState('info.userrating', res.userrating);
                         saveState('info.albumid', res.albumid);
                         saveState('info.year', res.year);
                         saveState('info.genre', res.genre ? res.genre.join(', ') :'');
@@ -399,12 +399,14 @@ function GetCurrentItem(cb){
                 }).catch(function (e){
                     ErrProcessing(e + '{GetCurrentItem}');
                 });
+            } else {
+                cb && cb();
             }
         });
     }
 }
 
-function getRatigs(cb){
+function getRatigsSong(cb){
     if (connection && player_id !== undefined && player_id !== null && states.info.id.val && states.info.albumid.val){
         const batch = connection.batch();
         const GetSongDetails = batch.AudioLibrary.GetSongDetails({
@@ -420,16 +422,16 @@ function getRatigs(cb){
             adapter.log.debug('Response getRatigs ' + JSON.stringify(res));
             ///////////////////////////////////////////////////////////////////////////////////////
             try {
-                saveState('info.userrating_song', res[0].songdetails.userrating);
+                saveState('info.userrating', res[0].songdetails.userrating);
                 saveState('info.userrating_album', res[1].albumdetails.userrating);
             } catch (e) {
                 ErrProcessing(e + ' catch getRatigs');
             }
             cb && cb();
         }, (e) => {
-            ErrProcessing(e + ' getRatigs');
+            cb && cb();
         }).catch((e) => {
-            ErrProcessing(e + ' getRatigs');
+            cb && cb();
         });
     } else {
         cb && cb();
@@ -499,7 +501,7 @@ function GetPlayerProperties(){
             }
             if (!res[0].live){
                 GetCurrentItem(() => {
-                    getRatigs(() => {
+                    getRatigsSong(() => {
                         setObject('states');
                     });
                     //setObject('states');
@@ -517,6 +519,9 @@ function GetPlayerProperties(){
 
 function saveState(name, val){
     const k = name.split('.');
+    if(k.length === 1){
+        k.unshift('main');
+    }
     if (!states[k[0]][k[1]]){
         adapter.log.error('saveState Object not found - ' + name + ': {val: false, name: "' + name + '", role: "media", type: "string", read: false, write: true}');
     } else {
@@ -905,18 +910,19 @@ function GetVolume(cb){
     }
 }
 
-function ConstructorCmd(method, ids, param){
-    adapter.log.debug('ConstructorCmd ' + method + ' - ' + ids + ' = ' + param);
-    if (method === 'input'){
+function ConstructorCmd(name, ids, param){
+    adapter.log.debug('ConstructorCmd ' + name + ' - ' + ids + ' = ' + param);
+    let method = null;
+    if (name === 'input'){
         method = 'Input.' + ids;
         param = [];
-    } else if (method === 'system'){
+    } else if (name === 'system'){
         method = 'System.' + ids;
         param = [];
     } else {
         switch (ids) {
             case "SwitchPVR":
-                method = null;
+                //method = null;
                 SwitchPVR(param, (res) => {
                     if (player_id){
                         sendCommand('Player.Stop', {'playerid': player_id}, () => {
@@ -934,7 +940,7 @@ function ConstructorCmd(method, ids, param){
                 });
                 break;
             case "SwitchPVRbyId":
-                method = null;
+                //method = null;
                 SwitchPVRbyId(param, (res) => {
                     if (player_id){
                         sendCommand('Player.Stop', {'playerid': player_id}, () => {
@@ -1018,7 +1024,7 @@ function ConstructorCmd(method, ids, param){
 
                 break;
             case "playid":
-                method = null;
+                //method = null;
                 if (player_id !== 'undefined'){
                     method = 'Player.GoTo';
                 } else {
@@ -1030,7 +1036,7 @@ function ConstructorCmd(method, ids, param){
                 param = {"playerid": player_id, "to": param};
                 break;
             case "position":
-                method = null;
+                //method = null;
                 if (player_id !== 'undefined'){
                     method = 'Player.GoTo';
                 } else {
@@ -1068,7 +1074,7 @@ function ConstructorCmd(method, ids, param){
                 break;
             case "add":
                 let type;
-                method = null;
+                //method = null;
                 param = param.toString();
                 playlist_id = 0;
                 type = {'playlistid': playlist_id, 'item': {'file': param}};
@@ -1082,7 +1088,7 @@ function ConstructorCmd(method, ids, param){
                 });
                 break;
             case "youtube":
-                method = null;
+                //method = null;
                 if (param){
                     if (~param.indexOf('http')){
                         param = param.toString().split('=');
@@ -1119,7 +1125,7 @@ function ConstructorCmd(method, ids, param){
                 break;
             case "open":
                 let type2;
-                method = null;
+                //method = null;
                 param = param.toString();
                 playlist_id = 0;
                 type2 = {'playlistid': playlist_id, 'item': {'file': param}};
@@ -1144,7 +1150,7 @@ function ConstructorCmd(method, ids, param){
                 }
                 break;
             case "Directory":
-                method = null;
+                //method = null;
                 param = param.toString().replace("\\", "\\\\");
                 GetDirectory(param);
                 break;
@@ -1160,22 +1166,40 @@ function ConstructorCmd(method, ids, param){
             case "CleanAudioLibrary":
                 method = 'AudioLibrary.Clean';
                 break;
-            case "userrating_song":
-                method = 'AudioLibrary.SetSongDetails';
-                param = param > 10 ? 10:param;
-                param = param < 0 ? 0:param;
-                param = {'songid': states.info.id.val, "userrating": param};
-                break;
             case "userrating_album":
                 method = 'AudioLibrary.SetAlbumDetails';
                 param = param > 10 ? 10:param;
                 param = param < 0 ? 0:param;
                 param = {'albumid': states.info.albumid.val, "userrating": param};
                 break;
+            case "userrating":
+                adapter.log.debug('userrating type ' + states.info.player_type.val);
+                param = param > 10 ? 10:param;
+                param = param < 0 ? 0:param;
+                if(states.info.player_type.val === 'internal audio' && states.info.id.val){
+                    method = 'AudioLibrary.SetSongDetails';
+                    param = {'songid': states.info.id.val, "userrating": param};
+                } else if(states.info.player_type.val === 'internal video' && states.info.season.val === -1 && states.info.episode.val === -1 && states.info.id.val){
+                    method = 'VideoLibrary.SetMovieDetails';
+                    param = {'movieid': states.info.id.val, "userrating": param};
+                }
+                break;
+            case "rating":
+                adapter.log.debug('rating type' + states.info.player_type.val);
+                param = param > 10 ? 10:param;
+                param = param < 0 ? 0:param;
+                if(states.info.player_type.val === 'internal audio' && states.info.id.val){
+                    method = 'AudioLibrary.SetSongDetails';
+                    param = {'songid': states.info.id.val, "rating": param};
+                } else if(states.info.player_type.val === 'internal video' && states.info.season.val === -1 && states.info.episode.val === -1 && states.info.id.val){
+                    method = 'VideoLibrary.SetMovieDetails';
+                    param = {'movieid': states.info.id.val, "rating": param};
+                }
+                break;
             default:
         }
     }
-    sendCommand(method, param);
+    method && sendCommand(method, param);
 }
 
 function sendCommand(method, param, callback){
