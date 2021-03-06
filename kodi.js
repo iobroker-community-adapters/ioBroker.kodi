@@ -728,7 +728,7 @@ function GetPlayList(){
     if (connection && player_id !== undefined && player_id !== null){
         connection.run('Playlist.GetItems', {
             "playlistid": playlist_id,
-            "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "album", "showtitle", "playcount", "file"]/*,"limits":{"start":0,"end":750}*/
+            "properties": ["title", "thumbnail", "fanart", "rating", "genre", "artist", "track", "season", "episode", "year", "duration", "albumid", "album", "showtitle", "playcount", "file"]/*,"limits":{"start":0,"end":750}*/
         }).then((res) => {
             let plst = res ? res.items :'';
             adapter.log.debug('GetPlayList: ' + JSON.stringify(plst));
