@@ -478,7 +478,7 @@ function GetPlayerProperties(){
                 }
                 if (res[0].type === 'audio'){
                     saveState('info.audio_codec', res[1]['MusicPlayer.Codec']);
-                    saveState('info.audio_bitrate', res[1]['MusicPlayer.BitRate']);
+                    saveState('info.audio_bitrate', Number (res[1]['MusicPlayer.BitRate']));
                     saveState('info.audio_channels', res[1]['MusicPlayer.Channels']);
                     //saveState('info.rating', res[1]['MusicPlayer.Rating']);
                     //saveState('info.artist', res[1]['MusicPlayer.Artist']);
@@ -491,7 +491,7 @@ function GetPlayerProperties(){
                     channel = false;
                 }
                 saveState('info.live', res[0].live);
-                saveState('main.seek', parseFloat(res[0].percentage).toFixed(4));
+                saveState('main.seek', Number (res[0].percentage));
                 saveState('main.subtitleenabled', res[0].subtitleenabled);
                 saveState('info.canchangespeed', res[0].canchangespeed);
                 saveState('info.canrepeat', res[0].canrepeat);
