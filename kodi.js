@@ -126,7 +126,7 @@ let states = {
         speed:             {val: 0, name: "Playback speed", role: "media.speed", type: "number", read: true, write: true, states: {'-32': '-32', '-16': '-16', '-8': '-8', '-4': '-4', '-2': '-2', '-1': '-1', '0': '0', '1': '1', '2': '2', '4': '4', '8': '8', '16': '16', '32': '32'}},
         playlistid:        {val: 0, name: "Playlist id", role: "media", type: "number", read: true, write: true},
         partymode:         {val: false, name: "Party mode toggle", role: "media", type: "boolean", read: true, write: true},
-        subtitleenabled:   {val: false, name: "Subtitle enabled", role: "media", type: "string", read: true, write: false},
+        subtitleenabled:   {val: false, name: "Subtitle enabled", role: "media", type: "boolean", read: true, write: false},
     }
 };
 
