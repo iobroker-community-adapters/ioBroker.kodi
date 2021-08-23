@@ -88,19 +88,24 @@
     "messagebox": true,
     "materialize": true,
     "compact": true,
-    "extIcon": "https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png",
+    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.kodi/master/admin/kodi.png",
     "keywords": [
       "kodi",
       "player",
       "xbmc",
       "vis"
     ],
-    "readme": "https://github.com/instalator/ioBroker.kodi/blob/master/README.md",
+    "readme": "https://github.com/iobroker-community-adapters/ioBroker.kodi/blob/master/README.md",
     "loglevel": "info",
     "type": "multimedia",
     "localLink": "%web_protocol%://%native_ip%:%native_portweb%",
     "restartAdapters": [
       "vis"
+    ],
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
     ]
   },
   "native": {
