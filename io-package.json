@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "news": {
+      "2.0.8": {
+        "en": "updates and fixes",
+        "de": "Updates und Korrekturen",
+        "ru": "обновления и исправления",
+        "pt": "atualizações e correções",
+        "nl": "updates en reparaties",
+        "fr": "mises à jour et correctifs",
+        "it": "aggiornamenti e correzioni",
+        "es": "actualizaciones y correcciones",
+        "pl": "aktualizacje i poprawki",
+        "zh-cn": "更新和修复"
+      },
       "2.0.7": {
         "en": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
         "de": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
