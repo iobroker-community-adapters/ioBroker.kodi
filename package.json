@@ -6,7 +6,7 @@
     "name": "instalator",
     "email": "vvvalt@mail.ru"
   },
-  "homepage": "https://github.com/instalator/ioBroker.kodi",
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.kodi",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -14,30 +14,30 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/instalator/ioBroker.kodi"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.kodi"
   },
   "dependencies": {
-    "kodi-ws": "https://github.com/iobroker-community-adapters/kodi-ws/tarball/master/",
-    "@iobroker/adapter-core": "^2.5.1"
+    "kodi-ws": "git+https://git@github.com/iobroker-community-adapters/kodi-ws.git",
+    "@iobroker/adapter-core": "^2.6.7"
   },
   "devDependencies": {
-    "@iobroker/testing": "^2.4.4",
-    "@types/chai": "^4.2.21",
-    "@types/chai-as-promised": "^7.1.4",
+    "@iobroker/testing": "^4.1.0",
+    "@types/chai": "^4.3.4",
+    "@types/chai-as-promised": "^7.1.5",
     "@types/gulp": "^4.0.9",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.7.1",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18.11.9",
     "@types/proxyquire": "^1.3.28",
-    "@types/sinon": "^10.0.2",
-    "@types/sinon-chai": "^3.2.5",
-    "axios": "^0.21.1",
-    "chai": "^4.3.4",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.9",
+    "axios": "^0.27.2",
+    "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^7.32.0",
+    "eslint": "^8.27.0",
     "gulp": "^4.0.2",
-    "mocha": "^9.1.0",
+    "mocha": "^10.1.0",
     "proxyquire": "^2.1.3",
-    "sinon": "^11.1.2",
+    "sinon": "^14.0.2",
     "sinon-chai": "^3.7.0"
   },
   "main": "kodi.js",
@@ -50,10 +50,10 @@
     "lint": "eslint"
   },
   "bugs": {
-    "url": "https://github.com/instalator/ioBroker.kodi/issues"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.kodi/issues"
   },
   "engines": {
-    "node": ">=11"
+    "node": ">=12"
   },
   "readmeFilename": "README.md"
 }

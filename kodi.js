@@ -136,15 +136,17 @@ function startAdapter(options){
         name:         'kodi',
         ready:        main,
         unload:       (callback) => {
+
+            timer && clearTimeout(timer);
+            reconnectTimer && clearTimeout(reconnectTimer);
+            getPlayListTimer && clearTimeout(getPlayListTimer);
+            SwitchPVRTimer && clearTimeout(SwitchPVRTimer);
+            GetSourcesTimer && clearTimeout(GetSourcesTimer);
+            GetNameVersionTimer && clearTimeout(GetNameVersionTimer);
+            infoFileTimer && clearTimeout(infoFileTimer);
             try {
+                kodi.close();
                 adapter.log.debug('cleaned everything up...');
-                timer && clearTimeout(timer);
-                reconnectTimer && clearTimeout(reconnectTimer);
-                getPlayListTimer && clearTimeout(getPlayListTimer);
-                SwitchPVRTimer && clearTimeout(SwitchPVRTimer);
-                GetSourcesTimer && clearTimeout(GetSourcesTimer);
-                GetNameVersionTimer && clearTimeout(GetNameVersionTimer);
-                infoFileTimer && clearTimeout(infoFileTimer);
                 callback();
             } catch (e) {
                 callback();
@@ -465,7 +467,7 @@ function GetPlayerProperties(){
                 if (res[0].currentaudiostream){
                     saveState('info.audio_codec', res[0].currentaudiostream.codec);
                     saveState('info.audio_bitrate', res[0].currentaudiostream.bitrate > 10000 ? (res[0].currentaudiostream.bitrate / 1000) :res[0].currentaudiostream.bitrate);
-                    saveState('info.audio_channels', Number (res[0].currentaudiostream.channels));
+                    saveState('info.audio_channels', Number(res[0].currentaudiostream.channels));
                     saveState('info.audio_language', res[0].currentaudiostream.language);
                     saveState('info.audio_stream', res[0].currentaudiostream.name);
                 }
@@ -478,8 +480,8 @@ function GetPlayerProperties(){
                 }
                 if (res[0].type === 'audio'){
                     saveState('info.audio_codec', res[1]['MusicPlayer.Codec']);
-                    saveState('info.audio_bitrate', Number (res[1]['MusicPlayer.BitRate']));
-                    saveState('info.audio_channels', Number (res[1]['MusicPlayer.Channels']));
+                    saveState('info.audio_bitrate', Number(res[1]['MusicPlayer.BitRate']));
+                    saveState('info.audio_channels', Number(res[1]['MusicPlayer.Channels']));
                     //saveState('info.rating', res[1]['MusicPlayer.Rating']);
                     //saveState('info.artist', res[1]['MusicPlayer.Artist']);
                 }
@@ -491,7 +493,7 @@ function GetPlayerProperties(){
                     channel = false;
                 }
                 saveState('info.live', res[0].live);
-                saveState('main.seek', Number (res[0].percentage));
+                saveState('main.seek', Number(res[0].percentage));
                 saveState('main.subtitleenabled', res[0].subtitleenabled);
                 saveState('info.canchangespeed', res[0].canchangespeed);
                 saveState('info.canrepeat', res[0].canrepeat);
@@ -1225,7 +1227,7 @@ function sendCommand(method, param, callback){
                     ErrProcessing(e + ' sendCommand: ' + method + ' - ' + JSON.stringify(param));
                 })
             } else {
-                ErrProcessing(e + ' getConnection Error: ' + method + ' - ' + JSON.stringify(param));
+                ErrProcessing(err + ' getConnection Error: ' + method + ' - ' + JSON.stringify(param));
             }
         });
     } else {
