@@ -1,0 +1,11 @@
+{
+    "Kodi adapter settings": "Настройки драйвера Kodi",
+    "Kodi adapter settings desc": "Укажите IP адрес и порт JSONRPC для управления KODI",
+    "Kodi webserver settings": "Настройки для доступа к вэбсерверу Kodi",
+    "default": "По умолчанию : 9090",
+    "ip": "IP адрес Kodi",
+    "login": "Логин",
+    "password": "Пароль",
+    "port": "Порт JSONRPC",
+    "portweb": "Порт веб-сервера"
+}
