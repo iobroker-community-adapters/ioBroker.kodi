@@ -121,6 +121,7 @@ sendTo("kodi.0", {
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Apollon77) Prevent crash if received data from Kodi are not valid UTF-8
 * (Apollon77) Optimize Adapter unload
 
 ### 2.0.8
