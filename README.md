@@ -119,8 +119,7 @@ sendTo("kodi.0", {
  - Suspend - приостанавливает Kodi
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 2.0.9 (2022-12-08)
 * (Apollon77) Prevent crash if received data from Kodi are not valid UTF-8
 * (Apollon77) Optimize Adapter unload
 
@@ -258,4 +257,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-

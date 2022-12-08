@@ -1,156 +1,169 @@
 {
-    "common": {
-        "name": "kodi",
-        "version": "2.0.8",
-        "news": {
-            "2.0.8": {
-                "en": "updates and fixes",
-                "de": "Updates und Korrekturen",
-                "ru": "обновления и исправления",
-                "pt": "atualizações e correções",
-                "nl": "updates en reparaties",
-                "fr": "mises à jour et correctifs",
-                "it": "aggiornamenti e correzioni",
-                "es": "actualizaciones y correcciones",
-                "pl": "aktualizacje i poprawki",
-                "zh-cn": "更新和修复",
-                "uk": "оновлення та виправлення"
-            },
-            "2.0.7": {
-                "en": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "de": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "ru": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "pt": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "nl": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "fr": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "it": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "es": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "pl": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "zh-cn": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
-                "uk": "виправлена ​​помилка subscribeNotification Player.OnResume [проблеми 49]\nдодані оцінки користувачів [випуски 57]\nвиправити помилку [проблеми 58]\nвіджети з виправленою помилкою"
-            },
-            "2.0.5": {
-                "en": "changed css classes\nfixed error",
-                "de": "changed css classes\nfixed error",
-                "ru": "changed css classes\nfixed error",
-                "pt": "changed css classes\nfixed error",
-                "nl": "changed css classes\nfixed error",
-                "fr": "changed css classes\nfixed error",
-                "it": "changed css classes\nfixed error",
-                "es": "changed css classes\nfixed error",
-                "pl": "changed css classes\nfixed error",
-                "zh-cn": "changed css classes\nfixed error",
-                "uk": "змінені класи css\nвиправлена ​​помилка"
-            },
-            "2.0.3": {
-                "en": "fixed thumbnails widget\nfixed info.tagline",
-                "de": "fixed thumbnails widget\nfixed info.tagline",
-                "ru": "fixed thumbnails widget\nfixed info.tagline",
-                "pt": "fixed thumbnails widget\nfixed info.tagline",
-                "nl": "fixed thumbnails widget\nfixed info.tagline",
-                "fr": "fixed thumbnails widget\nfixed info.tagline",
-                "it": "fixed thumbnails widget\nfixed info.tagline",
-                "es": "fixed thumbnails widget\nfixed info.tagline",
-                "pl": "fixed thumbnails widget\nfixed info.tagline",
-                "zh-cn": "fixed thumbnails widget\nfixed info.tagline",
-                "uk": "виправлений віджет мініатюр\nвиправлений info.tagline"
-            },
-            "2.0.2": {
-                "en": "changed title in io-package.json\nchanged seek\nfixed widgets\nfixed for thumbnails",
-                "de": "Titel in io-package.json geändert\nveränderte Suche\nfeste Widgets\nbehoben für Thumbnails",
-                "ru": "изменил название в io-package.json\nизменил искать\nисправлены виджеты\nисправлено для миниатюр",
-                "pt": "título alterado em io-package.json\nbusca alterada\nwidgets fixos\nfixo para miniaturas",
-                "nl": "titel gewijzigd in io-package.json\nveranderd zoeken\nvaste widgets\nopgelost voor miniaturen",
-                "fr": "changement de titre dans io-package.json\nchangé de recherche\nwidgets fixes\nfixe pour les vignettes",
-                "it": "titolo modificato in io-package.json\nricerca cambiata\nwidget fissi\nriparato per le anteprime",
-                "es": "título cambiado en io-package.json\nbúsqueda cambiada\nwidgets fijos\narreglado para miniaturas",
-                "pl": "zmieniono tytuł w io-package.json\nzmieniono poszukiwanie\nnaprawione widżety\nnaprawiono dla miniatur",
-                "zh-cn": "更改了io-package.json中的标题\n寻求改变\n固定的小部件\n固定缩略图",
-                "uk": "змінено назву в io-package.json\nзмінений пошук\nфіксовані віджети\nвиправлено для мініатюр"
-            }
-        },
-        "title": "Kodi media player control",
-        "titleLang": {
-            "en": "Kodi media player control",
-            "de": "Kodi Media Player-Steuerung",
-            "ru": "Управление медиаплеером Kodi",
-            "pt": "Controle do reprodutor de mídia Kodi",
-            "nl": "Kodi mediaspelerbediening",
-            "fr": "Contrôle du lecteur multimédia Kodi",
-            "it": "Controllo del lettore multimediale Kodi",
-            "es": "Control del reproductor multimedia Kodi",
-            "pl": "Sterowanie odtwarzaczem multimedialnym Kodi",
-            "zh-cn": "Kodi媒体播放器控件",
-            "uk": "Керування медіаплеєром Kodi"
-        },
-        "desc": {
-            "en": "Kodi Control Adapter",
-            "de": "Kodi Control Adapter",
-            "ru": "Адаптер для управления Kodi",
-            "pt": "Adaptador de controle Kodi",
-            "nl": "Kodi-besturingsadapter",
-            "fr": "Adaptateur de commande Kodi",
-            "it": "Adattatore di controllo Kodi",
-            "es": "Kodi juhtiadapter",
-            "pl": "Adapter sterowania Kodi",
-            "zh-cn": "Kodi控制適配器",
-            "uk": "Адаптер керування Kodi"
-        },
-        "license": "MIT",
-        "authors": [
-            "instalator"
-        ],
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "icon": "kodi.png",
-        "enabled": false,
-        "messagebox": true,
-        "materialize": true,
-        "compact": true,
-        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.kodi/master/admin/kodi.png",
-        "keywords": [
-            "kodi",
-            "player",
-            "xbmc",
-            "vis"
-        ],
-        "readme": "https://github.com/iobroker-community-adapters/ioBroker.kodi/blob/master/README.md",
-        "loglevel": "info",
-        "type": "multimedia",
-        "localLink": "%web_protocol%://%native_ip%:%native_portweb%",
-        "connectionType": "local",
-        "dataSource": "push",
-        "tier": 2,
-        "restartAdapters": [
-            "vis"
-        ],
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ]
+  "common": {
+    "name": "kodi",
+    "version": "2.0.9",
+    "news": {
+      "2.0.9": {
+        "en": "Prevent crash if received data from Kodi are not valid UTF-8\nOptimize Adapter unload",
+        "de": "Absturz verhindern, wenn empfangene Daten von Kodi nicht gültig sind UTF-8\nOptimieren des Adapters",
+        "ru": "Предотвратить аварии, если полученные данные от Kodi не действительны UTF-8\nОптимизируйте разгрузку адаптера",
+        "pt": "Evite falhas se os dados recebidos de Kodi não são válidos UTF-8\nOtimizar a descarga do adaptador",
+        "nl": "Prevent crash als er gegevens van Kodi zijn niet geldig\nVertaling:",
+        "fr": "Prévenir le crash si les données reçues de Kodi ne sont pas valides UTF-8\nOptimiser la décharge de l'adaptateur",
+        "it": "Prevenire crash se i dati ricevuti da Kodi non sono validi UTF-8\nOttimizzare lo scarico dell'adattatore",
+        "es": "Evitar el accidente si se reciben datos de Kodi no son válidos UTF-8\nOptimize Adaptador descarga",
+        "pl": "Przelotka, jeśli otrzyma dane z Kodi nie są prawidłowe UTF-8\nOptimize Adapter",
+        "uk": "Запобігання аварійної аварії, якщо отримані дані з Коді не діють UTF-8\nОптимальне завантаження адаптера",
+        "zh-cn": "如果从库迪获得的数据不有效,则可预防事故\nA. 减少卸货"
+      },
+      "2.0.8": {
+        "en": "updates and fixes",
+        "de": "Updates und Korrekturen",
+        "ru": "обновления и исправления",
+        "pt": "atualizações e correções",
+        "nl": "updates en reparaties",
+        "fr": "mises à jour et correctifs",
+        "it": "aggiornamenti e correzioni",
+        "es": "actualizaciones y correcciones",
+        "pl": "aktualizacje i poprawki",
+        "zh-cn": "更新和修复",
+        "uk": "оновлення та виправлення"
+      },
+      "2.0.7": {
+        "en": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "de": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "ru": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "pt": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "nl": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "fr": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "it": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "es": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "pl": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "zh-cn": "fixed error subscribeNotification Player.OnResume [issues 49]\nadded user ratings [issues 57]\nfix error [issues 58]\nfixed error widgets",
+        "uk": "виправлена ​​помилка subscribeNotification Player.OnResume [проблеми 49]\nдодані оцінки користувачів [випуски 57]\nвиправити помилку [проблеми 58]\nвіджети з виправленою помилкою"
+      },
+      "2.0.5": {
+        "en": "changed css classes\nfixed error",
+        "de": "changed css classes\nfixed error",
+        "ru": "changed css classes\nfixed error",
+        "pt": "changed css classes\nfixed error",
+        "nl": "changed css classes\nfixed error",
+        "fr": "changed css classes\nfixed error",
+        "it": "changed css classes\nfixed error",
+        "es": "changed css classes\nfixed error",
+        "pl": "changed css classes\nfixed error",
+        "zh-cn": "changed css classes\nfixed error",
+        "uk": "змінені класи css\nвиправлена ​​помилка"
+      },
+      "2.0.3": {
+        "en": "fixed thumbnails widget\nfixed info.tagline",
+        "de": "fixed thumbnails widget\nfixed info.tagline",
+        "ru": "fixed thumbnails widget\nfixed info.tagline",
+        "pt": "fixed thumbnails widget\nfixed info.tagline",
+        "nl": "fixed thumbnails widget\nfixed info.tagline",
+        "fr": "fixed thumbnails widget\nfixed info.tagline",
+        "it": "fixed thumbnails widget\nfixed info.tagline",
+        "es": "fixed thumbnails widget\nfixed info.tagline",
+        "pl": "fixed thumbnails widget\nfixed info.tagline",
+        "zh-cn": "fixed thumbnails widget\nfixed info.tagline",
+        "uk": "виправлений віджет мініатюр\nвиправлений info.tagline"
+      },
+      "2.0.2": {
+        "en": "changed title in io-package.json\nchanged seek\nfixed widgets\nfixed for thumbnails",
+        "de": "Titel in io-package.json geändert\nveränderte Suche\nfeste Widgets\nbehoben für Thumbnails",
+        "ru": "изменил название в io-package.json\nизменил искать\nисправлены виджеты\nисправлено для миниатюр",
+        "pt": "título alterado em io-package.json\nbusca alterada\nwidgets fixos\nfixo para miniaturas",
+        "nl": "titel gewijzigd in io-package.json\nveranderd zoeken\nvaste widgets\nopgelost voor miniaturen",
+        "fr": "changement de titre dans io-package.json\nchangé de recherche\nwidgets fixes\nfixe pour les vignettes",
+        "it": "titolo modificato in io-package.json\nricerca cambiata\nwidget fissi\nriparato per le anteprime",
+        "es": "título cambiado en io-package.json\nbúsqueda cambiada\nwidgets fijos\narreglado para miniaturas",
+        "pl": "zmieniono tytuł w io-package.json\nzmieniono poszukiwanie\nnaprawione widżety\nnaprawiono dla miniatur",
+        "zh-cn": "更改了io-package.json中的标题\n寻求改变\n固定的小部件\n固定缩略图",
+        "uk": "змінено назву в io-package.json\nзмінений пошук\nфіксовані віджети\nвиправлено для мініатюр"
+      }
     },
-    "native": {
-        "ip": "127.0.0.1",
-        "port": 9090,
-        "portweb": 8080,
-        "login": "",
-        "password": ""
+    "title": "Kodi media player control",
+    "titleLang": {
+      "en": "Kodi media player control",
+      "de": "Kodi Media Player-Steuerung",
+      "ru": "Управление медиаплеером Kodi",
+      "pt": "Controle do reprodutor de mídia Kodi",
+      "nl": "Kodi mediaspelerbediening",
+      "fr": "Contrôle du lecteur multimédia Kodi",
+      "it": "Controllo del lettore multimediale Kodi",
+      "es": "Control del reproductor multimedia Kodi",
+      "pl": "Sterowanie odtwarzaczem multimedialnym Kodi",
+      "zh-cn": "Kodi媒体播放器控件",
+      "uk": "Керування медіаплеєром Kodi"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "If connected to KODI",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Kodi Control Adapter",
+      "de": "Kodi Control Adapter",
+      "ru": "Адаптер для управления Kodi",
+      "pt": "Adaptador de controle Kodi",
+      "nl": "Kodi-besturingsadapter",
+      "fr": "Adaptateur de commande Kodi",
+      "it": "Adattatore di controllo Kodi",
+      "es": "Kodi juhtiadapter",
+      "pl": "Adapter sterowania Kodi",
+      "zh-cn": "Kodi控制適配器",
+      "uk": "Адаптер керування Kodi"
+    },
+    "license": "MIT",
+    "authors": [
+      "instalator"
+    ],
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "kodi.png",
+    "enabled": false,
+    "messagebox": true,
+    "materialize": true,
+    "compact": true,
+    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.kodi/master/admin/kodi.png",
+    "keywords": [
+      "kodi",
+      "player",
+      "xbmc",
+      "vis"
+    ],
+    "readme": "https://github.com/iobroker-community-adapters/ioBroker.kodi/blob/master/README.md",
+    "loglevel": "info",
+    "type": "multimedia",
+    "localLink": "%web_protocol%://%native_ip%:%native_portweb%",
+    "connectionType": "local",
+    "dataSource": "push",
+    "tier": 2,
+    "restartAdapters": [
+      "vis"
+    ],
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
     ]
+  },
+  "native": {
+    "ip": "127.0.0.1",
+    "port": 9090,
+    "portweb": 8080,
+    "login": "",
+    "password": ""
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If connected to KODI",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
