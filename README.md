@@ -123,7 +123,7 @@ sendTo("kodi.0", {
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 3.0.0 (2023-09-08)
 * (agross) Fixed seeking on Kodi >= 19
 * (bluefox) Supported only node.js versions >= 16
 

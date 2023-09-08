@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "kodi",
-    "version": "2.0.9",
+    "version": "3.0.0",
     "news": {
+      "3.0.0": {
+        "en": "Fixed seeking on Kodi >= 19\nSupported only node.js versions >= 16",
+        "de": "Feste Suche nach Kodi >= 19\nUnterstützt nur node.js Versionen >= ANHANG",
+        "ru": "Фиксированный поиск по Kodi >= 19\nПоддерживаются только версии node.js >= 16, 16, 16",
+        "pt": "Procura fixa em Kodi >= 19\nApenas suportado node.js versões >= 16",
+        "nl": "Ik ben op zoek naar Kodi 1919\nVertaling: 16",
+        "fr": "Fixe à la recherche sur Kodi 19\nSupporté uniquement les versions node.js 16",
+        "it": "Ricerca fissa su Kodi >= 19\nSupportato solo node.js versioni >= 16",
+        "es": "Buscando fijos en Kodi 19\nSolo soportado node.js versiones √= 16",
+        "pl": "Fixed szuka Kodi >====. 19 lat\nObsługuje się tylko węzłami >===. 16",
+        "uk": "Фіксований пошук на Kodi >= 19 мар\nПідтримка тільки node.js версії >= 16 мар",
+        "zh-cn": "D. 固定在Kodi >寻求的 1919\n只支持不dejspage > 16"
+      },
       "2.0.9": {
         "en": "Prevent crash if received data from Kodi are not valid UTF-8\nOptimize Adapter unload",
         "de": "Absturz verhindern, wenn empfangene Daten von Kodi nicht gültig sind UTF-8\nOptimieren des Adapters",
