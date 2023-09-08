@@ -976,7 +976,7 @@ function ConstructorCmd(name, ids, param){
             case "seek":
                 if (param >= 0 && param <= 100 && states.info.canseek){
                     method = 'Player.Seek'; //int 0-100
-                    param = {"playerid": player_id, "value": parseInt(param)}
+                    param = {"playerid": player_id, "value": { "percentage": parseInt(param) }}
                 } else if (!states.info.canseek){
                     adapter.log.warn('(seek) The operation for this content is not available.');
                 }
