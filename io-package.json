@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "kodi",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "news": {
+      "3.1.0": {
+        "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies have been updated",
+        "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nЗависимость обновлена",
+        "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nAs dependências foram atualizadas",
+        "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nLes dépendances ont été actualisées",
+        "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nLe dipendenze sono state aggiornate",
+        "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nSe han actualizado las dependencias",
+        "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nZaktualizowano zależności",
+        "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність було оновлено",
+        "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n依赖关系已更新"
+      },
       "3.0.0": {
         "en": "Fixed seeking on Kodi >= 19\nSupported only node.js versions >= 16",
         "de": "Feste Suche nach Kodi >= 19\nUnterstützt nur node.js Versionen >= ANHANG",
@@ -80,19 +93,6 @@
         "pl": "fixed thumbnails widget\nfixed info.tagline",
         "zh-cn": "fixed thumbnails widget\nfixed info.tagline",
         "uk": "виправлений віджет мініатюр\nвиправлений info.tagline"
-      },
-      "2.0.2": {
-        "en": "changed title in io-package.json\nchanged seek\nfixed widgets\nfixed for thumbnails",
-        "de": "Titel in io-package.json geändert\nveränderte Suche\nfeste Widgets\nbehoben für Thumbnails",
-        "ru": "изменил название в io-package.json\nизменил искать\nисправлены виджеты\nисправлено для миниатюр",
-        "pt": "título alterado em io-package.json\nbusca alterada\nwidgets fixos\nfixo para miniaturas",
-        "nl": "titel gewijzigd in io-package.json\nveranderd zoeken\nvaste widgets\nopgelost voor miniaturen",
-        "fr": "changement de titre dans io-package.json\nchangé de recherche\nwidgets fixes\nfixe pour les vignettes",
-        "it": "titolo modificato in io-package.json\nricerca cambiata\nwidget fissi\nriparato per le anteprime",
-        "es": "título cambiado en io-package.json\nbúsqueda cambiada\nwidgets fijos\narreglado para miniaturas",
-        "pl": "zmieniono tytuł w io-package.json\nzmieniono poszukiwanie\nnaprawione widżety\nnaprawiono dla miniatur",
-        "zh-cn": "更改了io-package.json中的标题\n寻求改变\n固定的小部件\n固定缩略图",
-        "uk": "змінено назву в io-package.json\nзмінений пошук\nфіксовані віджети\nвиправлено для мініатюр"
       }
     },
     "titleLang": {
