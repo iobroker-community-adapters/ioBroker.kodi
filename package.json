@@ -2,10 +2,10 @@
   "name": "iobroker.kodi",
   "version": "3.1.0",
   "description": "iobroker.kodi Adapter",
-  "author": {
-    "name": "instalator",
-    "email": "vvvalt@mail.ru"
-  },
+  "author": "instalator <vvvalt@mail.ru>",
+  "contributors": [
+    "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
+  ],
   "homepage": "https://github.com/iobroker-community-adapters/ioBroker.kodi",
   "license": "MIT",
   "keywords": [
