@@ -17,7 +17,7 @@
     "url": "https://github.com/iobroker-community-adapters/ioBroker.kodi"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "kodi-ws": "git+https://git@github.com/iobroker-community-adapters/kodi-ws.git",
