@@ -253,6 +253,8 @@ You can execute one of the following actions:
 #### 0.0.1
 * (instalator) initial (17.04.2016)
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 The MIT License (MIT)
 
