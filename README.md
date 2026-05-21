@@ -125,6 +125,7 @@ You can execute one of the following actions:
 -->
 
 ### **WORK IN PROGRESS**
+- (copilot) **ENHANCED**: Migrated adapter configuration UI to jsonConfig with responsive layout and short-form i18n files
 - (copilot) Adapter requires node.js >= 22 now
 - (copilot) Adapter requires admin >= 7.7.22 now
 - (copilot) Adapter requires js-controller >= 6.0.11 now

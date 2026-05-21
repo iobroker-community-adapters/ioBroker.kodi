@@ -134,7 +134,9 @@
     "icon": "kodi.png",
     "enabled": false,
     "messagebox": true,
-    "materialize": true,
+    "adminUI": {
+      "config": "json"
+    },
     "compact": true,
     "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.kodi/master/admin/kodi.png",
     "keywords": [
