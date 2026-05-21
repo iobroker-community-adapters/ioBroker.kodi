@@ -1,0 +1,11 @@
+{
+    "Kodi adapter settings": "Kodi-Adapter-Einstellungen",
+    "Kodi adapter settings desc": "Geben Sie die IP-Adresse und den JSONRPC-Port zur Steuerung von KODI an",
+    "Kodi webserver settings": "Kodi-Webserver-Zugriffseinstellungen",
+    "default": "Standard: 9090",
+    "ip": "Kodi-IP-Adresse",
+    "login": "Anmeldung",
+    "password": "Passwort",
+    "port": "JSONRPC-Port",
+    "portweb": "Webserver-Port"
+}

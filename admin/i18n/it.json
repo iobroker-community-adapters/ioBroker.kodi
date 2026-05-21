@@ -1,0 +1,11 @@
+{
+    "Kodi adapter settings": "Impostazioni dell'adattatore Kodi",
+    "Kodi adapter settings desc": "Specificare l'indirizzo IP e la porta JSONRPC per controllare KODI",
+    "Kodi webserver settings": "Impostazioni di accesso al server web Kodi",
+    "default": "predefinito: 9090",
+    "ip": "Indirizzo IP Kodi",
+    "login": "Accesso",
+    "password": "Password",
+    "port": "Porta JSONRPC",
+    "portweb": "Porta del server web"
+}
