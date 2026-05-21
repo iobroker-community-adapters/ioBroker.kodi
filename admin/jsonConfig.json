@@ -62,10 +62,21 @@
             "lg": 12,
             "xl": 12
         },
+        "portweb": {
+            "type": "number",
+            "label": "portweb",
+            "newLine": true,
+            "min": 1,
+            "max": 65535,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4
+        },
         "login": {
             "type": "text",
             "label": "login",
-            "newLine": true,
             "xs": 12,
             "sm": 12,
             "md": 6,

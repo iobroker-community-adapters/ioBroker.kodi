@@ -1,11 +1,11 @@
 {
-    "Kodi adapter settings": "Kodi adapter settings",
-    "Kodi adapter settings desc": "Specify the IP address and JSONRPC port for controlling KODI",
-    "Kodi webserver settings": "Kodi Web Server Access Settings",
-    "default": "default: 9090",
-    "ip": "Kodi IP Address",
-    "login": "Login",
-    "password": "Password",
-    "port": "Port JSONRPC",
-    "portweb": "Port Webserver"
+    "Kodi adapter settings": "Kodi-adapterinstellingen",
+    "Kodi adapter settings desc": "Geef het IP-adres en de JSONRPC-poort op om KODI te besturen",
+    "Kodi webserver settings": "Toegangsinstellingen voor Kodi-webserver",
+    "default": "standaard: 9090",
+    "ip": "Kodi-IP-adres",
+    "login": "Inloggen",
+    "password": "Wachtwoord",
+    "port": "JSONRPC-poort",
+    "portweb": "Webserverpoort"
 }
