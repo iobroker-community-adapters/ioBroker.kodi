@@ -134,7 +134,6 @@
     "icon": "kodi.png",
     "enabled": false,
     "messagebox": true,
-    "materialize": true,
     "compact": true,
     "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.kodi/master/admin/kodi.png",
     "keywords": [
@@ -163,7 +162,10 @@
       {
         "admin": ">=7.7.22"
       }
-    ]
+    ],
+    "adminUI": {
+      "config": "materialize"
+    }
   },
   "native": {
     "ip": "127.0.0.1",
