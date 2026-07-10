@@ -20,7 +20,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.1.6",
+    "@iobroker/adapter-core": "^3.4.1",
     "kodi-ws": "git+https://git@github.com/iobroker-community-adapters/kodi-ws.git"
   },
   "devDependencies": {
